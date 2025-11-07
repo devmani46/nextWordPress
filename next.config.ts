@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+    domains: ["wordpress_nextjs.test"],
   },
   async redirects() {
     return [

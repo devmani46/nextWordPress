@@ -101,6 +101,9 @@ export interface Page extends WPEntity {
   title: RenderedTitle;
   content: RenderedContent;
   excerpt: RenderedContent;
+  meta: {
+    [key: string]: unknown;
+  };
   author: number;
   featured_media: number;
   parent: number;
@@ -108,7 +111,7 @@ export interface Page extends WPEntity {
   comment_status: "open" | "closed";
   ping_status: "open" | "closed";
   template: string;
-  meta: Record<string, unknown>;
+  // meta: Record<string, unknown>;
 }
 
 // Taxonomy types

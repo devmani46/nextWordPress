@@ -1,7 +1,8 @@
 import "./globals.css";
 
 import { Section, Container } from "@/components/craft";
-import { Inter as FontSans } from "next/font/google";
+// import { Inter as FontSans } from "next/font/google";
+import { Instrument_Sans as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { MobileNav } from "@/components/nav/mobile-nav";
@@ -18,6 +19,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { Metadata } from "next";
+import NavBar from "@/components/fw-nav/fw-nav";
 
 const font = FontSans({
   subsets: ["latin"],
@@ -42,16 +44,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={cn("min-h-screen font-sans antialiased", font.variable)} suppressHydrationWarning>
+      <body
+        className={cn("min-h-screen font-sans antialiased", font.variable)}
+        suppressHydrationWarning
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <Nav />
+          {/* <Nav /> */}
+          <NavBar />
           {children}
-          <Footer />
+          {/* <Footer /> */}
         </ThemeProvider>
         <Analytics />
       </body>

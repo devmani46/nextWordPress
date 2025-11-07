@@ -53,7 +53,7 @@ async function wordpressFetch<T>(
     },
     next: {
       tags: ["wordpress"],
-      revalidate: 3600, // 1 hour cache
+      revalidate: 10, // 1 hour cache
     },
   });
 
@@ -84,7 +84,7 @@ async function wordpressFetchWithPagination<T>(
     },
     next: {
       tags: ["wordpress"],
-      revalidate: 3600, // 1 hour cache
+      revalidate: 10, // 1 hour cache
     },
   });
 
@@ -159,7 +159,7 @@ export async function getPostsPaginated(
     },
     next: {
       tags: cacheTags,
-      revalidate: 3600, // 1 hour cache
+      revalidate: 10, // 1 hour cache
     },
   });
 
@@ -455,9 +455,10 @@ export async function getTeamById(id: number): Promise<Team> {
 }
 
 export async function getTeamBySlug(slug: string): Promise<Team> {
-  return wordpressFetch<Team[]>("/wp-json/wp/v2/team", { slug, _embed: true }).then(
-    (teams) => teams[0]
-  );
+  return wordpressFetch<Team[]>("/wp-json/wp/v2/team", {
+    slug,
+    _embed: true,
+  }).then((teams) => teams[0]);
 }
 
 export async function getTeamsPaginated(
@@ -499,7 +500,9 @@ export async function getTeamsPaginated(
   // Add page-specific cache tag for granular invalidation
   cacheTags.push(`teams-page-${page}`);
 
-  const url = `${baseUrl}/wp-json/wp/v2/team${querystring.stringify(query) ? `?${querystring.stringify(query)}` : ""}`;
+  const url = `${baseUrl}/wp-json/wp/v2/team${
+    querystring.stringify(query) ? `?${querystring.stringify(query)}` : ""
+  }`;
   const userAgent = "Next.js WordPress Client";
 
   const response = await fetch(url, {
@@ -508,7 +511,7 @@ export async function getTeamsPaginated(
     },
     next: {
       tags: cacheTags,
-      revalidate: 3600, // 1 hour cache
+      revalidate: 10, // 1 hour cache
     },
   });
 
@@ -566,12 +569,14 @@ export async function getTeamCategoryById(id: number): Promise<Category> {
 }
 
 export async function getTeamCategoryBySlug(slug: string): Promise<Category> {
-  return wordpressFetch<Category[]>("/wp-json/wp/v2/team_category", { slug }).then(
-    (categories) => categories[0]
-  );
+  return wordpressFetch<Category[]>("/wp-json/wp/v2/team_category", {
+    slug,
+  }).then((categories) => categories[0]);
 }
 
-export async function getTeamsByTeamCategory(categoryId: number): Promise<Team[]> {
+export async function getTeamsByTeamCategory(
+  categoryId: number
+): Promise<Team[]> {
   return wordpressFetch<Team[]>("/wp-json/wp/v2/team", {
     team_category: categoryId,
     _embed: true,
@@ -645,3 +650,4 @@ export async function getTeamsByTeamTypePaginated(
 }
 
 export { WordPressAPIError };
+export type { Post, Page, Author, Category, Tag, Team, FeaturedMedia };
