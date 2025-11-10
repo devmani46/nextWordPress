@@ -11,6 +11,8 @@ import type {
   Author,
   FeaturedMedia,
   Team,
+  Notice,
+  Project,
 } from "./wordpress.d";
 
 const baseUrl = process.env.WORDPRESS_URL;
@@ -228,6 +230,14 @@ export async function getPostBySlug(slug: string): Promise<Post> {
   return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", { slug }).then(
     (posts) => posts[0]
   );
+}
+
+export async function getAllNotices(): Promise<Notice[]> {
+  return wordpressFetch<Notice[]>("/wp-json/wp/v2/notices");
+}
+
+export async function getAllProjects(): Promise<Project[]> {
+  return wordpressFetch<Project[]>("/wp-json/wp/v2/projects?_embed");
 }
 
 export async function getAllCategories(): Promise<Category[]> {
@@ -650,4 +660,14 @@ export async function getTeamsByTeamTypePaginated(
 }
 
 export { WordPressAPIError };
-export type { Post, Page, Author, Category, Tag, Team, FeaturedMedia };
+export type {
+  Post,
+  Page,
+  Author,
+  Category,
+  Tag,
+  Team,
+  FeaturedMedia,
+  Notice,
+  Project,
+};

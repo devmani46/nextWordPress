@@ -125,6 +125,22 @@ interface Taxonomy {
   meta: Record<string, unknown>;
 }
 
+export interface Notice {
+  id: number;
+  date: string;
+  slug: string;
+  link: string;
+  title: string;
+}
+
+export interface Project extends WPEntity {
+  title: RenderedTitle;
+  featured_media: number;
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+  };
+}
+
 export interface Category extends Taxonomy {
   taxonomy: "category";
   parent: number;
