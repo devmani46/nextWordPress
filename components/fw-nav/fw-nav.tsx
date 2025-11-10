@@ -2,7 +2,7 @@ export default function NavBar() {
   return (
     <section className="navbar py-2 w-full mb-8">
       <nav className="flex justify-center my-4">
-        <div className="flex justify-between p2-regular text-gray">
+        <div className="flex gap-44 p2-regular text-gray">
           <p>+977-014511530, 014526005</p>
           <ul className="flex gap-2">
             <li>Africa</li>

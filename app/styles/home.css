@@ -1,0 +1,16 @@
+.box-1 {
+  width: 1000px;
+  height: 1000px;
+  background-color: gray;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 63%,
+    70% 63%,
+    70% 100%,
+    0 100%,
+    0% 80%,
+    0% 20%
+  );
+  border-radius: 40px;
+}
