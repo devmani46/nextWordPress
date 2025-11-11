@@ -141,6 +141,14 @@ export interface Project extends WPEntity {
   };
 }
 
+export interface Activity extends WPEntity {
+  title: RenderedTitle;
+  featured_media: number;
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+  };
+}
+
 export interface Category extends Taxonomy {
   taxonomy: "category";
   parent: number;

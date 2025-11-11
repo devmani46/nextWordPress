@@ -13,6 +13,7 @@ import type {
   Team,
   Notice,
   Project,
+  Activity,
 } from "./wordpress.d";
 
 const baseUrl = process.env.WORDPRESS_URL;
@@ -238,6 +239,17 @@ export async function getAllNotices(): Promise<Notice[]> {
 
 export async function getAllProjects(): Promise<Project[]> {
   return wordpressFetch<Project[]>("/wp-json/wp/v2/projects?_embed");
+}
+
+export async function getAllActivities(): Promise<Activity[]> {
+  return wordpressFetch<Activity[]>("/wp-json/wp/v2/activities?_embed");
+}
+
+export async function getActivityBySlug(slug: string): Promise<Activity> {
+  return wordpressFetch<Activity[]>("/wp-json/wp/v2/activities", {
+    slug,
+    _embed: true,
+  }).then((activities) => activities[0]);
 }
 
 export async function getAllCategories(): Promise<Category[]> {
@@ -670,4 +682,5 @@ export type {
   FeaturedMedia,
   Notice,
   Project,
+  Activity,
 };

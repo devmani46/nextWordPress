@@ -88,6 +88,7 @@ import { getPageBySlug, getAllPages } from "@/lib/wordpress";
 import { Section, Container, Prose } from "@/components/craft";
 import HomeTemplate from "@/components/templates/HomeTemplate";
 import DefaultTemplate from "@/components/templates/DefaultTemplate";
+import ActivitiesTemplate from "@/components/templates/ActivitiesTemplate";
 
 export const revalidate = 10;
 
@@ -113,6 +114,9 @@ export default async function Page({
   switch (slug) {
     case "home":
       Template = HomeTemplate;
+      break;
+    case "activities":
+      Template = ActivitiesTemplate;
       break;
     default:
       Template = DefaultTemplate;
