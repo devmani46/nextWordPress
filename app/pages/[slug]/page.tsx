@@ -89,6 +89,7 @@ import { Section, Container, Prose } from "@/components/craft";
 import HomeTemplate from "@/components/templates/HomeTemplate";
 import DefaultTemplate from "@/components/templates/DefaultTemplate";
 import ActivitiesTemplate from "@/components/templates/ActivitiesTemplate";
+import WhoWeAreTemplate from "@/components/templates/WhoWeAre";
 
 export const revalidate = 10;
 
@@ -117,6 +118,9 @@ export default async function Page({
       break;
     case "activities":
       Template = ActivitiesTemplate;
+      break;
+    case "whoweare":
+      Template = WhoWeAreTemplate;
       break;
     default:
       Template = DefaultTemplate;

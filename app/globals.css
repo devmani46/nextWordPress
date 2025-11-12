@@ -159,19 +159,19 @@
 }
 
 .h5 {
-  @apply text-xl font-medium leading-[1.2];
+  @apply text-xl font-medium leading-[1.5];
 }
 
 .p1-regular {
-  @apply text-base font-normal tracking-[-0.01em] leading-normal;
+  @apply text-base font-normal leading-normal tracking-[-0.01em];
 }
 
 .p1-medium {
-  @apply text-base font-medium tracking-[-0.01em] leading-normal;
+  @apply text-base font-medium leading-normal tracking-[-0.01em];
 }
 
 .p1-bold {
-  @apply text-base font-bold tracking-[-0.01em] leading-normal;
+  @apply text-base font-bold leading-normal tracking-[-0.01em];
 }
 
 .p2-regular {

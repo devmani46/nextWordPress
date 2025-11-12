@@ -12,6 +12,7 @@ import type {
   FeaturedMedia,
   Team,
   Notice,
+  Event,
   Project,
   Activity,
 } from "./wordpress.d";
@@ -235,6 +236,10 @@ export async function getPostBySlug(slug: string): Promise<Post> {
 
 export async function getAllNotices(): Promise<Notice[]> {
   return wordpressFetch<Notice[]>("/wp-json/wp/v2/notices");
+}
+
+export async function getAllEvents(): Promise<Event[]> {
+  return wordpressFetch<Event[]>("/wp-json/wp/v2/events?_embed");
 }
 
 export async function getAllProjects(): Promise<Project[]> {
@@ -681,6 +686,7 @@ export type {
   Team,
   FeaturedMedia,
   Notice,
+  Event,
   Project,
   Activity,
 };

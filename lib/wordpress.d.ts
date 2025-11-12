@@ -133,6 +133,16 @@ export interface Notice {
   title: string;
 }
 
+export interface Event extends WPEntity {
+  title: RenderedTitle;
+  featured_media: number;
+  event_start_date: string;
+
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+  };
+}
+
 export interface Project extends WPEntity {
   title: RenderedTitle;
   featured_media: number;
