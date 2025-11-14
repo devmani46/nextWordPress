@@ -43,7 +43,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+      </head>
       <body
         className={cn("min-h-screen font-sans antialiased", font.variable)}
         suppressHydrationWarning
@@ -68,15 +73,15 @@ export default function RootLayout({
 const Nav = ({ className, children, id }: NavProps) => {
   return (
     <nav
-      className={cn("sticky z-50 top-0 bg-background", "border-b", className)}
+      className={cn("sticky top-0 z-50 bg-background", "border-b", className)}
       id={id}
     >
       <div
         id="nav-container"
-        className="max-w-5xl mx-auto py-4 px-6 sm:px-8 flex justify-between items-center"
+        className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4 sm:px-8"
       >
         <Link
-          className="hover:opacity-75 transition-all flex gap-4 items-center"
+          className="flex items-center gap-4 transition-all hover:opacity-75"
           href="/"
         >
           <Image
@@ -114,8 +119,8 @@ const Footer = () => {
   return (
     <footer>
       <Section>
-        <Container className="grid md:grid-cols-[1.5fr_0.5fr_0.5fr] gap-12">
-          <div className="flex flex-col gap-6 not-prose">
+        <Container className="grid gap-12 md:grid-cols-[1.5fr_0.5fr_0.5fr]">
+          <div className="not-prose flex flex-col gap-6">
             <Link href="/">
               <h3 className="sr-only">{siteConfig.site_name}</h3>
               <Image
@@ -131,10 +136,10 @@ const Footer = () => {
             </p>
           </div>
           <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Website</h5>
+            <h5 className="text-base font-medium">Website</h5>
             {Object.entries(mainMenu).map(([key, href]) => (
               <Link
-                className="hover:underline underline-offset-4"
+                className="underline-offset-4 hover:underline"
                 key={href}
                 href={href}
               >
@@ -143,10 +148,10 @@ const Footer = () => {
             ))}
           </div>
           <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Blog</h5>
+            <h5 className="text-base font-medium">Blog</h5>
             {Object.entries(contentMenu).map(([key, href]) => (
               <Link
-                className="hover:underline underline-offset-4"
+                className="underline-offset-4 hover:underline"
                 key={href}
                 href={href}
               >
@@ -155,7 +160,7 @@ const Footer = () => {
             ))}
           </div>
         </Container>
-        <Container className="border-t not-prose flex flex-col md:flex-row md:gap-2 gap-6 justify-between md:items-center">
+        <Container className="not-prose flex flex-col justify-between gap-6 border-t md:flex-row md:items-center md:gap-2">
           <ThemeToggle />
           <p className="text-muted-foreground">
             &copy; <a href="https://9d8.dev">9d8</a>. All rights reserved.

@@ -90,6 +90,9 @@ import HomeTemplate from "@/components/templates/HomeTemplate";
 import DefaultTemplate from "@/components/templates/DefaultTemplate";
 import ActivitiesTemplate from "@/components/templates/ActivitiesTemplate";
 import WhoWeAreTemplate from "@/components/templates/WhoWeAre";
+import ExecutiveCommitteeTemplate from "@/components/templates/ExecutiveCommitteeTemplate";
+import OurNCCTemplate from "@/components/templates/OurNCCTemplate";
+import CommitteesTaskforcesTemplate from "@/components/templates/CommitteesTaskforcesTemplate";
 
 export const revalidate = 10;
 
@@ -121,6 +124,15 @@ export default async function Page({
       break;
     case "whoweare":
       Template = WhoWeAreTemplate;
+      break;
+    case "executivecommittee":
+      Template = ExecutiveCommitteeTemplate;
+      break;
+    case "ourncc":
+      Template = OurNCCTemplate;
+      break;
+    case "committeestaskforce":
+      Template = CommitteesTaskforcesTemplate;
       break;
     default:
       Template = DefaultTemplate;

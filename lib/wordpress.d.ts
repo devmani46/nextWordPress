@@ -143,6 +143,15 @@ export interface Event extends WPEntity {
   };
 }
 
+export interface News extends WPEntity {
+  title: RenderedTitle;
+  featured_media: number;
+
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+  };
+}
+
 export interface Project extends WPEntity {
   title: RenderedTitle;
   featured_media: number;

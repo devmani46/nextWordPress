@@ -13,7 +13,7 @@ export default function WhiteButton({
     <Button
       {...props}
       disabled={loading || props.disabled}
-      className="bg-white-light text-primary p-5 "
+      className="bg-white-light p-5 text-primary hover:bg-white-normal-hover"
     >
       {loading ? "Loading..." : children}
     </Button>

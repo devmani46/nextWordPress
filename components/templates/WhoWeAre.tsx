@@ -2,7 +2,16 @@ import { Page } from "@/lib/wordpress";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Image from "next/image";
 import WhiteButton from "../ui/whitebutton";
-import { ArrowUpLeft, ArrowUpRight } from "lucide-react";
+import LiquidGlass from "liquid-glass-react";
+import LiquidGlassWrapper from "../ui/liquidglasswrapper";
+import "../../app/styles/whoweare.css";
+
+import {
+  ArrowUpLeft,
+  ArrowUpRight,
+  LucideGoal,
+  LucideTarget,
+} from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -10,6 +19,7 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import BlueButton from "../ui/bluebutton";
+import OverlappingCarousel from "../ui/OverlappingCarousel";
 
 interface WhoWeAreTemplateProps {
   page: Page;
@@ -18,6 +28,13 @@ interface WhoWeAreTemplateProps {
 export default async function WhoWeAreTemplate({
   page,
 }: WhoWeAreTemplateProps) {
+  const images = [
+    { src: "/FINAL DOG GRASS.png", alt: "image" },
+    { src: "/FINAL DOG GRASS.png", alt: "image" },
+    { src: "/FINAL DOG GRASS.png", alt: "image" },
+    { src: "/FINAL DOG GRASS.png", alt: "image" },
+  ];
+
   return (
     <div>
       <section className="about-text px-[15%]">
@@ -42,27 +59,20 @@ export default async function WhoWeAreTemplate({
         </p>
       </section>
 
-      <section className="mission-slider flex justify-center">
-        <Carousel
-          opts={{
-            align: "center", // keeps active item centered
-            loop: true,
-          }}
-          className="w-[900px] overflow-visible" // let side items peek out
-        >
-          <CarouselContent className="-ml-2">
-            {" "}
-            {/* adjust spacing */}
-            {[1, 2, 3].map((item) => (
-              <CarouselItem
-                key={item}
-                className="basis-[80%] pl-2 transition-transform duration-300 ease-in-out"
-              >
-                <div className="slider-image h-[420px] w-full rounded-2xl bg-gray shadow-lg"></div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+      <section className="mission-slider relative mt-20 flex justify-center">
+        <div className="our-mission absolute -top-10 z-10 w-[500px] rounded-lg border border-blue-light-active bg-white bg-opacity-70 px-6 py-3 backdrop-blur-md">
+          <div className="title mb-3 flex items-center gap-3">
+            <LucideGoal className="size-8 text-blue-normal" />
+            <p className="h5">Our Mission</p>
+          </div>
+          <p className="label-regular">
+            “Once a Nepali, always a Nepali” — we are committed to channeling
+            our efforts for the transformation of Nepali society and
+            safeguarding the welfare of Nepalis abroad, which ultimately serves
+            the nation’s interest.
+          </p>
+        </div>
+        <OverlappingCarousel images={images} autoplay loop showPagination />
       </section>
 
       {/*OUR VISION IN ACTION*/}
@@ -206,20 +216,50 @@ export default async function WhoWeAreTemplate({
             members worldwide.
           </p>
 
-          <ul className="p1-regular">
-            <li>Access to 500+ partner discounts</li>
-            <li>Global Networking opportunities</li>
-            <li>Exclusive events and webinars</li>
-            <li>Priority Customer support</li>
+          <ul className="p1-regular flex flex-col gap-2">
+            <li className="flex items-center gap-2">
+              <span className="material-symbols-outlined">check_circle</span>
+              "Access to 500+ partner discounts
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="material-symbols-outlined">check_circle</span>
+              Global Networking opportunities
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="material-symbols-outlined">check_circle</span>
+              Exclusive events and webinars
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="material-symbols-outlined">check_circle</span>
+              Priority Customer support
+            </li>
           </ul>
 
           <WhiteButton>Become A Member</WhiteButton>
         </div>
         <div className="join-stats grid basis-1/2 grid-cols-2 grid-rows-2 gap-4">
-          <div className="rounded-2xl bg-white bg-opacity-15"></div>
-          <div className="rounded-2xl bg-white bg-opacity-15"></div>
-          <div className="rounded-2xl bg-white bg-opacity-15"></div>
-          <div className="rounded-2xl bg-white bg-opacity-15"></div>
+          <div className="rounded-2xl bg-white bg-opacity-15">
+            <span className="material-symbols-outlined">diversity_2</span>
+            <p>50,000+</p>
+            <p>Active Members</p>
+          </div>
+          <div className="rounded-2xl bg-white bg-opacity-15">
+            <span className="material-symbols-outlined">globe_uk</span>
+            <p>80+</p>
+            <p>Countries</p>
+          </div>
+          <div className="rounded-2xl bg-white bg-opacity-15">
+            <span className="material-symbols-outlined">join_right</span>
+            <p>500+</p>
+            <p>Partner Outlets</p>
+          </div>
+          <div className="rounded-2xl bg-white bg-opacity-15">
+            <span className="material-symbols-outlined">
+              temp_preferences_eco
+            </span>
+            <p>$2M+</p>
+            <p>Total savings</p>
+          </div>
         </div>
       </section>
 
@@ -236,8 +276,10 @@ export default async function WhoWeAreTemplate({
               collapsible
             >
               <AccordionItem className="px-6 py-3" value="item-1">
-                <AccordionTrigger>Is it whatever?</AccordionTrigger>
-                <AccordionContent>
+                <AccordionTrigger className="p1-medium">
+                  Is it whatever?
+                </AccordionTrigger>
+                <AccordionContent className="p1-regular">
                   Yes. it is something something
                 </AccordionContent>
               </AccordionItem>

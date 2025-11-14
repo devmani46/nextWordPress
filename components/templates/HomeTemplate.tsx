@@ -1,10 +1,12 @@
 import {
   Event,
   getAllEvents,
+  getAllNews,
   getAllNotices,
   getAllProjects,
   getPageBySlug,
   getPostBySlug,
+  News,
   Page,
 } from "@/lib/wordpress";
 import {
@@ -29,6 +31,7 @@ import { Notice } from "@/lib/wordpress";
 import { Project } from "@/lib/wordpress";
 import BlueButton from "../ui/bluebutton";
 import WhiteButton from "../ui/whitebutton";
+import Link from "next/link";
 
 interface HomeTemplateProps {
   page: Page & {
@@ -43,6 +46,15 @@ interface HomeTemplateProps {
       cta_link: string;
       cta_title: string;
     }[];
+    about_stats?: {
+      title: string;
+      description: string;
+    }[];
+    why_features?: {
+      title: string;
+      description: string;
+    }[];
+    why_images_urls?: string[];
     about_image_1_url?: string;
     about_image_2_url?: string;
     about_image_3_url?: string;
@@ -52,15 +64,52 @@ interface HomeTemplateProps {
 export default async function HomeTemplate({ page }: HomeTemplateProps) {
   const hero_title = page.meta.hero_title as string;
   const hero_description = page.meta.hero_description as string;
-  const button_text = page.meta.hero_cta_title as string;
+  const hero_button_text = page.meta.hero_cta_title as string;
+  const banner_title = page.meta.banner_title as string;
+  const banner_description = page.meta.banner_description as string;
+
+  const banner_cta_title = page.meta.banner_cta_title as string;
+  const banner_cta_link = page.meta.banner_cta_link as string;
+
+  const why_title = page.meta.why_title as string;
+  const why_description = page.meta.why_description as string;
+  const why_cta_title = page.meta.why_cta_title as string;
+  const why_cta_link = page.meta.why_cta_link as string;
+
+  const involved_title = page.meta.involved_title as string;
+  const involved_description = page.meta.involved_description as string;
+
+  const stay_updated_title = page.meta.stay_updated_title as string;
+  const stay_updated_description = page.meta.stay_updated_description as string;
+
+  const latest_news_title = page.meta.latest_news_title as string;
+  const latest_news_description = page.meta.latest_news_description as string;
+
+  const our_intitiatives_title = page.meta.our_initiatives_title as string;
+  const our_initiatives_description = page.meta
+    .our_initiatives_description as string;
+
+  const journey_title = page.meta.journey_title as string;
+  const journey_description = page.meta.journey_description as string;
+  const journey_cta_title = page.meta.journey_cta_title as string;
+  const journey_cta_link = page.meta.journey_cta_link as string;
+
   const slider_image1 = page.slider_items?.[0];
   const slides = page.slider_items || [];
   const getInvolvedCards = page.involved_actions || [];
+  const why_features = page.meta.why_features || [];
+
+  console.log("hello");
+  console.log(why_features);
+
+  const stats = page.about_stats || [];
+  const why_images = page.why_images_urls || [];
 
   const aboutPage = await getPageBySlug("about");
   const notices: Notice[] = await getAllNotices();
   const projects: Project[] = await getAllProjects();
   const events: Event[] = await getAllEvents();
+  const news: News[] = await getAllNews();
 
   const aboutDescription = aboutPage.meta.about_hero_description as string;
   const aboutMessage = aboutPage.meta.about_message_description as string;
@@ -76,7 +125,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           <div className="h1 text-black">{hero_title}</div>
           <div className="p1-regular text-gray">{hero_description}</div>
           <button className="button-regular h-11 w-44 self-center rounded-md bg-blue-normal text-white">
-            {button_text}
+            {hero_button_text}
           </button>
         </div>
 
@@ -111,7 +160,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*ABOUT US SECTION*/}
 
-      <section className="about-us md:px-[15%]mb-20 mt-20 flex flex-col gap-8 px-8 md:flex-row">
+      <section className="about-us mb-20 mt-20 flex flex-col gap-8 px-4 sm:px-8 md:flex-row md:px-12 lg:px-[15%]">
         <div className="about-us-images basis-full md:basis-1/2">
           <div className="flex">
             <Image
@@ -149,23 +198,16 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*STATISTICS SECTION*/}
 
-      <section className="statistics flex w-full flex-wrap justify-between gap-16 px-8 md:px-[15%]">
-        <div className="stat-block basis-full sm:basis-1/2 md:basis-1/4">
-          <p className="h3 text-violet-normal">22 +</p>
-          <p className="p1-regular text-gray">Countries Represented</p>
-        </div>
-        <div className="stat-block">
-          <p className="h3 text-violet-normal">1M +</p>
-          <p className="p1-regular text-gray">Registered Members</p>
-        </div>
-        <div className="stat-block">
-          <p className="h3 text-violet-normal">500 +</p>
-          <p className="p1-regular text-gray">Projects Initiated</p>
-        </div>
-        <div className="stat-block">
-          <p className="h3 text-violet-normal">$50M +</p>
-          <p className="p1-regular text-gray">Funds Mobilized</p>
-        </div>
+      <section className="statistics flex w-full flex-wrap justify-center gap-16 px-8 sm:gap-12 md:justify-between md:gap-16 md:px-[15%]">
+        {stats.map((stat, index) => (
+          <div
+            key={index}
+            className="stat-block sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)]"
+          >
+            <p className="h3 text-violet-normal">{stat.title} +</p>
+            <p className="p1-regular text-gray">{stat.description}</p>
+          </div>
+        ))}
       </section>
 
       {/*WHY CHOOSE US SECTION*/}
@@ -174,27 +216,24 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
         <div className="box-1 relative max-h-[400px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] pl-16 pt-16">
           <div className="choose-us-text flex w-3/5 flex-col items-start gap-3">
             <p className="p1-regular">Why Choose Us</p>
-            <p className="h3 text-blue-normal">
-              Join a Worldwide Network of Nepali Changemakers
-            </p>
-            <p className="p1-regular text-gray">
-              For over 22 years, NRNA has been connecting Nepalis worldwide,
-              building a trusted global community, and shaping policies that
-              protect and empower our people.
-            </p>
-            <BlueButton className="mt-3 bg-blue-normal">
-              Join the Network
-            </BlueButton>
+            <p className="h3 text-blue-normal">{why_title}</p>
+            <p className="p1-regular text-gray">{why_description}</p>
+            <Link href={why_cta_link}>
+              <BlueButton className="mt-3 bg-blue-normal">
+                {why_cta_title}
+              </BlueButton>
+            </Link>
           </div>
         </div>
         <div className="box-2 relative max-h-[400px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] pl-[10%] pr-5 pt-4">
           <div className="community-container grid grid-cols-2 grid-rows-2 gap-5">
             <div className="col-span-full rounded-lg border border-white-light bg-white bg-opacity-40 p-4">
               <div className="flex justify-center">
-                {Array.from({ length: 6 }, (_, index) => (
-                  <div
+                {why_images.map((image, index) => (
+                  <img
                     key={index}
-                    className="-ml-2 rounded-full border-2 border-white bg-blue-normal p-4"
+                    src={image}
+                    className="-ml-2 max-h-12 min-h-12 min-w-12 max-w-12 rounded-full border-2 border-white bg-blue-normal object-cover"
                   />
                 ))}
               </div>
@@ -202,7 +241,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
             </div>
             <div className="flex flex-col rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
               <LucideGlobe className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
-              <div className="h5">22+</div>
+              <div className="h5">+</div>
               <div className="label-regular text-gray">Global Presence</div>
             </div>
             <div className="rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
@@ -224,16 +263,14 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       <section className="get-involved px-[15%]">
         <div className="get-involved-text mb-11">
           <p className="p1-regular">Get Involved</p>
-          <p className="h3">Support, Engage, & Empower With NRNA</p>
-          <p className="p1-regular text-gray">
-            Join hands with the global Nepali community.
-          </p>
+          <p className="h3">{involved_title}</p>
+          <p className="p1-regular text-gray">{involved_description}</p>
         </div>
-        <div className="card-container flex gap-8">
+        <div className="card-container flex flex-col gap-4 md:flex-row md:gap-8">
           {getInvolvedCards.map((card, index) => (
             <div
               key={index}
-              className="card h-[360px] rounded-3xl bg-violet-normal px-10 py-14"
+              className="card flex h-auto min-h-[360px] w-full flex-col items-start gap-3 rounded-3xl bg-violet-normal px-6 py-10 md:w-1/3 md:px-10 md:py-14"
             >
               <p className="p1-medium text-white">{card.title}</p>
               <p className="pr-8 text-3xl font-bold text-white">
@@ -250,8 +287,8 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*PRESIDENT'S MESSAGE SECTION*/}
 
-      <section className="president mt-11 flex gap-10 px-[15%]">
-        <div className="president-message flex basis-1/2 flex-col items-start justify-center gap-3">
+      <section className="president mt-11 flex flex-wrap gap-10 px-[15%]">
+        <div className="president-message flex flex-col items-start justify-center gap-3 md:basis-1/2">
           <p className="p1-regular">One Diaspora, One Purpose</p>
           <p className="h5 italic">{aboutMessage}</p>
           <p>Dr. Badri K.C. President</p>
@@ -272,14 +309,11 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       <section className="stay-updated bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] px-[15%] py-20">
         <div className="stay-updated-text mb-11">
           <p className="p1-regular">Stay Updated</p>
-          <p className="h3">Explore What's Happening at NRNA</p>
-          <p className="p1-regular">
-            Stay updated with NRNA announcements, events and activities
-            worldwide
-          </p>
+          <p className="h3">{stay_updated_title}</p>
+          <p className="p1-regular">{stay_updated_description}</p>
         </div>
-        <div className="notice-and-events flex gap-10">
-          <div className="notices flex basis-1/2 flex-col items-start gap-6">
+        <div className="notice-and-events flex flex-wrap gap-10 lg:flex-nowrap">
+          <div className="notices flex flex-col items-start gap-6 md:basis-1/2">
             <p>Notice</p>
             <div className="notice-card-container flex flex-col gap-3">
               {notices.slice(0, 4).map((notice, index) => (
@@ -297,7 +331,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
               View More
             </WhiteButton>
           </div>
-          <div className="events flex basis-1/2 flex-col items-start gap-5">
+          <div className="events flex flex-col items-start gap-5 md:basis-1/2">
             <p>Events</p>
             <div className="event-card-container grid grid-cols-2 grid-rows-2 gap-4">
               {events.slice(0, 4).map((event, index) => (
@@ -305,7 +339,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
                   key={index}
                   className="event-card rounded-lg border border-white-light bg-blue-light p-4"
                 >
-                  <div className="mb-3 flex items-center gap-2">
+                  <div className="mb-3 flex flex-wrap items-center gap-2">
                     {event._embedded?.["wp:featuredmedia"]?.[0]?.source_url && (
                       <Image
                         height={64}
@@ -351,50 +385,27 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       <section className="latest-news px-[15%] py-20">
         <div className="latest-news-text mb-10">
           <p className="p1-regular">Latest News & Updates</p>
-          <p className="h3">NRNA News & Highlights</p>
-          <p className="p1-regular">
-            Get the most recent news, stories and updates from NRNA worldwide
-          </p>
+          <p className="h3">{latest_news_title}</p>
+          <p className="p1-regular">{latest_news_description}</p>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex flex-wrap gap-8">
           <div className="big-news">
-            <div className="big-news-image mb-3 h-[80%] w-full rounded-lg bg-gray"></div>
-            <p>January 16, 2024</p>
-            <p>
-              इजरायलमा रहेका नेपालीको सुरक्षास्थिति मूल्यांकन गर्न एनआरएनएद्वारा
-              भर्चुअल अन्तरक्रिया
-            </p>
+            <img
+              src={news?.[0]._embedded?.["wp:featuredmedia"]?.[0]?.source_url}
+              className="big-news-image mb-3 h-[80%] w-full rounded-lg"
+              alt="latest news image"
+            />
+            <p>{news?.[0].date}</p>
+            <p>{news?.[0].title.rendered}</p>
           </div>
           <div className="more-news flex flex-col gap-3">
-            <div className="news-card py-1">
-              <p>January 16, 2024</p>
-              <p>
-                इजरायलमा रहेका नेपालीको सुरक्षास्थिति मूल्यांकन गर्न
-                एनआरएनएद्वारा भर्चुअल अन्तरक्रिया
-              </p>
-            </div>
-            <div className="news-card py-1">
-              <p>January 16, 2024</p>
-              <p>
-                इजरायलमा रहेका नेपालीको सुरक्षास्थिति मूल्यांकन गर्न
-                एनआरएनएद्वारा भर्चुअल अन्तरक्रिया
-              </p>
-            </div>
-            <div className="news-card py-1">
-              <p>January 16, 2024</p>
-              <p>
-                इजरायलमा रहेका नेपालीको सुरक्षास्थिति मूल्यांकन गर्न
-                एनआरएनएद्वारा भर्चुअल अन्तरक्रिया
-              </p>
-            </div>
-            <div className="news-card py-1">
-              <p>January 16, 2024</p>
-              <p>
-                इजरायलमा रहेका नेपालीको सुरक्षास्थिति मूल्यांकन गर्न
-                एनआरएनएद्वारा भर्चुअल अन्तरक्रिया
-              </p>
-            </div>
+            {news.slice(1, 5).map((single_news, index) => (
+              <div key={index} className="news-card py-1">
+                <p>{single_news.date}</p>
+                <p>{single_news.title.rendered}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -455,14 +466,11 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
         <div className="world-map basis-1/2"></div>
         <div className="journey-text flex basis-1/2 flex-col items-start gap-3">
           <p className="p1-regular">Join the Journey</p>
-          <p className="h3">
-            Connect with a Global Network of Nepali Trailblazers
-          </p>
-          <p className="p1-regular">
-            Millions of Nepalese across 100+ countries are shaping Nepal's
-            tomorrow through unity, leadership, and action
-          </p>
-          <WhiteButton className="mt-7">Join the Network</WhiteButton>
+          <p className="h3">{journey_title}</p>
+          <p className="p1-regular">{journey_description}</p>
+          <Link href={journey_cta_link}>
+            <WhiteButton className="mt-7">{journey_cta_title}</WhiteButton>
+          </Link>
         </div>
       </section>
     </div>

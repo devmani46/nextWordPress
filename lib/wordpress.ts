@@ -15,6 +15,7 @@ import type {
   Event,
   Project,
   Activity,
+  News,
 } from "./wordpress.d";
 
 const baseUrl = process.env.WORDPRESS_URL;
@@ -24,7 +25,11 @@ if (!baseUrl) {
 }
 
 class WordPressAPIError extends Error {
-  constructor(message: string, public status: number, public endpoint: string) {
+  constructor(
+    message: string,
+    public status: number,
+    public endpoint: string,
+  ) {
     super(message);
     this.name = "WordPressAPIError";
   }
@@ -44,7 +49,7 @@ export interface WordPressResponse<T> {
 // Keep original function for backward compatibility
 async function wordpressFetch<T>(
   path: string,
-  query?: Record<string, any>
+  query?: Record<string, any>,
 ): Promise<T> {
   const url = `${baseUrl}${path}${
     query ? `?${querystring.stringify(query)}` : ""
@@ -65,7 +70,7 @@ async function wordpressFetch<T>(
     throw new WordPressAPIError(
       `WordPress API request failed: ${response.statusText}`,
       response.status,
-      url
+      url,
     );
   }
 
@@ -75,7 +80,7 @@ async function wordpressFetch<T>(
 // New function for paginated requests
 async function wordpressFetchWithPagination<T>(
   path: string,
-  query?: Record<string, any>
+  query?: Record<string, any>,
 ): Promise<WordPressResponse<T>> {
   const url = `${baseUrl}${path}${
     query ? `?${querystring.stringify(query)}` : ""
@@ -96,7 +101,7 @@ async function wordpressFetchWithPagination<T>(
     throw new WordPressAPIError(
       `WordPress API request failed: ${response.statusText}`,
       response.status,
-      url
+      url,
     );
   }
 
@@ -121,7 +126,7 @@ export async function getPostsPaginated(
     tag?: string;
     category?: string;
     search?: string;
-  }
+  },
 ): Promise<WordPressResponse<Post[]>> {
   const query: Record<string, any> = {
     _embed: true,
@@ -171,7 +176,7 @@ export async function getPostsPaginated(
     throw new WordPressAPIError(
       `WordPress API request failed: ${response.statusText}`,
       response.status,
-      url
+      url,
     );
   }
 
@@ -230,7 +235,7 @@ export async function getPostById(id: number): Promise<Post> {
 
 export async function getPostBySlug(slug: string): Promise<Post> {
   return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", { slug }).then(
-    (posts) => posts[0]
+    (posts) => posts[0],
   );
 }
 
@@ -250,6 +255,10 @@ export async function getAllActivities(): Promise<Activity[]> {
   return wordpressFetch<Activity[]>("/wp-json/wp/v2/activities?_embed");
 }
 
+export async function getAllNews(): Promise<News[]> {
+  return wordpressFetch<News[]>("/wp-json/wp/v2/news?_embed");
+}
+
 export async function getActivityBySlug(slug: string): Promise<Activity> {
   return wordpressFetch<Activity[]>("/wp-json/wp/v2/activities", {
     slug,
@@ -267,7 +276,7 @@ export async function getCategoryById(id: number): Promise<Category> {
 
 export async function getCategoryBySlug(slug: string): Promise<Category> {
   return wordpressFetch<Category[]>("/wp-json/wp/v2/categories", { slug }).then(
-    (categories) => categories[0]
+    (categories) => categories[0],
   );
 }
 
@@ -295,7 +304,7 @@ export async function getTagById(id: number): Promise<Tag> {
 
 export async function getTagBySlug(slug: string): Promise<Tag> {
   return wordpressFetch<Tag[]>("/wp-json/wp/v2/tags", { slug }).then(
-    (tags) => tags[0]
+    (tags) => tags[0],
   );
 }
 
@@ -309,7 +318,7 @@ export async function getPageById(id: number): Promise<Page> {
 
 export async function getPageBySlug(slug: string): Promise<Page> {
   return wordpressFetch<Page[]>("/wp-json/wp/v2/pages", { slug }).then(
-    (pages) => pages[0]
+    (pages) => pages[0],
   );
 }
 
@@ -323,7 +332,7 @@ export async function getAuthorById(id: number): Promise<Author> {
 
 export async function getAuthorBySlug(slug: string): Promise<Author> {
   return wordpressFetch<Author[]>("/wp-json/wp/v2/users", { slug }).then(
-    (users) => users[0]
+    (users) => users[0],
   );
 }
 
@@ -332,14 +341,14 @@ export async function getPostsByAuthor(authorId: number): Promise<Post[]> {
 }
 
 export async function getPostsByAuthorSlug(
-  authorSlug: string
+  authorSlug: string,
 ): Promise<Post[]> {
   const author = await getAuthorBySlug(authorSlug);
   return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", { author: author.id });
 }
 
 export async function getPostsByCategorySlug(
-  categorySlug: string
+  categorySlug: string,
 ): Promise<Post[]> {
   const category = await getCategoryBySlug(categorySlug);
   return wordpressFetch<Post[]>("/wp-json/wp/v2/posts", {
@@ -390,7 +399,7 @@ export async function getAllPostSlugs(): Promise<{ slug: string }[]> {
         per_page: 100,
         page,
         _fields: "slug", // Only fetch slug field for performance
-      }
+      },
     );
 
     const posts = response.data;
@@ -407,7 +416,7 @@ export async function getAllPostSlugs(): Promise<{ slug: string }[]> {
 export async function getPostsByCategoryPaginated(
   categoryId: number,
   page: number = 1,
-  perPage: number = 9
+  perPage: number = 9,
 ): Promise<WordPressResponse<Post[]>> {
   const query = {
     _embed: true,
@@ -422,7 +431,7 @@ export async function getPostsByCategoryPaginated(
 export async function getPostsByTagPaginated(
   tagId: number,
   page: number = 1,
-  perPage: number = 9
+  perPage: number = 9,
 ): Promise<WordPressResponse<Post[]>> {
   const query = {
     _embed: true,
@@ -437,7 +446,7 @@ export async function getPostsByTagPaginated(
 export async function getPostsByAuthorPaginated(
   authorId: number,
   page: number = 1,
-  perPage: number = 9
+  perPage: number = 9,
 ): Promise<WordPressResponse<Post[]>> {
   const query = {
     _embed: true,
@@ -496,7 +505,7 @@ export async function getTeamsPaginated(
     team_category?: string;
     team_type?: string;
     search?: string;
-  }
+  },
 ): Promise<WordPressResponse<Team[]>> {
   const query: Record<string, any> = {
     _embed: true,
@@ -546,7 +555,7 @@ export async function getTeamsPaginated(
     throw new WordPressAPIError(
       `WordPress API request failed: ${response.statusText}`,
       response.status,
-      url
+      url,
     );
   }
 
@@ -573,7 +582,7 @@ export async function getAllTeamSlugs(): Promise<{ slug: string }[]> {
         per_page: 100,
         page,
         _fields: "slug",
-      }
+      },
     );
 
     const teams = response.data;
@@ -602,7 +611,7 @@ export async function getTeamCategoryBySlug(slug: string): Promise<Category> {
 }
 
 export async function getTeamsByTeamCategory(
-  categoryId: number
+  categoryId: number,
 ): Promise<Team[]> {
   return wordpressFetch<Team[]>("/wp-json/wp/v2/team", {
     team_category: categoryId,
@@ -620,7 +629,7 @@ export async function getTeamTypeById(id: number): Promise<Tag> {
 
 export async function getTeamTypeBySlug(slug: string): Promise<Tag> {
   return wordpressFetch<Tag[]>("/wp-json/wp/v2/team_type", { slug }).then(
-    (types) => types[0]
+    (types) => types[0],
   );
 }
 
@@ -649,7 +658,7 @@ export async function searchTeamTypes(query: string): Promise<Tag[]> {
 export async function getTeamsByTeamCategoryPaginated(
   categoryId: number,
   page: number = 1,
-  perPage: number = 9
+  perPage: number = 9,
 ): Promise<WordPressResponse<Team[]>> {
   const query = {
     _embed: true,
@@ -664,7 +673,7 @@ export async function getTeamsByTeamCategoryPaginated(
 export async function getTeamsByTeamTypePaginated(
   typeId: number,
   page: number = 1,
-  perPage: number = 9
+  perPage: number = 9,
 ): Promise<WordPressResponse<Team[]>> {
   const query = {
     _embed: true,
@@ -688,5 +697,6 @@ export type {
   Notice,
   Event,
   Project,
+  News,
   Activity,
 };

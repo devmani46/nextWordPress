@@ -13,7 +13,7 @@ export default function BlueButton({
     <Button
       {...props}
       disabled={loading || props.disabled}
-      className="bg-blue-normal px-6 py-6 button-regular"
+      className="button-regular bg-blue-normal px-6 py-6 hover:bg-blue-normal-hover"
     >
       {loading ? "Loading..." : children}
     </Button>

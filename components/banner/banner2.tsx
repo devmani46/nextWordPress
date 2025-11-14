@@ -2,7 +2,7 @@
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useRef } from "react";
 
-export default function CircleFollowCard() {
+export default function BannerTwo() {
   const cardRef = useRef<HTMLDivElement>(null);
 
   // track cursor position
@@ -38,8 +38,9 @@ export default function CircleFollowCard() {
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="global-banner relative m-auto w-4/5 overflow-hidden rounded-md bg-blue-normal px-10 py-11 md:px-20"
+        className="global-banner relative m-auto w-4/5 overflow-hidden rounded-md bg-[linear-gradient(180deg,#1B6AAC_0%,#4F85B3_39%,#3636B2_100%)] px-20 py-11"
       >
+        {/*TOP LEFT CIRCLES */}
         <motion.div
           className="circle-1 absolute rounded-full bg-white opacity-10"
           style={{
@@ -73,14 +74,11 @@ export default function CircleFollowCard() {
             translateY: "-50%",
           }}
         />
-        <div className="banner-cta relative z-10 flex flex-col gap-5 text-white">
-          <div>
-            <p className="h3">Be Part of the</p>
-            <p className="h1">Global Nepali Network</p>
-          </div>
-          <p>
-            Join NRNA to connect with Nepalis worldwide, shape policies, and
-            represent your region globally.
+
+        <div className="banner-cta relative z-10 flex flex-col items-center gap-5 px-[20%] text-white">
+          <p className="h2 text-center">
+            Discover NRNA NCCs, Representing Our Members in 80+ Countries, with
+            tenures from 2021–25.
           </p>
           <button className="button-regular h-11 w-72 rounded-md bg-white text-blue-normal">
             Explore Membership Benefits
