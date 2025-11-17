@@ -38,7 +38,7 @@ export default function CircleFollowCard() {
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="global-banner relative m-auto w-4/5 overflow-hidden rounded-md bg-blue-normal px-10 py-11 md:px-20"
+        className="global-banner relative m-auto w-[90%] overflow-hidden rounded-md bg-blue-normal px-10 py-11 md:w-4/5 md:px-20"
       >
         <motion.div
           className="circle-1 absolute rounded-full bg-white opacity-10"

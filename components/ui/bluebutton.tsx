@@ -1,4 +1,5 @@
 import { Button, ButtonProps } from "./button";
+import { FlipText } from "./flippingtext";
 
 type BlueButtonProps = ButtonProps & {
   loading?: boolean;
@@ -15,7 +16,10 @@ export default function BlueButton({
       disabled={loading || props.disabled}
       className="button-regular bg-blue-normal px-6 py-6 hover:bg-blue-normal-hover"
     >
-      {loading ? "Loading..." : children}
+      <FlipText
+        frontText={loading ? "Loading..." : children}
+        backText={loading ? "Loading..." : children}
+      />
     </Button>
   );
 }

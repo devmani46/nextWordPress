@@ -32,6 +32,7 @@ import { Project } from "@/lib/wordpress";
 import BlueButton from "../ui/bluebutton";
 import WhiteButton from "../ui/whitebutton";
 import Link from "next/link";
+import WorldMap from "../world-map/WorldMap";
 
 interface HomeTemplateProps {
   page: Page & {
@@ -160,7 +161,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*ABOUT US SECTION*/}
 
-      <section className="about-us mb-20 mt-20 flex flex-col gap-8 px-4 sm:px-8 md:flex-row md:px-12 lg:px-[15%]">
+      <section className="about-us mb-20 mt-20 flex flex-col gap-8 px-10 md:flex-row md:px-12 lg:px-[15%]">
         <div className="about-us-images basis-full md:basis-1/2">
           <div className="flex">
             <Image
@@ -198,7 +199,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*STATISTICS SECTION*/}
 
-      <section className="statistics flex w-full flex-wrap justify-center gap-16 px-8 sm:gap-12 md:justify-between md:gap-16 md:px-[15%]">
+      <section className="statistics flex w-full flex-wrap justify-center gap-16 px-8 sm:gap-12 md:justify-between md:gap-16 md:px-[15%] lg:flex-nowrap">
         {stats.map((stat, index) => (
           <div
             key={index}
@@ -212,7 +213,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*WHY CHOOSE US SECTION*/}
 
-      <section className="mb-20 mt-20 flex px-[15%]">
+      <section className="why-choose-us mb-20 mt-20 flex flex-wrap px-10 md:px-[15%] lg:flex-nowrap">
         <div className="box-1 relative max-h-[400px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] pl-16 pt-16">
           <div className="choose-us-text flex w-3/5 flex-col items-start gap-3">
             <p className="p1-regular">Why Choose Us</p>
@@ -251,7 +252,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
             </div>
           </div>
 
-          <div className="watch-video absolute bottom-7 left-6 flex items-center gap-2">
+          <div className="watch-video bottom-7 left-6 flex items-center gap-2 md:absolute">
             <LucidePlay className="h-16 w-16 rounded-full bg-white-light p-5 text-blue-normal" />
             <p className="p1-medium">Watch Video</p>
           </div>
@@ -260,7 +261,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*GET INVOLVED SECTION*/}
 
-      <section className="get-involved px-[15%]">
+      <section className="get-involved px-8 md:px-[15%]">
         <div className="get-involved-text mb-11">
           <p className="p1-regular">Get Involved</p>
           <p className="h3">{involved_title}</p>
@@ -273,7 +274,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
               className="card flex h-auto min-h-[360px] w-full flex-col items-start gap-3 rounded-3xl bg-violet-normal px-6 py-10 md:w-1/3 md:px-10 md:py-14"
             >
               <p className="p1-medium text-white">{card.title}</p>
-              <p className="pr-8 text-3xl font-bold text-white">
+              <p className="pr-8 text-2xl font-bold text-white">
                 {card.description}
               </p>
               <WhiteButton className="p1-regular bg-white hover:bg-violet-normal hover:text-white">
@@ -306,14 +307,14 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*STAY UPDATED SECTION*/}
 
-      <section className="stay-updated bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] px-[15%] py-20">
+      <section className="stay-updated bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] px-8 py-20 md:px-[15%]">
         <div className="stay-updated-text mb-11">
           <p className="p1-regular">Stay Updated</p>
           <p className="h3">{stay_updated_title}</p>
           <p className="p1-regular">{stay_updated_description}</p>
         </div>
         <div className="notice-and-events flex flex-wrap gap-10 lg:flex-nowrap">
-          <div className="notices flex flex-col items-start gap-6 md:basis-1/2">
+          <div className="notices flex flex-col gap-6 md:basis-1/2 md:items-start">
             <p>Notice</p>
             <div className="notice-card-container flex flex-col gap-3">
               {notices.slice(0, 4).map((notice, index) => (
@@ -331,7 +332,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
               View More
             </WhiteButton>
           </div>
-          <div className="events flex flex-col items-start gap-5 md:basis-1/2">
+          <div className="events flex flex-col gap-5 md:basis-1/2 md:items-start">
             <p>Events</p>
             <div className="event-card-container grid grid-cols-2 grid-rows-2 gap-4">
               {events.slice(0, 4).map((event, index) => (
@@ -382,28 +383,28 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*LATEST NEWS AND UPDATES */}
 
-      <section className="latest-news px-[15%] py-20">
+      <section className="latest-news px-8 py-20 md:px-[15%]">
         <div className="latest-news-text mb-10">
           <p className="p1-regular">Latest News & Updates</p>
           <p className="h3">{latest_news_title}</p>
           <p className="p1-regular">{latest_news_description}</p>
         </div>
 
-        <div className="flex flex-wrap gap-8">
+        <div className="flex flex-wrap gap-8 lg:flex-nowrap">
           <div className="big-news">
             <img
               src={news?.[0]._embedded?.["wp:featuredmedia"]?.[0]?.source_url}
               className="big-news-image mb-3 h-[80%] w-full rounded-lg"
               alt="latest news image"
             />
-            <p>{news?.[0].date}</p>
-            <p>{news?.[0].title.rendered}</p>
+            <p className="label-medium text-gray">{news?.[0].date}</p>
+            <p className="font-bold">{news?.[0].title.rendered}</p>
           </div>
           <div className="more-news flex flex-col gap-3">
             {news.slice(1, 5).map((single_news, index) => (
               <div key={index} className="news-card py-1">
-                <p>{single_news.date}</p>
-                <p>{single_news.title.rendered}</p>
+                <p className="label-medium text-gray">{single_news.date}</p>
+                <p className="font-bold">{single_news.title.rendered}</p>
               </div>
             ))}
           </div>
@@ -413,7 +414,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       {/*Our Initiatives*/}
 
       <section className="our-intiatives bg-[linear-gradient(to_bottom,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_60%,transparent_60%,transparent_100%)] py-20">
-        <div className="our-initiatives-text flex flex-col gap-3 pl-36">
+        <div className="our-initiatives-text flex flex-col gap-3 pl-10 md:pl-[15%]">
           <p className="p1-regular">Our Initiatives</p>
           <p className="h3">Transformative Projects Worldwide</p>
           <p className="p1-regular text-gray">
@@ -422,7 +423,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           </p>
         </div>
         <Carousel className="project-cards-container mt-11 flex w-[140%] gap-8">
-          <CarouselContent className="flex gap-4 pl-40">
+          <CarouselContent className="flex gap-4 pl-14 md:pl-60">
             {projects.map((project) => {
               // get featured image URL
               const imageUrl =
@@ -445,10 +446,10 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
                     }}
                   >
                     <div className="buttons-container flex bg-gray bg-opacity-10 text-white backdrop-blur-lg">
-                      <button className="basis-1/2 border-r border-t py-3">
+                      <button className="basis-1/2 border-r border-t py-3 transition-colors hover:bg-blue-normal hover:text-white-light">
                         Register
                       </button>
-                      <button className="basis-1/2 border-t py-3">
+                      <button className="basis-1/2 border-t py-3 transition-colors hover:bg-blue-normal hover:text-white-light">
                         Learn More
                       </button>
                     </div>
@@ -462,9 +463,11 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*JOIN THE JOURNEY*/}
 
-      <section className="join-the-journey mt-10 flex bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] px-[15%] py-28 text-white">
-        <div className="world-map basis-1/2"></div>
-        <div className="journey-text flex basis-1/2 flex-col items-start gap-3">
+      <section className="join-the-journey mt-10 flex flex-wrap bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] px-[10%] py-28 text-white lg:flex-nowrap">
+        <div className="world-map basis-full md:basis-2/3">
+          <WorldMap />
+        </div>
+        <div className="journey-text flex flex-col items-start gap-3 md:basis-1/2">
           <p className="p1-regular">Join the Journey</p>
           <p className="h3">{journey_title}</p>
           <p className="p1-regular">{journey_description}</p>
