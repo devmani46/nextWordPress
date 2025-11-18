@@ -33,6 +33,7 @@ import BlueButton from "../ui/bluebutton";
 import WhiteButton from "../ui/whitebutton";
 import Link from "next/link";
 import WorldMap from "../world-map/WorldMap";
+import HeroCarousel from "../home-carousel/home-carousel";
 
 interface HomeTemplateProps {
   page: Page & {
@@ -60,6 +61,12 @@ interface HomeTemplateProps {
     about_image_2_url?: string;
     about_image_3_url?: string;
   };
+}
+
+interface Slide {
+  src: string;
+  alt: string;
+  title: string;
 }
 
 export default async function HomeTemplate({ page }: HomeTemplateProps) {
@@ -96,7 +103,11 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
   const journey_cta_link = page.meta.journey_cta_link as string;
 
   const slider_image1 = page.slider_items?.[0];
-  const slides = page.slider_items || [];
+  const slides: Slide[] = (page.slider_items || []).map((item) => ({
+    src: item.image_url, // map image_url -> src
+    alt: item.title, // you can use title or something else for alt
+    title: item.title, // keep the title
+  }));
   const getInvolvedCards = page.involved_actions || [];
   const why_features = page.meta.why_features || [];
 
@@ -130,27 +141,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           </button>
         </div>
 
-        <Carousel
-          opts={{
-            align: "center",
-            loop: true,
-          }}
-          className="w-screen"
-        >
-          <CarouselContent>
-            {slides.map((slide, index) => (
-              <CarouselItem key={index} className="basis-3/4">
-                <Image
-                  src={slide.image_url}
-                  width={1000}
-                  height={420}
-                  alt="image"
-                  className="max-h-[420px] min-h-[420px] w-full rounded-lg object-cover"
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+        <HeroCarousel slides={slides} />
       </section>
 
       {/*BANNER SECTION*/}
@@ -214,7 +205,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       {/*WHY CHOOSE US SECTION*/}
 
       <section className="why-choose-us mb-20 mt-20 flex flex-wrap px-10 md:px-[15%] lg:flex-nowrap">
-        <div className="box-1 relative max-h-[400px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] pl-16 pt-16">
+        <div className="box-1 relative max-h-[800px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] pb-16 pl-16 pt-16 lg:max-h-[400px]">
           <div className="choose-us-text flex w-3/5 flex-col items-start gap-3">
             <p className="p1-regular">Why Choose Us</p>
             <p className="h3 text-blue-normal">{why_title}</p>
@@ -252,7 +243,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
             </div>
           </div>
 
-          <div className="watch-video bottom-7 left-6 flex items-center gap-2 md:absolute">
+          <div className="watch-video bottom-7 left-6 mt-10 flex items-center gap-2 lg:absolute lg:mt-0">
             <LucidePlay className="h-16 w-16 rounded-full bg-white-light p-5 text-blue-normal" />
             <p className="p1-medium">Watch Video</p>
           </div>
