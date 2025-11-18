@@ -1,6 +1,7 @@
 "use client";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useRef } from "react";
+import WhiteButton from "../ui/whitebutton";
 
 export default function CircleFollowCard() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -73,7 +74,7 @@ export default function CircleFollowCard() {
             translateY: "-50%",
           }}
         />
-        <div className="banner-cta relative z-10 flex flex-col gap-5 text-white">
+        <div className="banner-cta relative z-10 flex flex-col items-start gap-5 text-white">
           <div>
             <p className="h3">Be Part of the</p>
             <p className="h1">Global Nepali Network</p>
@@ -82,9 +83,9 @@ export default function CircleFollowCard() {
             Join NRNA to connect with Nepalis worldwide, shape policies, and
             represent your region globally.
           </p>
-          <button className="button-regular h-11 w-72 rounded-md bg-white text-blue-normal">
+          <WhiteButton className="button-regular text-blue-normal">
             Explore Membership Benefits
-          </button>
+          </WhiteButton>
         </div>
         <div className="banner-image"></div>
       </div>

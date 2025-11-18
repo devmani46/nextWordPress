@@ -117,14 +117,18 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
   const stats = page.about_stats || [];
   const why_images = page.why_images_urls || [];
 
-  const aboutPage = await getPageBySlug("about");
+  const whowearePage = await getPageBySlug("whoweare");
   const notices: Notice[] = await getAllNotices();
   const projects: Project[] = await getAllProjects();
   const events: Event[] = await getAllEvents();
   const news: News[] = await getAllNews();
 
-  const aboutDescription = aboutPage.meta.about_hero_description as string;
-  const aboutMessage = aboutPage.meta.about_message_description as string;
+  const who_we_are_hero_title = whowearePage.meta
+    .who_we_are_hero_title as string;
+  const who_we_are_hero_description = whowearePage.meta
+    .who_we_are_hero_description as string;
+  const who_we_are_message_description = whowearePage.meta
+    .who_we_are_message_description as string;
 
   if (slides.length === 0) return null; //nothing to show
 
@@ -133,12 +137,10 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       {/*HERO SECTION*/}
 
       <section className="hero w-full">
-        <div className="hero-cta m-auto mb-10 flex w-8/12 flex-col gap-4 text-center md:w-5/12">
+        <div className="hero-cta m-auto mb-10 flex w-8/12 flex-col items-center gap-4 text-center md:w-5/12">
           <div className="h1 text-black">{hero_title}</div>
           <div className="p1-regular text-gray">{hero_description}</div>
-          <button className="button-regular h-11 w-44 self-center rounded-md bg-blue-normal text-white">
-            {hero_button_text}
-          </button>
+          <BlueButton className="button-regular">{hero_button_text}</BlueButton>
         </div>
 
         <HeroCarousel slides={slides} />
@@ -181,7 +183,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           <p className="title h3">
             Global Representation of Nepalis Across Borders
           </p>
-          <p className="p1-regular text-gray">{aboutDescription}</p>
+          <p className="p1-regular text-gray">{who_we_are_hero_description}</p>
           <button className="button-regular h-11 w-44 rounded-md bg-blue-normal text-white">
             Read More
           </button>
@@ -282,7 +284,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       <section className="president mt-11 flex flex-wrap gap-10 px-[15%]">
         <div className="president-message flex flex-col items-start justify-center gap-3 md:basis-1/2">
           <p className="p1-regular">One Diaspora, One Purpose</p>
-          <p className="h5 italic">{aboutMessage}</p>
+          <p className="h5 italic">{who_we_are_message_description}</p>
           <p>Dr. Badri K.C. President</p>
           <BlueButton className="mt-3">Read Full Message</BlueButton>
         </div>
