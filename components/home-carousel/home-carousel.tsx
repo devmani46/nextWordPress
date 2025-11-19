@@ -8,6 +8,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
+import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -54,7 +55,17 @@ export default function HeroCarousel({
 
   return (
     <div className="relative w-full overflow-hidden">
-      <Carousel setApi={setApi} opts={{ loop, slidesToScroll: 1 }}>
+      <div className="gradient-left absolute left-0 top-0 z-10 h-[450px] w-[15%] bg-gradient-to-r from-white to-transparent" />
+      <div className="gradient-right absolute right-0 top-0 z-10 h-[450px] w-[15%] bg-gradient-to-l from-white to-transparent" />
+      <Carousel
+        setApi={setApi}
+        opts={{ loop, slidesToScroll: 1 }}
+        plugins={[
+          Autoplay({
+            delay: 4000,
+          }),
+        ]}
+      >
         <CarouselContent className="flex h-[500px] w-full">
           {slides.map((slide, index) => {
             const isCenter = index === current;
@@ -62,7 +73,7 @@ export default function HeroCarousel({
               <CarouselItem
                 key={index}
                 className={cn(
-                  "relative flex h-[80%] shrink-0 grow-0 basis-[70%] items-center justify-center transition-transform duration-300",
+                  "relative flex h-[90%] shrink-0 grow-0 basis-[60%] items-center justify-center",
                 )}
               >
                 <motion.div
@@ -99,7 +110,7 @@ export default function HeroCarousel({
           })}
         </CarouselContent>
 
-        {showNavigation && (
+        {/* {showNavigation && (
           <div className="absolute inset-x-0 bottom-4 flex justify-between px-4">
             <button
               aria-label="Previous slide"
@@ -116,7 +127,7 @@ export default function HeroCarousel({
               <ChevronRight className="text-white" />
             </button>
           </div>
-        )}
+        )} */}
 
         {showPagination && (
           <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 pb-2">
@@ -125,8 +136,8 @@ export default function HeroCarousel({
                 key={index}
                 onClick={() => api?.scrollTo(index)}
                 className={cn(
-                  "h-2 w-2 rounded-full transition-all",
-                  current === index ? "bg-black" : "bg-gray-300",
+                  "h-2 w-2 rounded-full bg-blue-normal transition-all",
+                  current === index ? "w-8" : "bg-blue-normal",
                 )}
                 aria-label={`Go to slide ${index + 1}`}
               />

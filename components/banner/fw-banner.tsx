@@ -39,8 +39,12 @@ export default function CircleFollowCard() {
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="global-banner relative m-auto w-[90%] overflow-hidden rounded-md bg-blue-normal px-10 py-11 md:w-4/5 md:px-20"
+        className="global-banner relative m-auto w-[90%] overflow-hidden rounded-xl bg-blue-normal px-10 py-11 md:w-[70%] md:px-20"
       >
+        <img
+          src="/globe.png"
+          className="absolute bottom-0 right-0 z-20 w-[40%]"
+        />
         <motion.div
           className="circle-1 absolute rounded-full bg-white opacity-10"
           style={{
@@ -74,7 +78,7 @@ export default function CircleFollowCard() {
             translateY: "-50%",
           }}
         />
-        <div className="banner-cta relative z-10 flex flex-col items-start gap-5 text-white">
+        <div className="banner-cta relative z-10 flex flex-col items-start gap-5 text-white lg:w-[50%]">
           <div>
             <p className="h3">Be Part of the</p>
             <p className="h1">Global Nepali Network</p>
