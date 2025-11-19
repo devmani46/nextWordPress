@@ -135,12 +135,12 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
   return (
     <div className="home text-black">
       {/*HERO SECTION*/}
-      <img src="/lines.png" alt="" className="absolute left-0 top-0" />
+      {/* <img src="/lines.png" alt="" className="absolute left-0 top-0" />
       <img
         src="/lines.png"
         alt=""
         className="absolute right-0 top-0 -scale-x-100"
-      />
+      /> */}
 
       <section className="hero w-full">
         <div className="hero-cta m-auto mb-10 flex w-8/12 flex-col items-center gap-5 text-center md:w-4/12">
@@ -270,14 +270,14 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           <p className="h3">{involved_title}</p>
           <p className="p1-regular text-gray">{involved_description}</p>
         </div>
-        <div className="card-container flex flex-col gap-4 md:flex-row md:gap-8">
+        <div className="card-container flex flex-col gap-4 md:gap-8 lg:flex-row">
           {getInvolvedCards.map((card, index) => (
             <div
               key={index}
-              className="card flex h-auto min-h-[360px] w-full flex-col items-center justify-center gap-3 rounded-3xl bg-[url('/Mask-group.jpg')] px-6 py-10 transition-transform hover:-translate-x-2 hover:-translate-y-4 md:w-1/3 md:px-10 md:py-14 lg:items-start lg:justify-normal"
+              className="card flex h-auto min-h-[360px] w-full flex-col items-start gap-3 rounded-3xl bg-[url('/Mask-group.jpg')] px-6 py-10 transition-transform hover:-translate-x-2 hover:-translate-y-4 md:px-10 md:py-14 lg:w-1/3"
             >
               <p className="p1-medium text-white">{card.title}</p>
-              <p className="mb-3 text-center text-2xl font-bold text-white lg:pr-8 lg:text-left">
+              <p className="mb-3 pr-8 text-2xl font-bold text-white">
                 {card.description}
               </p>
               <WhiteButton className="p1-regular bg-white" icon>
@@ -290,7 +290,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*PRESIDENT'S MESSAGE SECTION*/}
 
-      <section className="president mt-11 flex flex-wrap gap-10 px-[15%] lg:flex-nowrap">
+      <section className="president mt-11 flex flex-wrap gap-10 px-10 md:px-[15%] lg:flex-nowrap">
         <div className="president-message flex flex-col items-start justify-center gap-3 md:basis-3/5">
           <p className="p1-regular">One Diaspora, One Purpose</p>
           <p className="h5 italic">"{who_we_are_message_description}"</p>
@@ -315,14 +315,11 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
         <div className="stay-updated-text mb-11 flex flex-col gap-3">
           <p className="p1-regular">Stay Updated</p>
           <p className="h3">{stay_updated_title}</p>
-          <div className="flex w-full items-center justify-between">
-            <p className="p1-regular">{stay_updated_description}</p>
-            <WhiteButton icon>View More</WhiteButton>
-          </div>
+          <p className="p1-regular">{stay_updated_description}</p>
         </div>
         <div className="notice-and-events flex flex-wrap gap-10 lg:flex-nowrap">
-          <div className="notices flex flex-col gap-6 md:basis-1/2 md:items-start">
-            <p>Notice</p>
+          <div className="notices flex flex-col items-start gap-6 lg:basis-1/2">
+            <p className="h5">Notice</p>
             <div className="notice-card-container flex flex-col gap-3">
               {notices.slice(0, 4).map((notice, index) => (
                 <div
@@ -342,8 +339,8 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
             </div>
             <WhiteButton icon>View More</WhiteButton>
           </div>
-          <div className="events flex flex-col gap-5 md:basis-1/2 md:items-start">
-            <p>Events</p>
+          <div className="events flex flex-col items-start gap-5 lg:basis-1/2">
+            <p className="h5">Events</p>
             <div className="event-card-container grid grid-cols-2 grid-rows-2 gap-4">
               {events.slice(0, 4).map((event, index) => (
                 <div
