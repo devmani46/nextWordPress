@@ -256,7 +256,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
             <p className="p1-medium">Watch Video</p>
           </div>
         </div>
-        <div className="years-stat lg: invisible bottom-0 right-[230px] z-10 mt-0 h-[108px] w-[117px] rounded-2xl bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] pt-3 text-center text-white-light lg:visible lg:absolute">
+        <div className="years-stat lg: invisible absolute bottom-0 right-[230px] z-10 mt-0 h-[108px] w-[117px] rounded-2xl bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] pt-3 text-center text-white-light lg:visible">
           <p className="h1">22</p>
           <p className="h2">Years</p>
         </div>
@@ -274,7 +274,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           {getInvolvedCards.map((card, index) => (
             <div
               key={index}
-              className="card flex h-auto min-h-[360px] w-full flex-col items-start gap-3 rounded-3xl bg-[url('/Mask-group.jpg')] px-6 py-10 transition-transform hover:-translate-x-2 hover:-translate-y-4 md:px-10 md:py-14 lg:w-1/3"
+              className="card flex h-auto min-h-[360px] w-full flex-col items-start gap-3 rounded-3xl bg-[url('/Mask-group.jpg')] bg-cover px-6 py-10 transition-transform hover:-translate-x-2 hover:-translate-y-4 md:px-10 md:py-14 lg:w-1/3"
             >
               <p className="p1-medium text-white">{card.title}</p>
               <p className="mb-3 pr-8 text-2xl font-bold text-white">
@@ -515,6 +515,8 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           </Link>
         </div>
       </section>
+
+      <footer></footer>
     </div>
   );
 }
