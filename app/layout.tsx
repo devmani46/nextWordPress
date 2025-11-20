@@ -50,7 +50,10 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={cn("min-h-screen font-sans antialiased", font.variable)}
+        className={cn(
+          "min-h-screen !min-w-full font-sans antialiased",
+          font.variable,
+        )}
         suppressHydrationWarning
       >
         <ThemeProvider

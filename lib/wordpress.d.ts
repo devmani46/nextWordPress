@@ -295,3 +295,10 @@ export interface FilterBarProps {
   onTagChange?: (tagId: Tag["id"] | undefined) => void;
   onCategoryChange?: (categoryId: Category["id"] | undefined) => void;
 }
+
+export interface WpMenuItem {
+  id: number;
+  title: string;
+  url: string;
+  children?: WpMenuItem[];
+}

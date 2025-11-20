@@ -29,7 +29,7 @@ export default function BlueButton({
     <Button
       {...props}
       disabled={loading || props.disabled}
-      className="button-regular bg-blue-normal px-6 py-6 hover:bg-blue-normal-hover"
+      className="button-regular rounded-lg bg-blue-normal px-6 py-6 hover:bg-blue-normal-hover"
     >
       <FlipText
         className="flex gap-4"

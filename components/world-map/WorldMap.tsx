@@ -60,7 +60,7 @@ export default function WorldMap() {
       </ComposableMap>
 
       {hovered && (
-        <div className="absolute bottom-4 rounded bg-white px-3 py-1 text-sm shadow">
+        <div className="absolute bottom-4 rounded bg-white px-3 py-1 text-sm text-black shadow">
           {hovered}
         </div>
       )}

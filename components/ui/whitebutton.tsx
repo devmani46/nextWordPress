@@ -30,7 +30,7 @@ export default function WhiteButton({
       {...props}
       disabled={loading || props.disabled}
       className={cn(
-        "bg-white-light p-5 text-gray hover:bg-white-normal-hover",
+        "bg-white-light py-5 pl-2 pr-3 text-gray hover:bg-white-normal-hover",
         className,
       )}
     >

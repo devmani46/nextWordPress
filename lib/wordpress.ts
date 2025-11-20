@@ -16,6 +16,7 @@ import type {
   Project,
   Activity,
   News,
+  WpMenuItem,
 } from "./wordpress.d";
 
 const baseUrl = process.env.WORDPRESS_URL;
@@ -684,6 +685,57 @@ export async function getTeamsByTeamTypePaginated(
 
   return wordpressFetchWithPagination<Team[]>("/wp-json/wp/v2/team", query);
 }
+
+// export async function getMenu(menuSlug: string) {
+//   const path = `wp-json/custom/v1/menus/${menuSlug}`;
+
+//   const menuItems = await wordpressFetch<any[]>(path);
+
+//   //Convert full WP URLS to Next.js URLs
+//   const normalized = menuItems.map((item) => ({
+//     ...item,
+//     url: normalizeWpUrl(item.url),
+//   }));
+
+//   return normalized;
+// }
+
+export function normalizeWpUrl(url?: string) {
+  if (!url) return "";
+
+  try {
+    const wpBase = new URL(process.env.NEXT_PUBLIC_WORDPRESS_URL!).origin;
+
+    return url.startsWith(wpBase) ? url.replace(wpBase, "") : url;
+  } catch {
+    return url;
+  }
+}
+
+// --- Recursive URL normalizer ---
+function normalizeMenuTree(menu: WpMenuItem[]): WpMenuItem[] {
+  return menu.map((item) => ({
+    ...item,
+    url: normalizeWpUrl(item.url),
+    children: item.children ? normalizeMenuTree(item.children) : [],
+  }));
+}
+
+// // --- Fetch menus from WP API ---
+// export async function getMenus(): Promise<WpMenuItem[]> {
+//   const res = await fetch(
+//     "http://wordpress_nextjs.test/wp-json/wp/v1/menu/primary",
+//     {
+//       next: { revalidate: 60 }, // optional caching
+//     },
+//   );
+
+//   if (!res.ok) throw new Error("Failed to fetch menus");
+
+//   const data: WpMenuItem[] = await res.json();
+
+//   return normalizeMenuTree(data);
+// }
 
 export { WordPressAPIError };
 export type {

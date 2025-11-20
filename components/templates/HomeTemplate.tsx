@@ -189,7 +189,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           <p className="title h3">
             Global Representation of Nepalis Across Borders
           </p>
-          <p className="p1-regular mb-3 text-justify text-gray">
+          <p className="p1-regular mb-3 text-gray">
             {who_we_are_hero_description}
           </p>
           <BlueButton className="button-regular" icon>
@@ -200,13 +200,15 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*STATISTICS SECTION*/}
 
-      <section className="statistics flex w-full flex-wrap justify-center gap-16 px-8 sm:gap-12 md:justify-between md:gap-16 md:px-[15%] lg:flex-nowrap">
+      <section className="statistics flex w-full flex-nowrap justify-center px-10 sm:gap-12 md:justify-between md:gap-16 md:px-[15%]">
         {stats.map((stat, index) => (
           <div
             key={index}
             className="stat-block sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)]"
           >
-            <p className="h3 text-violet-normal">{stat.title} +</p>
+            <p className="md:h3 text-[22px] font-medium text-violet-normal">
+              {stat.title} +
+            </p>
             <p className="p1-regular text-gray">{stat.description}</p>
           </div>
         ))}
@@ -215,8 +217,8 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       {/*WHY CHOOSE US SECTION*/}
 
       <section className="why-choose-us relative mb-20 mt-20 flex flex-wrap px-10 md:px-[15%] lg:flex-nowrap">
-        <div className="box-1 relative max-h-[800px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_20%,rgba(224,224,244,1)_80%)] pb-16 pl-16 pt-16 lg:max-h-[400px]">
-          <div className="choose-us-text flex w-4/5 flex-col items-start gap-3 lg:w-3/5">
+        <div className="box-1 relative max-h-[800px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_20%,rgba(224,224,244,1)_80%)] pb-16 pl-10 pt-16 lg:max-h-[400px] lg:pl-16">
+          <div className="choose-us-text flex w-[90%] flex-col items-start gap-3 lg:w-3/5">
             <p className="p1-regular">Why Choose Us</p>
             <p className="h3 text-blue-normal">{why_title}</p>
             <p className="p1-regular text-gray">{why_description}</p>
@@ -224,11 +226,16 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
               <BlueButton icon>{why_cta_title}</BlueButton>
             </Link>
           </div>
+          <img
+            src="/nepalFlag.png"
+            className="invisible absolute bottom-0 right-16 lg:visible"
+          />
         </div>
         <div className="box-2 relative max-h-[400px] bg-[linear-gradient(180deg,rgba(224,224,244,1)_10%,rgba(191,216,235,1)_80%,rgba(234,243,249,1)_100%)] pl-[10%] pr-5 pt-4">
           <div className="community-container grid grid-cols-2 grid-rows-2 gap-5">
             <div className="col-span-full rounded-lg border border-white-light bg-white bg-opacity-40 p-4">
               <div className="flex justify-center">
+                {/*circle avatars*/}
                 {why_images.map((image, index) => (
                   <img
                     key={index}
@@ -237,28 +244,29 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
                   />
                 ))}
               </div>
-              <p className="label-regular text-center">Vast Community</p>
+              <p className="label-regular mt-2 text-center">Vast Community</p>
             </div>
-            <div className="flex flex-col rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
+            <div className="flex flex-col gap-1 rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
               <LucideGlobe className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
-              <div className="h5">+</div>
+              <div className="text-xl font-semibold">22+</div>
               <div className="label-regular text-gray">Global Presence</div>
             </div>
-            <div className="rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
+            <div className="flex flex-col gap-1 rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
               <LucideChartColumn className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
-              <div className="h5">500+</div>
+              <div className="text-xl font-semibold">500+</div>
               <div className="label-regular text-gray">Proven Impact</div>
             </div>
           </div>
 
           <div className="watch-video bottom-7 left-6 mt-10 flex items-center gap-2 lg:absolute lg:mt-0">
+            <span className="material-symbols-outlined"></span>
             <LucidePlay className="h-16 w-16 rounded-full bg-white-light p-5 text-blue-normal" />
             <p className="p1-medium">Watch Video</p>
           </div>
         </div>
         <div className="years-stat lg: invisible absolute bottom-0 right-[230px] z-10 mt-0 h-[108px] w-[117px] rounded-2xl bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] pt-3 text-center text-white-light lg:visible">
           <p className="h1">22</p>
-          <p className="h2">Years</p>
+          <p className="h4">Years</p>
         </div>
       </section>
 
@@ -271,16 +279,17 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           <p className="p1-regular text-gray">{involved_description}</p>
         </div>
         <div className="card-container flex flex-col gap-4 md:gap-8 lg:flex-row">
+          {/*list of cards*/}
           {getInvolvedCards.map((card, index) => (
             <div
               key={index}
               className="card flex h-auto min-h-[360px] w-full flex-col items-start gap-3 rounded-3xl bg-[url('/Mask-group.jpg')] bg-cover px-6 py-10 transition-transform hover:-translate-x-2 hover:-translate-y-4 md:px-10 md:py-14 lg:w-1/3"
             >
               <p className="p1-medium text-white">{card.title}</p>
-              <p className="mb-3 pr-8 text-2xl font-bold text-white">
+              <p className="mb-3 pr-4 text-[30px] font-bold text-white">
                 {card.description}
               </p>
-              <WhiteButton className="p1-regular bg-white" icon>
+              <WhiteButton className="p2-medium bg-white" icon>
                 {card.cta_title}
               </WhiteButton>
             </div>
@@ -290,16 +299,16 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*PRESIDENT'S MESSAGE SECTION*/}
 
-      <section className="president mt-11 flex flex-wrap gap-10 px-10 md:px-[15%] lg:flex-nowrap">
+      <section className="president mb-20 mt-11 flex flex-wrap gap-10 px-10 md:px-[15%] lg:flex-nowrap">
         <div className="president-message flex flex-col items-start justify-center gap-3 md:basis-3/5">
           <p className="p1-regular">One Diaspora, One Purpose</p>
           <p className="h5 italic">"{who_we_are_message_description}"</p>
-          <p className="mb-3 text-gray">Dr. Badri K.C. President</p>
+          <p className="p1-medium mb-3 text-gray">Dr. Badri K.C. President</p>
           <BlueButton icon className="mt-3">
             Read Full Message
           </BlueButton>
         </div>
-        <div className="president-image lg:basis-2/5">
+        <div className="president-image hidden lg:flex lg:basis-2/5">
           <Image
             src={"/NRNA 1.png"}
             alt="president-image"
@@ -315,12 +324,13 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
         <div className="stay-updated-text mb-11 flex flex-col gap-3">
           <p className="p1-regular">Stay Updated</p>
           <p className="h3">{stay_updated_title}</p>
-          <p className="p1-regular">{stay_updated_description}</p>
+          <p className="p1-regular text-gray">{stay_updated_description}</p>
         </div>
         <div className="notice-and-events flex flex-wrap gap-10 lg:flex-nowrap">
           <div className="notices flex flex-col items-start gap-6 lg:basis-1/2">
             <p className="h5">Notice</p>
             <div className="notice-card-container flex flex-col gap-3">
+              {/*display four notices*/}
               {notices.slice(0, 4).map((notice, index) => (
                 <div
                   key={index}
@@ -342,6 +352,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           <div className="events flex flex-col items-start gap-5 lg:basis-1/2">
             <p className="h5">Events</p>
             <div className="event-card-container grid grid-cols-2 grid-rows-2 gap-4">
+              {/*Display four events*/}
               {events.slice(0, 4).map((event, index) => (
                 <div
                   key={index}
@@ -359,8 +370,9 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
                         className="rounded-lg"
                       />
                     )}
+                    {/* <div className="h-16 w-24 bg-slate-400" /> */}
 
-                    <div className="event-date flex items-center gap-2 text-gray">
+                    <div className="event-date flex flex-col text-violet-normal">
                       <p className="h2">
                         {new Date(event.event_start_date).toLocaleDateString(
                           "en-GB",
@@ -374,6 +386,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
                           "en-GB",
                           {
                             month: "short",
+                            year: "numeric",
                           },
                         )}
                       </p>
@@ -400,7 +413,10 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
           <p className="h3">{latest_news_title}</p>
           <div className="flex w-full items-center justify-between">
             <p className="p1-regular">{latest_news_description}</p>
-            <WhiteButton className="border border-gray border-opacity-10" icon>
+            <WhiteButton
+              className="invisible border border-gray border-opacity-10 md:visible"
+              icon
+            >
               View More
             </WhiteButton>
           </div>
@@ -439,6 +455,12 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
               </div>
             ))}
           </div>
+          <WhiteButton
+            className="border border-gray border-opacity-10 lg:hidden"
+            icon
+          >
+            View More
+          </WhiteButton>
         </div>
       </section>
 
@@ -453,15 +475,12 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
               Explore NRNA projects driving impact across communities and
               supporting global Nepali Initiatives
             </p>
-            <WhiteButton icon>View More</WhiteButton>
+            <WhiteButton className="hidden md:flex" icon>
+              View More
+            </WhiteButton>
           </div>
         </div>
-        <Carousel
-          className="project-cards-container mt-11 flex w-[160%] gap-8"
-          opts={{
-            skipSnaps: true,
-          }}
-        >
+        <Carousel className="project-cards-container mt-11 flex gap-8">
           <CarouselContent className="flex gap-4 pl-14 pt-4 md:pl-60">
             {projects.map((project) => {
               // get featured image URL
@@ -471,10 +490,16 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
               return (
                 <CarouselItem
                   key={project.id}
-                  className="project-card flex max-w-80 flex-col overflow-hidden rounded-lg bg-white pl-0 transition-transform hover:-translate-x-2 hover:-translate-y-4"
+                  className="project-card flex max-w-80 flex-col overflow-hidden rounded-2xl bg-white pl-0 transition-transform hover:-translate-x-2 hover:-translate-y-4"
                 >
                   <div className="project-card-text p-6">
-                    <p className="label-medium text-gray">{project.date}</p>
+                    <p className="label-medium mb-1 text-gray">
+                      {new Date(project.date).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </p>
                     <p className="p1-medium">{project.title.rendered}</p>
                   </div>
                   <div

@@ -55,14 +55,15 @@ export default function HeroCarousel({
 
   return (
     <div className="relative w-full overflow-hidden">
-      <div className="gradient-left absolute left-0 top-0 z-10 h-[450px] w-[15%] bg-gradient-to-r from-white to-transparent" />
-      <div className="gradient-right absolute right-0 top-0 z-10 h-[450px] w-[15%] bg-gradient-to-l from-white to-transparent" />
+      <div className="gradient-left pointer-events-none absolute left-0 top-0 z-10 h-[450px] w-[15%] bg-gradient-to-r from-white to-transparent" />
+      <div className="gradient-right pointer-events-none absolute right-0 top-0 z-10 h-[450px] w-[15%] bg-gradient-to-l from-white to-transparent" />
       <Carousel
         setApi={setApi}
-        opts={{ loop, slidesToScroll: 1 }}
+        opts={{ loop, slidesToScroll: 1, dragFree: false }}
         plugins={[
           Autoplay({
             delay: 4000,
+            stopOnInteraction: false,
           }),
         ]}
       >
@@ -105,6 +106,9 @@ export default function HeroCarousel({
                     </motion.div>
                   )}
                 </AnimatePresence>
+                {/* <p className="p1-bold absolute bottom-16 left-10 text-white-light">
+                  This is the title of the image
+                </p> */}
               </CarouselItem>
             );
           })}

@@ -2,11 +2,64 @@
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../motion-primitives/accordion";
+import Link from "next/link";
+
+type WpMenuItem = {
+  id: number;
+  title: string;
+  url: string;
+  menu_item_parent: string;
+  children: WpMenuItem[];
+};
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [menus, setMenus] = useState<WpMenuItem[]>([]);
+
+  function normalizeWpUrl(url?: string) {
+    if (!url) return "#"; // fallback for empty URLs
+
+    const wpBase = "http://wordpress_nextjs.test"; // or process.env.NEXT_PUBLIC_WORDPRESS_URL!
+
+    // If url is "#" or already relative
+    if (url === "#") return url;
+
+    let path = url;
+
+    // Remove WordPress domain if present
+    if (url.startsWith(wpBase)) {
+      try {
+        path = new URL(url).pathname;
+      } catch {
+        path = url;
+      }
+    }
+
+    // Ensure leading slash
+    if (!path.startsWith("/")) path = "/" + path;
+
+    // Remove trailing slash except for root
+    if (path !== "/" && path.endsWith("/")) path = path.slice(0, -1);
+
+    // Add /pages prefix
+    if (path !== "#") path = "/pages" + path;
+
+    return path;
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +73,19 @@ export default function NavBar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    async function loadMenus() {
+      const res = await fetch(
+        "http://wordpress_nextjs.test/wp-json/wp/v1/menu/primary",
+      );
+      const data = await res.json();
+      setMenus(data);
+    }
+    loadMenus();
+  }, []);
+
+  console.log(menus[0]?.id);
 
   return (
     <section className="navbar mb-8 w-full py-2">
@@ -41,7 +107,7 @@ export default function NavBar() {
       <div className="h-[100px]"></div>
       {/* Main Nav */}
       <nav
-        className={`fixed left-0 top-0 z-40 flex w-full items-center justify-between bg-white px-10 transition-all lg:px-[15%] ${scrolled ? "bg-white py-3" : "pt-3 lg:pt-11"}`}
+        className={`fixed left-0 top-0 z-40 flex w-full items-center justify-between bg-white px-10 transition-all lg:px-[15%] ${scrolled ? "bg-white bg-opacity-80 py-3 backdrop-blur-md" : "pt-3 lg:pt-11"}`}
       >
         {/* Logo */}
         <div className="logo-container flex items-center gap-4">
@@ -54,13 +120,13 @@ export default function NavBar() {
                 transition={{ duration: 0.45, ease: "easeInOut" }}
                 className="logo-image h-14 w-14 transition-all"
               >
-                <img src="/logo.jpg" />
+                <img src="/logo.png" />
               </motion.div>
             )}
           </AnimatePresence>
 
           {/* Hide logo text on mobile */}
-          <div className="logo-text-container p2-semi-bold hidden text-violet-dark md:block">
+          <div className="logo-text-container p2-semi-bold hidden text-violet-dark lg:block">
             <p className="mb-1 font-bold">Non-Residential Nepali</p>
             <p className="font-bold">गैरआवासीय नेपाली संघ</p>
           </div>
@@ -68,21 +134,29 @@ export default function NavBar() {
 
         {/* Desktop Menu */}
         <ul className="p2-regular hidden items-center gap-4 text-gray md:flex">
-          {[
-            "About Us",
-            "Resources",
-            "Reports & Publications",
-            "News & Events",
-            "Projects",
-            "Gallery",
-          ].map((item) => (
-            <li key={item} className="flex cursor-pointer items-center gap-1">
-              {item}
-              {item !== "Projects" && item !== "Gallery" && (
-                <span className="material-symbols-outlined">
-                  keyboard_arrow_down
-                </span>
-              )}
+          {menus.map((item) => (
+            <li key={item.id} className="cursor-pointer">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-1 focus-within:text-blue-normal hover:text-blue-normal focus:outline-none">
+                  {item.title}
+                  {item.children?.length > 0 && (
+                    <span className="material-symbols-outlined">
+                      keyboard_arrow_down
+                    </span>
+                  )}
+                </DropdownMenuTrigger>
+                {item.children?.length > 0 && (
+                  <DropdownMenuContent>
+                    {item.children.map((child) => (
+                      <DropdownMenuItem key={child.id}>
+                        <Link href={normalizeWpUrl(child.url)}>
+                          {child.title}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                )}
+              </DropdownMenu>
             </li>
           ))}
         </ul>
@@ -114,7 +188,7 @@ export default function NavBar() {
             </div> */}
 
             {/* Language Dropdown */}
-            <motion.div>
+            {/* <motion.div>
               <button
                 className="flex w-full justify-between rounded p-2"
                 onClick={() => setLanguageOpen(!languageOpen)}
@@ -144,7 +218,7 @@ export default function NavBar() {
                   </motion.ul>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </motion.div> */}
 
             {/* Main Links */}
             <motion.ul
@@ -158,31 +232,48 @@ export default function NavBar() {
               }}
               className="mt-4 space-y-2"
             >
-              {[
-                "About Us",
-                "Resources",
-                "Reports & Publications",
-                "News & Events",
-                "Projects",
-                "Gallery",
-              ].map((item) => (
-                <motion.li
-                  key={item}
-                  variants={{
-                    hidden: { opacity: 0, y: 40 },
-                    visible: { opacity: 1, y: 0 },
-                  }}
-                  transition={{ duration: 0.6 }}
-                  className="flex cursor-pointer items-center justify-between rounded p-2"
-                >
-                  {item}
-                  {item !== "Projects" && item !== "Gallery" && (
-                    <span className="material-symbols-outlined">
-                      keyboard_arrow_down
-                    </span>
-                  )}
-                </motion.li>
-              ))}
+              <Accordion
+                className="flex w-full flex-col"
+                transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                variants={{
+                  expanded: {
+                    opacity: 1,
+                    scale: 1,
+                  },
+                  collapsed: {
+                    opacity: 0,
+                    scale: 0.7,
+                  },
+                }}
+              >
+                {menus.map((item) => (
+                  <AccordionItem key={item.id} value={item}>
+                    <AccordionTrigger>
+                      <motion.li
+                        variants={{
+                          hidden: { opacity: 0, y: 40 },
+                          visible: { opacity: 1, y: 0 },
+                        }}
+                        transition={{ duration: 0.6 }}
+                        className="flex cursor-pointer items-center justify-between rounded p-2 text-xl font-semibold transition-colors hover:text-blue-normal"
+                      >
+                        {item.title}
+                        {item.children?.length > 0 && (
+                          <span className="material-symbols-outlined">
+                            keyboard_arrow_down
+                          </span>
+                        )}
+                      </motion.li>
+                    </AccordionTrigger>
+                    <AccordionContent className="flex origin-left flex-col gap-2 pl-3">
+                      <li className="hover:text-blue-normal">Submenu 1</li>
+                      <li>Submenu 2</li>
+                      <li>Submenu 3</li>
+                      <li>Submenu 4</li>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </motion.ul>
           </motion.div>
         )}
