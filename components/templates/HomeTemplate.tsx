@@ -409,7 +409,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
                       year: "numeric",
                     })}
                   </p>
-                  <p className="p1-medium">{notice.title}</p>
+                  <p className="p1-medium">{notice.title.rendered}</p>
                 </div>
               ))}
             </div>

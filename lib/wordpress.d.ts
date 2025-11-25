@@ -125,12 +125,8 @@ interface Taxonomy {
   meta: Record<string, unknown>;
 }
 
-export interface Notice {
-  id: number;
-  date: string;
-  slug: string;
-  link: string;
-  title: string;
+export interface Notice extends WPEntity {
+  title: RenderedTitle;
 }
 
 export interface Event extends WPEntity {
