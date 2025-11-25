@@ -1,4 +1,4 @@
-  "use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -45,7 +45,7 @@ export function FilterTeams({
   }, [selectedAuthor, selectedTeamCategory, selectedTeamType]);
 
   const applyFilters = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || "");
 
     if (author && author !== "all-authors") {
       params.set("author", author);
@@ -79,8 +79,8 @@ export function FilterTeams({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-      <div className="flex flex-col sm:flex-row gap-2">
+    <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Select value={author} onValueChange={setAuthor}>
           <SelectTrigger className="w-full sm:w-48">
             <SelectValue placeholder="Filter by author" />

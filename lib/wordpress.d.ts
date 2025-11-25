@@ -162,6 +162,8 @@ export interface Project extends WPEntity {
 
 export interface Activity extends WPEntity {
   title: RenderedTitle;
+  content: RenderedContent;
+  activity_content?: string;
   featured_media: number;
   _embedded?: {
     "wp:featuredmedia"?: FeaturedMedia[];

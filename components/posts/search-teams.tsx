@@ -22,7 +22,7 @@ export function SearchTeams({ defaultValue }: SearchTeamsProps) {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString());
 
     if (search.trim()) {
       params.set("search", search.trim());
@@ -38,8 +38,8 @@ export function SearchTeams({ defaultValue }: SearchTeamsProps) {
 
   return (
     <form onSubmit={handleSearch} className="flex gap-2">
-      <div className="relative flex-1 max-w-sm">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+      <div className="relative max-w-sm flex-1">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
         <Input
           type="text"
           placeholder="Search team members..."

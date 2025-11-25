@@ -34,6 +34,13 @@ import WhiteButton from "../ui/whitebutton";
 import Link from "next/link";
 import WorldMap from "../world-map/WorldMap";
 import HeroCarousel from "../home-carousel/home-carousel";
+import { Input } from "../ui/input";
+import { cn } from "@/lib/utils";
+import { Tilt } from "../motion-primitives/tilt";
+import { Spotlight } from "../motion-primitives/spotlight";
+import { TextEffect } from "../motion-primitives/text-effect";
+import { InView } from "../ui/in-view";
+import { TextShimmer } from "../motion-primitives/text-shimmer";
 
 interface HomeTemplateProps {
   page: Page & {
@@ -144,7 +151,15 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       <section className="hero w-full">
         <div className="hero-cta m-auto mb-10 flex w-8/12 flex-col items-center gap-5 text-center md:w-4/12">
-          <div className="h1 text-black">{hero_title}</div>
+          <div className="h1 text-black">
+            <TextEffect
+              preset="fade-in-blur"
+              speedReveal={1.1}
+              speedSegment={0.3}
+            >
+              {hero_title}
+            </TextEffect>
+          </div>
           <div className="p1-regular text-gray">{hero_description}</div>
           <BlueButton className="button-regular">{hero_button_text}</BlueButton>
         </div>
@@ -153,122 +168,166 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       </section>
 
       {/*BANNER SECTION*/}
-
-      <section className="banner-container mt-28">
-        <CircleFollowCard />
-      </section>
+      <InView
+        variants={{
+          hidden: { opacity: 0, y: 100, filter: "blur(4px)" },
+          visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+        }}
+        viewOptions={{ margin: "0px 0px -200px 0px" }}
+        transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
+      >
+        <section className="banner-container mt-28">
+          <CircleFollowCard />
+        </section>
+      </InView>
 
       {/*ABOUT US SECTION*/}
 
-      <section className="about-us mb-20 mt-20 flex flex-col gap-8 px-10 md:flex-row md:px-12 lg:px-[15%]">
-        <div className="about-us-images basis-full md:basis-1/2">
-          <div className="flex">
+      <InView
+        variants={{
+          hidden: { opacity: 0, y: 100, filter: "blur(4px)" },
+          visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+        }}
+        viewOptions={{ margin: "0px 0px -200px 0px" }}
+        transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
+      >
+        <section className="about-us mb-20 mt-20 flex flex-col gap-8 px-10 md:flex-row md:px-12 lg:px-[15%]">
+          <div className="about-us-images basis-full md:basis-1/2">
+            <div className="flex">
+              <Image
+                src={page.about_image_1_url as string}
+                alt="about-image-1"
+                width={380}
+                height={230}
+              />
+              <Image
+                src={page.about_image_2_url as string}
+                alt="about-image-1"
+                className="h-[80px] w-[75px]"
+                width={75}
+                height={80}
+              />
+            </div>
             <Image
-              src={page.about_image_1_url as string}
+              src={page.about_image_3_url as string}
               alt="about-image-1"
-              width={380}
-              height={230}
-            />
-            <Image
-              src={page.about_image_2_url as string}
-              alt="about-image-1"
-              className="h-[80px] w-[75px]"
-              width={75}
-              height={80}
+              width={480}
+              height={260}
             />
           </div>
-          <Image
-            src={page.about_image_3_url as string}
-            alt="about-image-1"
-            width={480}
-            height={260}
-          />
-        </div>
-        <div className="about-us-text flex basis-full flex-col items-start gap-3 md:basis-1/2">
-          <p className="sub-title p1-regular">About us</p>
-          <p className="title h3">
-            Global Representation of Nepalis Across Borders
-          </p>
-          <p className="p1-regular mb-3 text-gray">
-            {who_we_are_hero_description}
-          </p>
-          <BlueButton className="button-regular" icon>
-            Read More
-          </BlueButton>
-        </div>
-      </section>
+          <div className="about-us-text flex basis-full flex-col items-start gap-3 md:basis-1/2">
+            <TextEffect per="char" preset="fade">
+              About us
+            </TextEffect>
+
+            <p className="title h3">
+              Global Representation of Nepalis Across Borders
+            </p>
+            <p className="p1-regular mb-3 text-gray">
+              {who_we_are_hero_description}
+            </p>
+            <BlueButton className="button-regular" icon>
+              Read More
+            </BlueButton>
+          </div>
+        </section>
+      </InView>
 
       {/*STATISTICS SECTION*/}
 
-      <section className="statistics flex w-full flex-nowrap justify-center px-10 sm:gap-12 md:justify-between md:gap-16 md:px-[15%]">
-        {stats.map((stat, index) => (
-          <div
-            key={index}
-            className="stat-block sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)]"
-          >
-            <p className="md:h3 text-[22px] font-medium text-violet-normal">
-              {stat.title} +
-            </p>
-            <p className="p1-regular text-gray">{stat.description}</p>
-          </div>
-        ))}
-      </section>
+      <InView
+        variants={{
+          hidden: { opacity: 0, y: 100, filter: "blur(4px)" },
+          visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+        }}
+        viewOptions={{ margin: "0px 0px -200px 0px" }}
+        transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
+      >
+        <section className="statistics flex w-full flex-nowrap justify-center px-10 sm:gap-12 md:justify-between md:gap-16 md:px-[15%]">
+          {stats.map((stat, index) => (
+            <div
+              key={index}
+              className="stat-block sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)]"
+            >
+              <p className="md:h3 text-[22px] font-medium text-violet-normal">
+                {stat.title} +
+              </p>
+              <p className="p1-regular text-gray">{stat.description}</p>
+            </div>
+          ))}
+        </section>
+      </InView>
 
       {/*WHY CHOOSE US SECTION*/}
 
-      <section className="why-choose-us relative mb-20 mt-20 flex flex-wrap px-10 md:px-[15%] lg:flex-nowrap">
-        <div className="box-1 relative max-h-[800px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_20%,rgba(224,224,244,1)_80%)] pb-16 pl-10 pt-16 lg:max-h-[400px] lg:pl-16">
-          <div className="choose-us-text flex w-[90%] flex-col items-start gap-3 lg:w-3/5">
-            <p className="p1-regular">Why Choose Us</p>
-            <p className="h3 text-blue-normal">{why_title}</p>
-            <p className="p1-regular text-gray">{why_description}</p>
-            <Link href={why_cta_link} className="mt-3">
-              <BlueButton icon>{why_cta_title}</BlueButton>
-            </Link>
-          </div>
-          <img
-            src="/nepalFlag.png"
-            className="invisible absolute bottom-0 right-16 lg:visible"
-          />
-        </div>
-        <div className="box-2 relative max-h-[400px] bg-[linear-gradient(180deg,rgba(224,224,244,1)_10%,rgba(191,216,235,1)_80%,rgba(234,243,249,1)_100%)] pl-[10%] pr-5 pt-4">
-          <div className="community-container grid grid-cols-2 grid-rows-2 gap-5">
-            <div className="col-span-full rounded-lg border border-white-light bg-white bg-opacity-40 p-4">
-              <div className="flex justify-center">
-                {/*circle avatars*/}
-                {why_images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    className="-ml-2 max-h-12 min-h-12 min-w-12 max-w-12 rounded-full border-2 border-white bg-blue-normal object-cover"
-                  />
-                ))}
+      <InView
+        variants={{
+          hidden: { opacity: 0, y: 100, filter: "blur(4px)" },
+          visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+        }}
+        viewOptions={{ margin: "0px 0px -200px 0px" }}
+        transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
+      >
+        <section className="why-choose-us relative mb-20 mt-20 flex flex-wrap px-10 md:px-[15%] lg:flex-nowrap">
+          <Tilt rotationFactor={4} isRevese>
+            <div className="box-1 relative max-h-[800px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_20%,rgba(224,224,244,1)_80%)] pb-16 pl-10 pt-16 lg:max-h-[400px] lg:pl-16">
+              <div className="choose-us-text flex w-[90%] flex-col items-start gap-3 lg:w-3/5">
+                <p className="p1-regular">Why Choose Us</p>
+                <p className="h3 text-blue-normal">{why_title}</p>
+                <p className="p1-regular text-gray">{why_description}</p>
+                <Link href={why_cta_link} className="mt-3">
+                  <BlueButton icon>{why_cta_title}</BlueButton>
+                </Link>
               </div>
-              <p className="label-regular mt-2 text-center">Vast Community</p>
+              <img
+                src="/nepalFlag.png"
+                className="invisible absolute bottom-0 right-16 lg:visible"
+              />
             </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
-              <LucideGlobe className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
-              <div className="text-xl font-semibold">22+</div>
-              <div className="label-regular text-gray">Global Presence</div>
-            </div>
-            <div className="flex flex-col gap-1 rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
-              <LucideChartColumn className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
-              <div className="text-xl font-semibold">500+</div>
-              <div className="label-regular text-gray">Proven Impact</div>
-            </div>
-          </div>
+          </Tilt>
+          <div className="box-2 relative max-h-[400px] bg-[linear-gradient(180deg,rgba(224,224,244,1)_10%,rgba(191,216,235,1)_80%,rgba(234,243,249,1)_100%)] pl-[10%] pr-5 pt-4">
+            <Tilt rotationFactor={4} isRevese>
+              <div className="community-container grid grid-cols-2 grid-rows-2 gap-5">
+                <div className="col-span-full rounded-lg border border-white-light bg-white bg-opacity-40 p-4">
+                  <div className="flex justify-center">
+                    {/*circle avatars*/}
+                    {why_images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                        className="-ml-2 max-h-12 min-h-12 min-w-12 max-w-12 rounded-full border-2 border-white bg-blue-normal object-cover"
+                      />
+                    ))}
+                  </div>
+                  <p className="label-regular mt-2 text-center">
+                    Vast Community
+                  </p>
+                </div>
+                <div className="flex flex-col gap-1 rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
+                  <LucideGlobe className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
+                  <div className="text-xl font-semibold">22+</div>
+                  <div className="label-regular text-gray">Global Presence</div>
+                </div>
+                <div className="flex flex-col gap-1 rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
+                  <LucideChartColumn className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
+                  <div className="text-xl font-semibold">500+</div>
+                  <div className="label-regular text-gray">Proven Impact</div>
+                </div>
+              </div>
+            </Tilt>
 
-          <div className="watch-video bottom-7 left-6 mt-10 flex items-center gap-2 lg:absolute lg:mt-0">
-            <span className="material-symbols-outlined"></span>
-            <LucidePlay className="h-16 w-16 rounded-full bg-white-light p-5 text-blue-normal" />
-            <p className="p1-medium">Watch Video</p>
+            <div className="watch-video bottom-7 left-6 mt-10 flex items-center gap-2 lg:absolute lg:mt-0">
+              <span className="material-symbols-outlined"></span>
+              <LucidePlay className="h-16 w-16 rounded-full bg-white-light p-5 text-blue-normal" />
+              <p className="p1-medium">Watch Video</p>
+            </div>
           </div>
-        </div>
-        <div className="years-stat lg: invisible absolute bottom-0 right-[230px] z-10 mt-0 h-[108px] w-[117px] rounded-2xl bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] pt-3 text-center text-white-light lg:visible">
-          <p className="h1">22</p>
-          <p className="h4">Years</p>
-        </div>
-      </section>
+          <div className="years-stat lg: invisible absolute bottom-0 right-[230px] z-10 mt-0 h-[108px] w-[117px] rounded-2xl bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] pt-3 text-center text-white-light lg:visible">
+            <p className="h1">22</p>
+            <p className="h4">Years</p>
+          </div>
+        </section>
+      </InView>
 
       {/*GET INVOLVED SECTION*/}
 
@@ -302,7 +361,9 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
       <section className="president mb-20 mt-11 flex flex-wrap gap-10 px-10 md:px-[15%] lg:flex-nowrap">
         <div className="president-message flex flex-col items-start justify-center gap-3 md:basis-3/5">
           <p className="p1-regular">One Diaspora, One Purpose</p>
-          <p className="h5 italic">"{who_we_are_message_description}"</p>
+          <p className="h5 italic">
+            &quot;{who_we_are_message_description}&quot;
+          </p>
           <p className="p1-medium mb-3 text-gray">Dr. Badri K.C. President</p>
           <BlueButton icon className="mt-3">
             Read Full Message
@@ -336,6 +397,11 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
                   key={index}
                   className="notice-card flex flex-col gap-2 rounded-xl border border-white-normal bg-blue-light p-4 transition-all hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer hover:bg-blue-light-hover"
                 >
+                  <Spotlight
+                    className="from-blue-light-hover via-blue-normal-hover to-blue-light-hover blur-3xl dark:from-blue-light-hover dark:via-blue-light-hover dark:to-blue-light-hover"
+                    size={124}
+                  />
+                  <div className="relative h-full w-full rounded-xl bg-white dark:bg-black"></div>
                   <p className="label-medium text-gray">
                     {new Date(notice.date).toLocaleDateString("en-US", {
                       month: "long",
@@ -343,7 +409,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
                       year: "numeric",
                     })}
                   </p>
-                  <p className="p1-medium">{notice.title.rendered}</p>
+                  <p className="p1-medium">{notice.title}</p>
                 </div>
               ))}
             </div>
@@ -541,7 +607,91 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
         </div>
       </section>
 
-      <footer></footer>
+      <footer className="w-full px-[15%] pt-16">
+        <div className="column-containers flex justify-between">
+          <div className="first-column">
+            <div className="logo-text-container p2-semi-bold mb-7 text-violet-dark">
+              <p className="mb-1 font-bold">Non-Residential Nepali</p>
+              <p className="font-bold">गैरआवासीय नेपाली संघ</p>
+            </div>
+            <div className="p2-medium flex flex-col gap-3 text-gray">
+              <p>Phone: +977-014511530,014526005</p>
+              <p>Email:info@nrna.org</p>
+              <p>Address:Subarna Shamsher Marg, Baluwatar, Kathmandu</p>
+            </div>
+          </div>
+          <div className="second-column">
+            <p className="p1-bold mb-6">Resources</p>
+            <ul>
+              {[
+                "Notice",
+                "News",
+                "Gallery",
+                "Activities",
+                "Press Release",
+                "Publications",
+              ].map((item) => (
+                <li
+                  className="p2-medium footerlink mb-[14px] text-gray"
+                  key={item}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="third-column">
+            <p className="p1-bold mb-6">Important</p>
+            <ul>
+              {[
+                "Notice",
+                "News",
+                "Gallery",
+                "Activities",
+                "Press Release",
+                "Publications",
+              ].map((item) => (
+                <li className="p2-medium mb-[14px] text-gray" key={item}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="fourth-column">
+            <p className="p1-bold mb-6">NRN Area</p>
+            <ul>
+              {[
+                "Notice",
+                "News",
+                "Gallery",
+                "Activities",
+                "Press Release",
+                "Publications",
+              ].map((item) => (
+                <li className="p2-medium mb-[14px] text-gray" key={item}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="contacts">
+          <div className="subscribe">
+            <p>Subscribe</p>
+            <Input type="email" placeholder="Enter your email address" />
+            <Button
+              className={cn(
+                "duration-[2200ms] rounded-lg border-[1px] bg-[length:200%_100%] tracking-wide shadow hover:animate-bg-shine",
+
+                "border-zinc-300 bg-[linear-gradient(110deg,#FFF,45%,#60609AFF,95%,#FFF)]",
+              )}
+            >
+              Subscribe
+            </Button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

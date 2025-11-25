@@ -135,7 +135,7 @@ export default async function WhoWeAreTemplate({
       {/*CERTIFICATE SECTION*/}
 
       <section className="certificate-section mt-20 flex flex-col gap-11 px-[15%]">
-        <div className="certificate-image h-[354px] w-[1064px] rounded-2xl bg-gray"></div>
+        <div className="certificate-image h-[354px] w-full rounded-2xl bg-gray"></div>
         <div className="certificate-text flex flex-col gap-3 px-[10%]">
           <p className="p1-regular">Official Recognition</p>
           <p className="h3">Certificate of Registration</p>
@@ -158,7 +158,7 @@ export default async function WhoWeAreTemplate({
 
       <section className="presidents-message mt-20 flex px-[15%]">
         <div className="message-text basis-1/2">
-          <p>President's</p>
+          <p>President&apos;s</p>
           <p>Message</p>
           <p>
             Honoring the trust which all the members of NRNA have never seen fit
@@ -219,7 +219,7 @@ export default async function WhoWeAreTemplate({
           <ul className="p1-regular flex flex-col gap-2">
             <li className="flex items-center gap-2">
               <span className="material-symbols-outlined">check_circle</span>
-              "Access to 500+ partner discounts
+              Access to 500+ partner discounts
             </li>
             <li className="flex items-center gap-2">
               <span className="material-symbols-outlined">check_circle</span>
@@ -238,10 +238,12 @@ export default async function WhoWeAreTemplate({
           <WhiteButton>Become A Member</WhiteButton>
         </div>
         <div className="join-stats grid basis-1/2 grid-cols-2 grid-rows-2 gap-4">
-          <div className="rounded-2xl bg-white bg-opacity-15">
-            <span className="material-symbols-outlined">diversity_2</span>
-            <p>50,000+</p>
-            <p>Active Members</p>
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+            <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
+              diversity_2
+            </span>
+            <p className="text-3xl font-semibold text-white">50,000+</p>
+            <p className="p1-regular text-white">Active Members</p>
           </div>
           <div className="rounded-2xl bg-white bg-opacity-15">
             <span className="material-symbols-outlined">globe_uk</span>
@@ -266,8 +268,8 @@ export default async function WhoWeAreTemplate({
       {/*FAQ*/}
 
       <section className="faq-section mt-20 px-[15%]">
-        <p>FAQs</p>
-        <p>Everything you need to know</p>
+        <p className="p1-regular mb-3">FAQs</p>
+        <p className="h3 mb-6">Everything you need to know</p>
         <div className="flex gap-4">
           <div className="faqs basis-3/4">
             <Accordion
@@ -304,10 +306,14 @@ export default async function WhoWeAreTemplate({
             </Accordion>
           </div>
 
-          <div className="more-questions basis-1/4 rounded-2xl border border-gray border-opacity-50">
-            <div className="chat-bubble"></div>
-            <p>Do you have more questions?</p>
-            <p>Reach out to our team & we'll get back to you quickly</p>
+          <div className="more-questions flex basis-1/4 flex-col items-center justify-center gap-5 rounded-2xl border border-gray border-opacity-50 px-8 text-center">
+            <span className="material-symbols-outlined h-10 w-10">
+              chat_bubble
+            </span>
+            <p className="p1-medium">Do you have more questions?</p>
+            <p className="p1-regular text-gray">
+              Reach out to our team & we&apos;ll get back to you quickly
+            </p>
             <BlueButton>Get in Touch</BlueButton>
           </div>
         </div>

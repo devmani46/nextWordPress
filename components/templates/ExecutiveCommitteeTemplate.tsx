@@ -58,11 +58,62 @@ export default async function ExecutiveCommitteeTemplate({
         </div>
       </header>
 
-      <section className="hierarchy">
-        <div className="member-card">
-          <div className="member-image" />
-          <p>Dr. Badri K.C.</p>
-          <p>President | IES | Russia</p>
+      <section className="hierarchy mt-6 flex flex-col gap-4 px-[15%]">
+        <div className="row flex justify-center">
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+        </div>
+        <div className="row flex justify-center gap-4">
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+        </div>
+        <div className="row flex justify-center gap-4">
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
+          <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+            <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
+            <p className="label-regular">President | IES | Russia</p>
+          </div>
         </div>
       </section>
 

@@ -11,12 +11,14 @@ export function SearchInput({ defaultValue }: { defaultValue?: string }) {
   const { replace } = useRouter();
 
   const handleSearch = useDebouncedCallback((term: string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams?.toString() || "");
+
     if (term) {
       params.set("search", term);
     } else {
       params.delete("search");
     }
+
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 

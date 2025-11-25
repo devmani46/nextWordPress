@@ -3,7 +3,7 @@ import { getActivityBySlug } from "@/lib/wordpress";
 export default async function ActivityPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
 
@@ -32,7 +32,7 @@ export default async function ActivityPage({
       )}
       <div
         dangerouslySetInnerHTML={{
-          __html: activity.content?.rendered || activity.activity_content,
+          __html: activity.content?.rendered || activity.activity_content || "",
         }}
       />
     </div>

@@ -1,4 +1,6 @@
-export default function DefaultTemplate({ page }) {
+import { Page } from "@/lib/wordpress";
+
+export default function DefaultTemplate({ page }: { page: Page }) {
   return (
     <div>
       <h1>{page.title.rendered}</h1>

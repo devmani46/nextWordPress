@@ -14,7 +14,6 @@ import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
 
 import Balancer from "react-wrap-balancer";
-import Logo from "@/public/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -43,12 +42,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        />
-      </head>
       <body
         className={cn(
           "min-h-screen !min-w-full font-sans antialiased",
@@ -87,14 +80,6 @@ const Nav = ({ className, children, id }: NavProps) => {
           className="flex items-center gap-4 transition-all hover:opacity-75"
           href="/"
         >
-          <Image
-            src={Logo}
-            alt="Logo"
-            loading="eager"
-            className="dark:invert"
-            width={42}
-            height={26.44}
-          ></Image>
           <h2 className="text-sm">{siteConfig.site_name}</h2>
         </Link>
         {children}
@@ -126,13 +111,6 @@ const Footer = () => {
           <div className="not-prose flex flex-col gap-6">
             <Link href="/">
               <h3 className="sr-only">{siteConfig.site_name}</h3>
-              <Image
-                src={Logo}
-                alt="Logo"
-                className="dark:invert"
-                width={42}
-                height={26.44}
-              ></Image>
             </Link>
             <p>
               <Balancer>{siteConfig.site_description}</Balancer>

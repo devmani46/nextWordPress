@@ -46,6 +46,7 @@ export default function CircleFollowCard() {
           className="absolute bottom-0 right-0 z-20 w-[40%]"
         />
         <motion.div
+          inherit={false}
           className="circle-1 absolute rounded-full bg-white opacity-10"
           style={{
             width: 400,

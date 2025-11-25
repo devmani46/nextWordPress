@@ -11,7 +11,7 @@ import {
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 export default function WorldMap() {
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHovered] = useState<string | null>(null);
 
   const markers = [
     { name: "Japan", coordinates: [138.2529, 36.2048] },
@@ -34,8 +34,8 @@ export default function WorldMap() {
         height={600}
       >
         <Geographies geography={geoUrl}>
-          {({ geographies }) =>
-            geographies.map((geo) => (
+          {({ geographies }: { geographies: any[] }) =>
+            geographies.map((geo: any) => (
               <Geography
                 key={geo.rsmKey}
                 geography={geo}

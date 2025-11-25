@@ -85,8 +85,6 @@ export default function NavBar() {
     loadMenus();
   }, []);
 
-  console.log(menus[0]?.id);
-
   return (
     <section className="navbar mb-8 w-full py-2">
       {/* Desktop Top Bar */}
@@ -247,7 +245,7 @@ export default function NavBar() {
                 }}
               >
                 {menus.map((item) => (
-                  <AccordionItem key={item.id} value={item}>
+                  <AccordionItem key={item.id} value={item.id}>
                     <AccordionTrigger>
                       <motion.li
                         variants={{
