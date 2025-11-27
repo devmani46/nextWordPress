@@ -1,11 +1,5 @@
 import {
   Event,
-  getAllEvents,
-  getAllNews,
-  getAllNotices,
-  getAllProjects,
-  getPageBySlug,
-  getPostBySlug,
   News,
   Page,
 } from "@/lib/wordpress";
@@ -17,7 +11,7 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 import Image from "next/image";
-import "../../app/styles/home.css";
+
 import { Button } from "../ui/button";
 import {
   ArrowUpRight,
@@ -68,6 +62,17 @@ interface HomeTemplateProps {
     about_image_2_url?: string;
     about_image_3_url?: string;
   };
+  whowearePage: Page & {
+    meta: {
+      who_we_are_hero_title: string;
+      who_we_are_hero_description: string;
+      who_we_are_message_description: string;
+    };
+  };
+  notices: Notice[];
+  projects: Project[];
+  events: Event[];
+  news: News[];
 }
 
 interface Slide {
@@ -76,7 +81,14 @@ interface Slide {
   title: string;
 }
 
-export default async function HomeTemplate({ page }: HomeTemplateProps) {
+export default function HomeTemplate({
+  page,
+  whowearePage,
+  notices,
+  projects,
+  events,
+  news,
+}: HomeTemplateProps) {
   const hero_title = page.meta.hero_title as string;
   const hero_description = page.meta.hero_description as string;
   const hero_button_text = page.meta.hero_cta_title as string;
@@ -124,11 +136,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
   const stats = page.about_stats || [];
   const why_images = page.why_images_urls || [];
 
-  const whowearePage = await getPageBySlug("whoweare");
-  const notices: Notice[] = await getAllNotices();
-  const projects: Project[] = await getAllProjects();
-  const events: Event[] = await getAllEvents();
-  const news: News[] = await getAllNews();
+
 
   const who_we_are_hero_title = whowearePage.meta
     .who_we_are_hero_title as string;
@@ -358,7 +366,7 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
 
       {/*PRESIDENT'S MESSAGE SECTION*/}
 
-      <section className="president mb-20 mt-11 flex flex-wrap gap-10 px-10 md:px-[15%] lg:flex-nowrap">
+      <section className="president mt-11 flex flex-wrap gap-10 px-10 md:px-[15%] lg:flex-nowrap">
         <div className="president-message flex flex-col items-start justify-center gap-3 md:basis-3/5">
           <p className="p1-regular">One Diaspora, One Purpose</p>
           <p className="h5 italic">
@@ -369,12 +377,13 @@ export default async function HomeTemplate({ page }: HomeTemplateProps) {
             Read Full Message
           </BlueButton>
         </div>
-        <div className="president-image hidden lg:flex lg:basis-2/5">
+        <div className="president-image hidden overflow-hidden lg:flex lg:basis-2/5">
           <Image
             src={"/NRNA 1.png"}
             alt="president-image"
             height={612}
             width={408}
+            className="translate-y-[150px] object-cover object-top"
           ></Image>
         </div>
       </section>

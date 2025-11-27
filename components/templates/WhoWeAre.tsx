@@ -4,7 +4,6 @@ import Image from "next/image";
 import WhiteButton from "../ui/whitebutton";
 import LiquidGlass from "liquid-glass-react";
 import LiquidGlassWrapper from "../ui/liquidglasswrapper";
-import "../../app/styles/whoweare.css";
 
 import {
   ArrowUpLeft,
@@ -20,14 +19,18 @@ import {
 } from "../ui/accordion";
 import BlueButton from "../ui/bluebutton";
 import OverlappingCarousel from "../ui/OverlappingCarousel";
+import ParallaxDiv from "../parallax-divs/parallax";
+import { Spotlight } from "../motion-primitives/spotlight";
 
 interface WhoWeAreTemplateProps {
-  page: Page;
+  page: Page & {
+    who_we_are_vision_image_url?: string;
+    who_we_are_goals_image_url?: string;
+    who_we_are_certificate_image_url?: string;
+  };
 }
 
-export default async function WhoWeAreTemplate({
-  page,
-}: WhoWeAreTemplateProps) {
+export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
   const images = [
     { src: "/FINAL DOG GRASS.png", alt: "image" },
     { src: "/FINAL DOG GRASS.png", alt: "image" },
@@ -35,31 +38,37 @@ export default async function WhoWeAreTemplate({
     { src: "/FINAL DOG GRASS.png", alt: "image" },
   ];
 
+  const who_we_are_hero_title = page.meta.who_we_are_hero_title as string;
+  const who_we_are_hero_description = page.meta
+    .who_we_are_hero_description as string;
+  const who_we_are_vision_title = page.meta.who_we_are_vision_title as string;
+  const who_we_are_vision_description = page.meta
+    .who_we_are_vision_description as string;
+
+  const who_we_are_goals_title = page.meta.who_we_are_goals_title as string;
+  const who_we_are_goals_description = page.meta
+    .who_we_are_goals_description as string;
+
+  const who_we_are_certificate_title = page.meta
+    .who_we_are_certificate_title as string;
+  const who_we_are_certificate_description = page.meta
+    .who_we_are_certificate_description as string;
+
+  //Images
+  const who_we_are_vision_image_url =
+    page.who_we_are_vision_image_url as string;
+  const who_we_are_goals_image_url = page.who_we_are_goals_image_url as string;
+  const who_we_are_certificate_image_url =
+    page.who_we_are_certificate_image_url as string;
+
   return (
     <div>
       <section className="about-text px-[15%]">
-        <p className="h2">About NRNA</p>
-        <p>
-          NRNA was founded on 11 October 2003 to unite the Nepali diaspora under
-          one umbrella. Over the past 20 years, it has grown into a global
-          non-governmental organization with National Coordination Councils in
-          88 countries, representing the interests and commitments of Nepalis
-          worldwide.
-          <br />
-          <br />
-          No matter where Nepalis go or what nationality we adopt, we never
-          forget the land that defines our identity and soul. We celebrate
-          Nepal’s successes and share in her struggles. Guided by the belief
-          that “once a Nepali, always a Nepali,” NRNA channels the energy and
-          resources of the diaspora toward the transformation of Nepali society.
-          Recognizing the vital role of its diaspora, the Government of Nepal
-          granted legal status to NRNs through the Non-Resident Nepali Act 2064.
-          Today, NRNA represents Nepali interests globally as a strong, united
-          network of people of Nepali origin living beyond SAARC countries.
-        </p>
+        <p className="h2 mb-6">{who_we_are_hero_title}</p>
+        <p>{who_we_are_hero_description}</p>
       </section>
 
-      <section className="mission-slider relative mt-20 flex justify-center">
+      <section className="mission-slider relative mt-32 flex justify-center">
         <div className="our-mission absolute -top-10 z-10 w-[500px] rounded-lg border border-blue-light-active bg-white bg-opacity-70 px-6 py-3 backdrop-blur-md">
           <div className="title mb-3 flex items-center gap-3">
             <LucideGoal className="size-8 text-blue-normal" />
@@ -76,91 +85,48 @@ export default async function WhoWeAreTemplate({
       </section>
 
       {/*OUR VISION IN ACTION*/}
-      <section className="our-vision mt-20 flex px-[15%]">
-        <div className="everything-container flex h-[520px] w-full rounded-2xl bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)]">
-          <div className="empty-test-block relative basis-1/2">
-            <div className="red-block absolute -left-10 -top-6 h-[520px] w-[450px] rounded-2xl bg-blue-normal"></div>
-          </div>
-          <div className="text-block flex basis-1/2 flex-col gap-3 py-11 pr-20">
-            <p className="p1-regular">Our Vision in Action</p>
-            <p className="h3 text-blue-normal">Strategic Goals: </p>
-            <p className="p1-regular text-gray">
-              The Strategic Goals of NRNA is to unite and bring Nepali residing
-              all over the world under one umbrella; protect and promote their
-              interest in and outside Nepal and utilize their potentials and
-              resources for the welfare of Nepal. To achieve these objectives
-              the association shall conduct the following activities: Promote
-              and protect the rights and interest of Nepalis residing outside
-              Nepal Establish a global network and a common platform for Nepalis
-              Diaspora Attract and facilitate NRNs investment including foreign
-              direct investment (FDI) for economic and social development of
-              Nepal Promote tourism and preserve Nepali culture and heritage
-              globally Mobilize the knowledge, skills, capital and other
-              resources within the disposal of NRNs for the socio economic
-              development of Nepal.
-            </p>
-          </div>
-        </div>
+      <section className="our-vision mt-40 flex px-10 md:px-[15%]">
+        <ParallaxDiv
+          alignment="left"
+          image_url={who_we_are_vision_image_url}
+          title="Our Vision in Action"
+          subtitle={who_we_are_vision_title}
+          description={who_we_are_vision_description}
+        />
       </section>
 
       {/*TURNING GOALS INTO REALITY*/}
 
       <section className="turning-goals mt-20 flex px-[15%]">
-        <div className="everything-container flex h-[520px] w-full rounded-2xl bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)]">
-          <div className="text-block flex basis-1/2 flex-col gap-3 py-11 pl-20">
-            <p className="p1-regular">Our Vision in Action</p>
-            <p className="h3 text-blue-normal">Strategic Goals: </p>
-            <p className="p1-regular text-gray">
-              The Strategic Goals of NRNA is to unite and bring Nepali residing
-              all over the world under one umbrella; protect and promote their
-              interest in and outside Nepal and utilize their potentials and
-              resources for the welfare of Nepal. To achieve these objectives
-              the association shall conduct the following activities: Promote
-              and protect the rights and interest of Nepalis residing outside
-              Nepal Establish a global network and a common platform for Nepalis
-              Diaspora Attract and facilitate NRNs investment including foreign
-              direct investment (FDI) for economic and social development of
-              Nepal Promote tourism and preserve Nepali culture and heritage
-              globally Mobilize the knowledge, skills, capital and other
-              resources within the disposal of NRNs for the socio economic
-              development of Nepal.
-            </p>
-          </div>
-          <div className="empty-test-block relative basis-1/2">
-            <div className="red-block absolute -right-10 -top-6 h-[520px] w-[450px] rounded-2xl bg-blue-normal"></div>
-          </div>
-        </div>
+        <ParallaxDiv
+          alignment="right"
+          title="something"
+          subtitle={who_we_are_goals_title}
+          description={who_we_are_goals_description}
+          image_url={who_we_are_goals_image_url}
+        />
       </section>
 
       {/*CERTIFICATE SECTION*/}
 
-      <section className="certificate-section mt-20 flex flex-col gap-11 px-[15%]">
-        <div className="certificate-image h-[354px] w-full rounded-2xl bg-gray"></div>
-        <div className="certificate-text flex flex-col gap-3 px-[10%]">
+      <section className="certificate-section mt-20 flex flex-col gap-11 px-10 md:px-[15%]">
+        <div className="certificate-image h-[354px] w-full rounded-2xl bg-gray">
+          <img src={who_we_are_certificate_image_url} alt="certificate" />
+        </div>
+        <div className="certificate-text flex flex-col gap-3 px-0 md:px-[10%]">
           <p className="p1-regular">Official Recognition</p>
-          <p className="h3">Certificate of Registration</p>
-          <p className="p1-regular">
-            The Non-Resident Nepali Association (NRNA) is officially registered
-            as a global organization representing the interests, identity, and
-            unity of Nepalis living abroad. The Certificate of Registration
-            authenticates NRNA’s legal status and recognition, ensuring its
-            operations are legitimate and accountable. This certificate reflects
-            NRNA’s commitment to working transparently with governments,
-            institutions, and communities worldwide, while safeguarding the
-            rights and welfare of the Nepali diaspora. It stands as a mark of
-            trust, credibility, and dedication towards building stronger
-            connections between Nepal and Nepalis across the globe.
-          </p>
+          <p className="h3">{who_we_are_certificate_title}</p>
+          <p className="p1-regular">{who_we_are_certificate_description}</p>
         </div>
       </section>
 
       {/*President's Message*/}
 
       <section className="presidents-message mt-20 flex px-[15%]">
-        <div className="message-text basis-1/2">
-          <p>President&apos;s</p>
-          <p>Message</p>
-          <p>
+        <div className="message-text basis-3/5">
+          <p className="h3">President&apos;s</p>
+          <p className="h3 mb-10">Message</p>
+          <p className="p1-regular text-gray">
             Honoring the trust which all the members of NRNA have never seen fit
             to place in us, we owe the team a debt of sincere gratitude. We are
             deeply humbled by the support of everyone to have us provided a fair
@@ -175,8 +141,9 @@ export default async function WhoWeAreTemplate({
           <p>Dr. Badri K.C.</p>
           <p>President</p>
         </div>
-        <div className="president-image-container basis-1/2 bg-gray">
-          <div className="president-image"></div>
+        <div className="president-image-container relative basis-2/5">
+          <img src="/NRNA 1.png" className="object-fill" alt="pres" />
+          <div className="absolute bottom-0 left-0 z-10 h-[450px] w-full bg-gradient-to-t from-white to-transparent" />
         </div>
       </section>
 
@@ -218,49 +185,62 @@ export default async function WhoWeAreTemplate({
 
           <ul className="p1-regular flex flex-col gap-2">
             <li className="flex items-center gap-2">
-              <span className="material-symbols-outlined">check_circle</span>
+              <span className="material-symbols-outlined text-amber-500">
+                check_circle
+              </span>
               Access to 500+ partner discounts
             </li>
             <li className="flex items-center gap-2">
-              <span className="material-symbols-outlined">check_circle</span>
+              <span className="material-symbols-outlined text-amber-500">
+                check_circle
+              </span>
               Global Networking opportunities
             </li>
             <li className="flex items-center gap-2">
-              <span className="material-symbols-outlined">check_circle</span>
+              <span className="material-symbols-outlined text-amber-500">
+                check_circle
+              </span>
               Exclusive events and webinars
             </li>
             <li className="flex items-center gap-2">
-              <span className="material-symbols-outlined">check_circle</span>
+              <span className="material-symbols-outlined text-amber-500">
+                check_circle
+              </span>
               Priority Customer support
             </li>
           </ul>
 
-          <WhiteButton>Become A Member</WhiteButton>
+          <WhiteButton className="mt-5">Become A Member</WhiteButton>
         </div>
         <div className="join-stats grid basis-1/2 grid-cols-2 grid-rows-2 gap-4">
           <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+            <Spotlight size={128} className="opacity-35 blur-2xl" />
             <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
               diversity_2
             </span>
             <p className="text-3xl font-semibold text-white">50,000+</p>
             <p className="p1-regular text-white">Active Members</p>
           </div>
-          <div className="rounded-2xl bg-white bg-opacity-15">
-            <span className="material-symbols-outlined">globe_uk</span>
-            <p>80+</p>
-            <p>Countries</p>
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+            <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
+              globe_uk
+            </span>
+            <p className="text-3xl font-semibold text-white">80+</p>
+            <p className="p1-regular text-white">Countries</p>
           </div>
-          <div className="rounded-2xl bg-white bg-opacity-15">
-            <span className="material-symbols-outlined">join_right</span>
-            <p>500+</p>
-            <p>Partner Outlets</p>
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+            <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
+              join_right
+            </span>
+            <p className="text-3xl font-semibold text-white">500+</p>
+            <p className="p1-regular text-white">Partner Outlets</p>
           </div>
-          <div className="rounded-2xl bg-white bg-opacity-15">
-            <span className="material-symbols-outlined">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+            <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
               temp_preferences_eco
             </span>
-            <p>$2M+</p>
-            <p>Total savings</p>
+            <p className="text-3xl font-semibold text-white">$2M+</p>
+            <p className="p1-regular text-white">Total savings</p>
           </div>
         </div>
       </section>
@@ -277,7 +257,7 @@ export default async function WhoWeAreTemplate({
               className="rounded-2xl border border-gray border-opacity-50"
               collapsible
             >
-              <AccordionItem className="px-6 py-3" value="item-1">
+              <AccordionItem className="px-6" value="item-1">
                 <AccordionTrigger className="p1-medium">
                   Is it whatever?
                 </AccordionTrigger>
@@ -306,8 +286,8 @@ export default async function WhoWeAreTemplate({
             </Accordion>
           </div>
 
-          <div className="more-questions flex basis-1/4 flex-col items-center justify-center gap-5 rounded-2xl border border-gray border-opacity-50 px-8 text-center">
-            <span className="material-symbols-outlined h-10 w-10">
+          <div className="more-questions flex basis-1/4 flex-col items-center justify-center gap-3 rounded-2xl border border-gray border-opacity-50 px-8 text-center">
+            <span className="material-symbols-outlined h-10 w-10 text-5xl">
               chat_bubble
             </span>
             <p className="p1-medium">Do you have more questions?</p>

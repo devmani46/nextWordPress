@@ -13,7 +13,7 @@ interface ExecutiveCommitteeTemplateProps {
   page: Page;
 }
 
-export default async function ExecutiveCommitteeTemplate({
+export default function ExecutiveCommitteeTemplate({
   page,
 }: ExecutiveCommitteeTemplateProps) {
   return (

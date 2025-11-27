@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "next start",
+    "start": "cross-env PORT=4200 next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -70,6 +70,7 @@
     "@typescript-eslint/eslint-plugin": "^8.48.0",
     "@typescript-eslint/parser": "^8.48.0",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^10.1.0",
     "eslint": "^9.29.0",
     "eslint-config-next": "^15.3.4",
     "postcss": "^8.5.6",

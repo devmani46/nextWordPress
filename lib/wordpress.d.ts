@@ -127,6 +127,13 @@ interface Taxonomy {
 
 export interface Notice extends WPEntity {
   title: RenderedTitle;
+  notice_content: string;
+  notice_related: string[]; // IDs as strings
+  featured_media: number;
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+    "wp:term"?: Array<Array<Category | Tag>>;
+  };
 }
 
 export interface Event extends WPEntity {
@@ -299,4 +306,20 @@ export interface WpMenuItem {
   title: string;
   url: string;
   children?: WpMenuItem[];
+}
+
+export interface Region extends Taxonomy {
+  taxonomy: "region";
+}
+
+export interface OurNCC extends WPEntity {
+  title: RenderedTitle;
+  ncc_year_of_tenure: string;
+  ncc_region: string;
+  ncc_country_name: string;
+  ncc_name: string;
+  ncc_role: string;
+  ncc_est_date: string;
+  ncc_official_email: string;
+  ncc_website: string;
 }

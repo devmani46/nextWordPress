@@ -1,0 +1,27 @@
+import "@/styles/globals.css";
+import "@/styles/home.css";
+import "@/styles/whoweare.css";
+import type { AppProps } from "next/app";
+
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import NavBar from "@/components/fw-nav/fw-nav";
+import { Analytics } from "@vercel/analytics/react";
+import { cn } from "@/lib/utils";
+
+import { Instrument_Sans as FontSans } from "next/font/google";
+const font = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <NavBar />
+      <main className={cn("min-h-screen font-sans", font.variable)}>
+        <Component {...pageProps} />
+      </main>
+      <Analytics />
+    </ThemeProvider>
+  );
+}

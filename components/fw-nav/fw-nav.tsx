@@ -21,6 +21,7 @@ type WpMenuItem = {
   title: string;
   url: string;
   menu_item_parent: string;
+  slug: string;
   children: WpMenuItem[];
 };
 
@@ -29,37 +30,6 @@ export default function NavBar() {
   const [languageOpen, setLanguageOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menus, setMenus] = useState<WpMenuItem[]>([]);
-
-  function normalizeWpUrl(url?: string) {
-    if (!url) return "#"; // fallback for empty URLs
-
-    const wpBase = "http://wordpress_nextjs.test"; // or process.env.NEXT_PUBLIC_WORDPRESS_URL!
-
-    // If url is "#" or already relative
-    if (url === "#") return url;
-
-    let path = url;
-
-    // Remove WordPress domain if present
-    if (url.startsWith(wpBase)) {
-      try {
-        path = new URL(url).pathname;
-      } catch {
-        path = url;
-      }
-    }
-
-    // Ensure leading slash
-    if (!path.startsWith("/")) path = "/" + path;
-
-    // Remove trailing slash except for root
-    if (path !== "/" && path.endsWith("/")) path = path.slice(0, -1);
-
-    // Add /pages prefix
-    if (path !== "#") path = "/pages" + path;
-
-    return path;
-  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,7 +47,7 @@ export default function NavBar() {
   useEffect(() => {
     async function loadMenus() {
       const res = await fetch(
-        "http://wordpress_nextjs.test/wp-json/wp/v1/menu/primary",
+        `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wp/v1/menu/primary`,
       );
       const data = await res.json();
       setMenus(data);
@@ -147,9 +117,7 @@ export default function NavBar() {
                   <DropdownMenuContent>
                     {item.children.map((child) => (
                       <DropdownMenuItem key={child.id}>
-                        <Link href={normalizeWpUrl(child.url)}>
-                          {child.title}
-                        </Link>
+                        <Link href={`/${child.slug}`}>{child.title}</Link>
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>

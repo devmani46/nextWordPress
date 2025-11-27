@@ -17,11 +17,14 @@ import type {
   Activity,
   News,
   WpMenuItem,
+  OurNCC,
+  Region,
 } from "./wordpress.d";
 
 const baseUrl = process.env.WORDPRESS_URL;
+console.log("WORDPRESS_URL =", baseUrl);
 
-if (!baseUrl) {
+if (!baseUrl && typeof window === "undefined") {
   throw new Error("WORDPRESS_URL environment variable is not defined");
 }
 
@@ -242,6 +245,82 @@ export async function getPostBySlug(slug: string): Promise<Post> {
 
 export async function getAllNotices(): Promise<Notice[]> {
   return wordpressFetch<Notice[]>("/wp-json/wp/v2/notices");
+}
+
+export async function getNoticesPaginated(
+  page: number = 1,
+  perPage: number = 9,
+  filterParams?: {
+    category?: string;
+    search?: string;
+  },
+): Promise<WordPressResponse<Notice[]>> {
+  const query: Record<string, any> = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  if (filterParams?.search) {
+    query.search = filterParams.search;
+  }
+  if (filterParams?.category) {
+    query.notice_category = filterParams.category;
+  }
+
+  return wordpressFetchWithPagination<Notice[]>(
+    "/wp-json/wp/v2/notices",
+    query,
+  );
+}
+
+export async function getNoticeBySlug(slug: string): Promise<Notice> {
+  return wordpressFetch<Notice[]>("/wp-json/wp/v2/notices", {
+    slug,
+    _embed: true,
+  }).then((notices) => notices[0]);
+}
+
+export async function getNoticesByIds(ids: number[]): Promise<Notice[]> {
+  if (ids.length === 0) return [];
+  return wordpressFetch<Notice[]>("/wp-json/wp/v2/notices", {
+    include: ids.join(","),
+    _embed: true,
+  });
+}
+
+export async function getNoticeImage(
+  notice: Notice,
+): Promise<string | undefined> {
+  // 1. Try _embedded
+  let imageUrl = notice._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
+
+  // 2. Try fetching media by ID
+  if (!imageUrl && notice.featured_media > 0) {
+    try {
+      const media = await getFeaturedMediaById(notice.featured_media);
+      imageUrl = media.source_url;
+    } catch (e) {
+      // Ignore 401 or other errors, try next fallback
+      console.warn(
+        `Failed to fetch media ${notice.featured_media} for notice ${notice.id}`,
+      );
+    }
+  }
+
+  // 3. Try extracting from content
+  if (!imageUrl && notice.notice_content) {
+    const match = notice.notice_content.match(/<img[^>]+src="([^">]+)"/);
+    if (match) {
+      imageUrl = match[1];
+    }
+  }
+
+  return imageUrl;
+}
+
+export async function getAllNoticeCategories(): Promise<Category[]> {
+  return wordpressFetch<Category[]>("/wp-json/wp/v2/notice_category");
 }
 
 export async function getAllEvents(): Promise<Event[]> {
@@ -722,6 +801,48 @@ function normalizeMenuTree(menu: WpMenuItem[]): WpMenuItem[] {
 }
 
 // // --- Fetch menus from WP API ---
+
+export async function getAllOurNCCs(): Promise<OurNCC[]> {
+  return wordpressFetch<OurNCC[]>("/wp-json/wp/v2/our_ncc?_embed&per_page=100");
+}
+
+export async function getOurNCCsPaginated(
+  page: number = 1,
+  perPage: number = 20,
+  filterParams?: {
+    region?: string; // Changed to string as per JSON
+    search?: string;
+  },
+): Promise<WordPressResponse<OurNCC[]>> {
+  const query: Record<string, any> = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  if (filterParams?.search) {
+    query.search = filterParams.search;
+  }
+  if (filterParams?.region) {
+    // Assuming we might need to filter by meta or custom field if it's not a taxonomy
+    // But for now let's assume we filter client side or if API supports it
+    // The JSON shows ncc_region as a top level field.
+    // Standard WP API doesn't filter by custom fields easily without plugin support.
+    // I will fetch all and filter client side in the template for now if needed,
+    // OR pass it as a param if the backend supports it.
+    // Given the user said "Show region filter tabs fetched from backend",
+    // I'll assume for pagination we might just fetch all for now or rely on client side filtering
+    // if the dataset is small (100 per page).
+    // However, to be safe, I'll pass it as a query param in case they have a filter set up.
+    query.ncc_region = filterParams.region;
+  }
+
+  return wordpressFetchWithPagination<OurNCC[]>(
+    "/wp-json/wp/v2/our_ncc",
+    query,
+  );
+}
+
 // export async function getMenus(): Promise<WpMenuItem[]> {
 //   const res = await fetch(
 //     "http://wordpress_nextjs.test/wp-json/wp/v1/menu/primary",
@@ -751,4 +872,6 @@ export type {
   Project,
   News,
   Activity,
+  OurNCC,
+  Region,
 };

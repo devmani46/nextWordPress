@@ -4,7 +4,7 @@ interface CommitteesTaskforcesProps {
   page: Page;
 }
 
-export default async function CommitteesTaskforcesTemplate({
+export default function CommitteesTaskforcesTemplate({
   page,
 }: CommitteesTaskforcesProps) {
   return (
