@@ -8,6 +8,7 @@ import type {
   Category,
   Tag,
   Page,
+  OrganizationalStructurePage,
   Author,
   FeaturedMedia,
   Team,
@@ -16,9 +17,14 @@ import type {
   Project,
   Activity,
   News,
+  Faq,
   WpMenuItem,
   OurNCC,
   Region,
+  Gallery,
+  Video,
+  WordPressPaginationHeaders,
+  WordPressResponse,
 } from "./wordpress.d";
 
 const baseUrl = process.env.WORDPRESS_URL;
@@ -37,17 +43,6 @@ class WordPressAPIError extends Error {
     super(message);
     this.name = "WordPressAPIError";
   }
-}
-
-// New types for pagination support
-export interface WordPressPaginationHeaders {
-  total: number;
-  totalPages: number;
-}
-
-export interface WordPressResponse<T> {
-  data: T;
-  headers: WordPressPaginationHeaders;
 }
 
 // Keep original function for backward compatibility
@@ -247,6 +242,10 @@ export async function getAllNotices(): Promise<Notice[]> {
   return wordpressFetch<Notice[]>("/wp-json/wp/v2/notices");
 }
 
+export async function getAllFaqs(): Promise<Faq[]> {
+  return wordpressFetch<Faq[]>("/wp-json/wp/v2/faqs");
+}
+
 export async function getNoticesPaginated(
   page: number = 1,
   perPage: number = 9,
@@ -344,6 +343,57 @@ export async function getActivityBySlug(slug: string): Promise<Activity> {
     slug,
     _embed: true,
   }).then((activities) => activities[0]);
+}
+
+export async function getAllGalleries(): Promise<Gallery[]> {
+  return wordpressFetch<Gallery[]>("/wp-json/wp/v2/galleries?_embed");
+}
+
+export async function getGalleriesPaginated(
+  page: number = 1,
+  perPage: number = 9,
+): Promise<WordPressResponse<Gallery[]>> {
+  const query = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  return wordpressFetchWithPagination<Gallery[]>(
+    "/wp-json/wp/v2/galleries",
+    query,
+  );
+}
+
+export async function getGalleryBySlug(slug: string): Promise<Gallery> {
+  return wordpressFetch<Gallery[]>("/wp-json/wp/v2/galleries", {
+    slug,
+    _embed: true,
+  }).then((galleries) => galleries[0]);
+}
+
+export async function getAllVideos(): Promise<Video[]> {
+  return wordpressFetch<Video[]>("/wp-json/wp/v2/videos?_embed");
+}
+
+export async function getVideosPaginated(
+  page: number = 1,
+  perPage: number = 12,
+): Promise<WordPressResponse<Video[]>> {
+  const query = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  return wordpressFetchWithPagination<Video[]>("/wp-json/wp/v2/videos", query);
+}
+
+export async function getVideoBySlug(slug: string): Promise<Video> {
+  return wordpressFetch<Video[]>("/wp-json/wp/v2/videos", {
+    slug,
+    _embed: true,
+  }).then((videos) => videos[0]);
 }
 
 export async function getAllCategories(): Promise<Category[]> {
@@ -862,6 +912,7 @@ export { WordPressAPIError };
 export type {
   Post,
   Page,
+  OrganizationalStructurePage,
   Author,
   Category,
   Tag,
@@ -872,6 +923,7 @@ export type {
   Project,
   News,
   Activity,
+  Faq,
   OurNCC,
   Region,
 };

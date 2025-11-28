@@ -1,5 +1,6 @@
 .box-1 {
-  width: 730px;
+  max-width: 750px;
+  min-width: 350px;
   height: 1000px;
   clip-path: polygon(
     0% 3.922%,
@@ -81,7 +82,9 @@
 }
 
 .box-2 {
-  width: 420px;
+  width: 100%;
+  max-width: 430px;
+  min-width: 350px;
   margin-left: -70px;
   clip-path: polygon(
     21.736% 3.922%,
@@ -217,6 +220,29 @@
 }
 
 @media only screen and (max-width: 1024px) {
+  .box-1,
+  .box-2 {
+    clip-path: none;
+  }
+
+  .box-1 {
+    border-radius: 16px;
+    height: auto;
+  }
+
+  .box-2 {
+    border-radius: 16px;
+    margin-left: 0;
+    padding: 2rem;
+    width: 100%;
+  }
+
+  .why-choose-us {
+    gap: 2rem;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
   .box-1,
   .box-2 {
     clip-path: none;

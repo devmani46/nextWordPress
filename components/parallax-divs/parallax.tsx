@@ -8,6 +8,7 @@ import {
   useTransform,
 } from "motion/react";
 import Image from "next/image";
+import parse from "html-react-parser";
 import { useRef } from "react";
 
 type ParallaxProps = {
@@ -65,7 +66,9 @@ export default function ParallaxDiv(props: ParallaxProps) {
       >
         <p className="p1-regular">{props.title}</p>
         <p className="h3 text-blue-normal">{props.subtitle} </p>
-        <p className="p1-regular text-gray">{props.description}</p>
+        <div className="p1-regular prose h-[80%] overflow-y-scroll text-gray [&::-webkit-scrollbar-thumb]:bg-gray [&::-webkit-scrollbar-thumb]:bg-opacity-20 [&::-webkit-scrollbar-track]:bg-none [&::-webkit-scrollbar]:w-1">
+          {parse(props.description)}
+        </div>
       </motion.div>
 
       {props.alignment == "right" && (

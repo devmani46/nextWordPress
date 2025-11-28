@@ -1,5 +1,6 @@
 import { Page } from "@/lib/wordpress";
 import BlueButton from "../ui/bluebutton";
+import Countdown from "../countdown/countdown";
 
 interface EventtestProps {
   page: Page;
@@ -24,27 +25,7 @@ export default function EventtestTemplate({ page }: EventtestProps) {
       </section>
 
       <section className="flex w-full justify-center px-[20%]">
-        <div className="justify-center">
-          <p>Event Countdown</p>
-          <div className="countdown-container flex">
-            <div className="countdown-card w-36 bg-gray pt-2 text-center">
-              <p>00</p>
-              <p>days</p>
-            </div>
-            <div className="countdown-card">
-              <p>00</p>
-              <p>days</p>
-            </div>
-            <div className="countdown-card">
-              <p>00</p>
-              <p>days</p>
-            </div>
-            <div className="countdown-card">
-              <p>00</p>
-              <p>days</p>
-            </div>
-          </div>
-        </div>
+        <Countdown />
       </section>
     </div>
   );

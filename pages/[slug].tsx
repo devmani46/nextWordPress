@@ -20,12 +20,18 @@ import CommitteesTaskforcesTemplate from "@/components/templates/CommitteesTaskf
 import EventtestTemplate from "@/components/templates/EventTestTemplate";
 
 import { GetStaticProps } from "next";
+import OrganizationalStructureTemplate from "@/components/templates/OrganizationalStructureTemplate";
+import VideosTemplate from "@/components/templates/VideosTemplate";
+import PhotoAlbumTemplate from "@/components/templates/PhotoAlbumTemplate";
 
 export async function getStaticPaths() {
   const pages = await getAllPages();
 
+  // Filter out any pages that might be undefined or have no slug
+  const validPages = pages.filter((page) => page && page.slug);
+
   return {
-    paths: pages.map((page) => ({
+    paths: validPages.map((page) => ({
       params: { slug: page.slug },
     })),
     fallback: "blocking",
@@ -35,48 +41,61 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params?.slug as string;
 
-  const page = await getPageBySlug(slug);
-
-  if (!page) {
+  if (!slug) {
+    console.error("Page slug is undefined in getStaticProps");
     return { notFound: true };
   }
 
-  const props: any = {
-    page,
-    slug,
-  };
+  try {
+    const page = await getPageBySlug(slug);
 
-  // Fetch additional data for specific pages
-  if (slug === "home") {
-    const [whowearePage, notices, projects, events, news] = await Promise.all([
-      getPageBySlug("whoweare"),
-      getAllNotices(),
-      getAllProjects(),
-      getAllEvents(),
-      getAllNews(),
-    ]);
+    if (!page) {
+      console.log(`Page not found for slug: ${slug}`);
+      return { notFound: true };
+    }
 
-    props.whowearePage = whowearePage;
-    props.notices = notices;
-    props.projects = projects;
-    props.events = events;
-    props.news = news;
+    const props: any = {
+      page,
+      slug,
+    };
+
+    // Fetch additional data for specific pages
+    if (slug === "home") {
+      const [whowearePage, notices, projects, events, news] = await Promise.all(
+        [
+          getPageBySlug("whoweare"),
+          getAllNotices(),
+          getAllProjects(),
+          getAllEvents(),
+          getAllNews(),
+        ],
+      );
+
+      props.whowearePage = whowearePage;
+      props.notices = notices;
+      props.projects = projects;
+      props.events = events;
+      props.news = news;
+    }
+
+    if (slug === "activities") {
+      const activities = await getAllActivities();
+      props.activities = activities;
+    }
+
+    if (slug === "ourncc") {
+      const ourNCCs = await getAllOurNCCs();
+      props.ourNCCs = ourNCCs;
+    }
+
+    return {
+      props,
+      revalidate: 10,
+    };
+  } catch (error) {
+    console.error(`Error in getStaticProps for slug ${slug}:`, error);
+    return { notFound: true };
   }
-
-  if (slug === "activities") {
-    const activities = await getAllActivities();
-    props.activities = activities;
-  }
-
-  if (slug === "ourncc") {
-    const ourNCCs = await getAllOurNCCs();
-    props.ourNCCs = ourNCCs;
-  }
-
-  return {
-    props,
-    revalidate: 10,
-  };
 };
 
 export default function Page(props: any) {
@@ -104,6 +123,15 @@ export default function Page(props: any) {
       break;
     case "committeestaskforce":
       Template = CommitteesTaskforcesTemplate;
+      break;
+    case "nrna-organizational-structure":
+      Template = OrganizationalStructureTemplate;
+      break;
+    case "videos":
+      Template = VideosTemplate;
+      break;
+    case "photo-album":
+      Template = PhotoAlbumTemplate;
       break;
     default:
       Template = DefaultTemplate;

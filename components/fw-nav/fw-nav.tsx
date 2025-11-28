@@ -2,6 +2,8 @@
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Instrument_Sans as FontSans } from "next/font/google";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +17,7 @@ import {
   AccordionTrigger,
 } from "../motion-primitives/accordion";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type WpMenuItem = {
   id: number;
@@ -24,6 +27,11 @@ type WpMenuItem = {
   slug: string;
   children: WpMenuItem[];
 };
+
+const font = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -56,7 +64,7 @@ export default function NavBar() {
   }, []);
 
   return (
-    <section className="navbar mb-8 w-full py-2">
+    <section className={cn("navbar mb-8 w-full py-2 font-sans", font.variable)}>
       {/* Desktop Top Bar */}
       <nav className="absolute z-50 my-4 hidden w-full justify-center md:flex">
         <div className="p2-regular m-auto flex w-[70%] justify-between gap-44 text-gray">
@@ -101,28 +109,39 @@ export default function NavBar() {
         </div>
 
         {/* Desktop Menu */}
+        {/* Desktop Menu */}
         <ul className="p2-regular hidden items-center gap-4 text-gray md:flex">
           {menus.map((item) => (
             <li key={item.id} className="cursor-pointer">
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1 focus-within:text-blue-normal hover:text-blue-normal focus:outline-none">
-                  {item.title}
-                  {item.children?.length > 0 && (
+              {item.children?.length > 0 ? (
+                // Item has children → dropdown
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="flex items-center gap-1 focus-within:text-blue-normal hover:text-blue-normal focus:outline-none">
+                    {item.title}
                     <span className="material-symbols-outlined">
                       keyboard_arrow_down
                     </span>
-                  )}
-                </DropdownMenuTrigger>
-                {item.children?.length > 0 && (
+                  </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     {item.children.map((child) => (
-                      <DropdownMenuItem key={child.id}>
+                      <DropdownMenuItem
+                        className={cn("font-sans", font.variable)}
+                        key={child.id}
+                      >
                         <Link href={`/${child.slug}`}>{child.title}</Link>
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
-                )}
-              </DropdownMenu>
+                </DropdownMenu>
+              ) : (
+                // No children → direct link
+                <Link
+                  href={`/${item.slug}`}
+                  className="flex items-center gap-1 focus-within:text-blue-normal hover:text-blue-normal focus:outline-none"
+                >
+                  {item.title}
+                </Link>
+              )}
             </li>
           ))}
         </ul>

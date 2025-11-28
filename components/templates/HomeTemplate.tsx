@@ -1,8 +1,4 @@
-import {
-  Event,
-  News,
-  Page,
-} from "@/lib/wordpress";
+import { Event, News, Page } from "@/lib/wordpress";
 import {
   Carousel,
   CarouselContent,
@@ -135,8 +131,6 @@ export default function HomeTemplate({
 
   const stats = page.about_stats || [];
   const why_images = page.why_images_urls || [];
-
-
 
   const who_we_are_hero_title = whowearePage.meta
     .who_we_are_hero_title as string;
@@ -276,10 +270,10 @@ export default function HomeTemplate({
         viewOptions={{ margin: "0px 0px -200px 0px" }}
         transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
       >
-        <section className="why-choose-us relative mb-20 mt-20 flex flex-wrap px-10 md:px-[15%] lg:flex-nowrap">
+        <section className="why-choose-us relative mb-20 mt-20 flex flex-wrap px-10 md:px-[15%] xl:flex-nowrap">
           <Tilt rotationFactor={4} isRevese>
-            <div className="box-1 relative max-h-[800px] bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_20%,rgba(224,224,244,1)_80%)] pb-16 pl-10 pt-16 lg:max-h-[400px] lg:pl-16">
-              <div className="choose-us-text flex w-[90%] flex-col items-start gap-3 lg:w-3/5">
+            <div className="box-1 relative max-h-[800px] min-w-[320px] flex-1 bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_20%,rgba(224,224,244,1)_80%)] pb-16 pl-10 pt-16 lg:max-h-[400px] lg:pl-16">
+              <div className="choose-us-text flex w-[90%] flex-col items-start gap-3 xl:w-3/5">
                 <p className="p1-regular">Why Choose Us</p>
                 <p className="h3 text-blue-normal">{why_title}</p>
                 <p className="p1-regular text-gray">{why_description}</p>
@@ -289,11 +283,11 @@ export default function HomeTemplate({
               </div>
               <img
                 src="/nepalFlag.png"
-                className="invisible absolute bottom-0 right-16 lg:visible"
+                className="invisible absolute bottom-0 right-16 xl:visible"
               />
             </div>
           </Tilt>
-          <div className="box-2 relative max-h-[400px] bg-[linear-gradient(180deg,rgba(224,224,244,1)_10%,rgba(191,216,235,1)_80%,rgba(234,243,249,1)_100%)] pl-[10%] pr-5 pt-4">
+          <div className="box-2 relative max-h-[400px] min-w-[300px] flex-1 bg-[linear-gradient(180deg,rgba(224,224,244,1)_10%,rgba(191,216,235,1)_80%,rgba(234,243,249,1)_100%)] pl-[10%] pr-5 pt-4">
             <Tilt rotationFactor={4} isRevese>
               <div className="community-container grid grid-cols-2 grid-rows-2 gap-5">
                 <div className="col-span-full rounded-lg border border-white-light bg-white bg-opacity-40 p-4">
@@ -383,7 +377,7 @@ export default function HomeTemplate({
             alt="president-image"
             height={612}
             width={408}
-            className="translate-y-[150px] object-cover object-top"
+            className="translate-y-[150px] scale-125 object-cover object-top"
           ></Image>
         </div>
       </section>

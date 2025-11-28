@@ -4,6 +4,7 @@ import Image from "next/image";
 import WhiteButton from "../ui/whitebutton";
 import LiquidGlass from "liquid-glass-react";
 import LiquidGlassWrapper from "../ui/liquidglasswrapper";
+import parse from "html-react-parser";
 
 import {
   ArrowUpLeft,
@@ -21,13 +22,30 @@ import BlueButton from "../ui/bluebutton";
 import OverlappingCarousel from "../ui/OverlappingCarousel";
 import ParallaxDiv from "../parallax-divs/parallax";
 import { Spotlight } from "../motion-primitives/spotlight";
+import { Tilt } from "../motion-primitives/tilt";
+import Faqs from "../fw-faqs/fw-faqs";
 
 interface WhoWeAreTemplateProps {
   page: Page & {
     who_we_are_vision_image_url?: string;
     who_we_are_goals_image_url?: string;
     who_we_are_certificate_image_url?: string;
+    who_we_are_team_image_url?: string;
+    who_we_are_slider_items?: {
+      title: string;
+      description: string;
+      image: string;
+      image_url: string;
+    }[];
   };
+}
+
+interface Slide {
+  id: string;
+  src: string;
+  alt: string;
+  title: string;
+  description: string;
 }
 
 export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
@@ -54,12 +72,27 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
   const who_we_are_certificate_description = page.meta
     .who_we_are_certificate_description as string;
 
+  const who_we_are_team_title = page.meta.who_we_are_team_title as string;
+  const who_we_are_team_description = page.meta
+    .who_we_are_team_description as string;
+
   //Images
   const who_we_are_vision_image_url =
     page.who_we_are_vision_image_url as string;
   const who_we_are_goals_image_url = page.who_we_are_goals_image_url as string;
   const who_we_are_certificate_image_url =
     page.who_we_are_certificate_image_url as string;
+  const who_we_are_team_image_url = page.who_we_are_team_image_url as string;
+
+  const who_we_are_slider_items = page.who_we_are_slider_items || [];
+
+  const slides: Slide[] = (page.who_we_are_slider_items || []).map((item) => ({
+    id: item.image,
+    src: item.image_url,
+    alt: item.title, // map image_url -> src
+    title: item.title,
+    description: item.description, // keep the title
+  }));
 
   return (
     <div>
@@ -81,7 +114,7 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
             the nation’s interest.
           </p>
         </div>
-        <OverlappingCarousel images={images} autoplay loop showPagination />
+        <OverlappingCarousel images={slides} autoplay loop showPagination />
       </section>
 
       {/*OUR VISION IN ACTION*/}
@@ -122,11 +155,11 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
 
       {/*President's Message*/}
 
-      <section className="presidents-message mt-20 flex px-[15%]">
+      <section className="presidents-message relative mt-20 flex px-[15%]">
         <div className="message-text basis-3/5">
           <p className="h3">President&apos;s</p>
           <p className="h3 mb-10">Message</p>
-          <p className="p1-regular text-gray">
+          <p className="p1-regular pl-10 text-gray">
             Honoring the trust which all the members of NRNA have never seen fit
             to place in us, we owe the team a debt of sincere gratitude. We are
             deeply humbled by the support of everyone to have us provided a fair
@@ -138,11 +171,20 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
             ensure to do best to be voice of change and to maintain transparency
             and accountability.
           </p>
-          <p>Dr. Badri K.C.</p>
-          <p>President</p>
+          <img className="absolute bottom-40" src="/chat_bubble.svg" />
+          <div className="message-giver relative flex flex-col">
+            <div className="giver-name mr-20 mt-12 self-end">
+              <p>Dr. Badri K.C.</p>
+              <p>President</p>
+            </div>
+          </div>
         </div>
-        <div className="president-image-container relative basis-2/5">
-          <img src="/NRNA 1.png" className="object-fill" alt="pres" />
+        <div className="president-image-container relative h-[525px] basis-2/5 overflow-hidden">
+          <img
+            src="/NRNA 1.png"
+            className="translate-y-[140px] scale-150 object-fill"
+            alt="pres"
+          />
           <div className="absolute bottom-0 left-0 z-10 h-[450px] w-full bg-gradient-to-t from-white to-transparent" />
         </div>
       </section>
@@ -150,21 +192,13 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
       {/*MEET THE TEAM*/}
 
       <section className="meet-the-team mt-20 flex flex-col gap-11 px-[15%]">
-        <div className="certificate-image h-[354px] w-[1064px] rounded-2xl bg-gray"></div>
+        <div className="certificate-image h-[354px] w-[1064px] rounded-2xl bg-gray object-cover">
+          <img src={who_we_are_team_image_url} alt="team-image" />
+        </div>
         <div className="certificate-text flex flex-col items-start gap-3 px-[10%]">
           <p className="p1-regular">The Team</p>
-          <p className="h3">Meet the TEAM Behind NRNA</p>
-          <p className="p1-regular">
-            From visionary leaders to dedicated volunteers, our team is united
-            by one mission—serving Nepalis worldwide. At the core of NRNA is a
-            team of passionate individuals who believe in the power of unity and
-            community. From visionary leaders shaping our direction to dedicated
-            volunteers working tirelessly on the ground, each member brings
-            unique skills, experiences, and a shared commitment to connecting
-            Nepalis across the globe. Together, they turn ideas into action,
-            challenges into opportunities, and dreams into reality—making NRNA
-            not just an organization, but a family working for a common purpose.
-          </p>
+          <p className="h3">{who_we_are_team_title}</p>
+          <p className="p1-regular">{who_we_are_team_description}</p>
           <WhiteButton>
             <ArrowUpRight className="text-amber-500" /> Meet Our Team
           </WhiteButton>
@@ -173,7 +207,7 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
 
       {/*JOIN NRNA TODAY*/}
 
-      <section className="join-nrna mt-20 flex bg-blue-normal px-[15%] py-20">
+      <section className="join-nrna mt-20 flex bg-gradient-to-br from-[#2A2A6B] to-[#3082BF] px-[15%] py-20">
         <div className="join-text flex basis-1/2 flex-col items-start gap-3 text-white">
           <p className="h1">Not a Member Yet?</p>
           <p className="h1">Join NRNA Today!</p>
@@ -210,93 +244,70 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
             </li>
           </ul>
 
-          <WhiteButton className="mt-5">Become A Member</WhiteButton>
+          <WhiteButton className="mt-5 text-blue-normal">
+            Become A Member
+          </WhiteButton>
         </div>
         <div className="join-stats grid basis-1/2 grid-cols-2 grid-rows-2 gap-4">
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+          <Tilt
+            rotationFactor={8}
+            isRevese
+            className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15"
+          >
             <Spotlight size={128} className="opacity-35 blur-2xl" />
             <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
               diversity_2
             </span>
             <p className="text-3xl font-semibold text-white">50,000+</p>
             <p className="p1-regular text-white">Active Members</p>
-          </div>
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+          </Tilt>
+
+          <Tilt
+            rotationFactor={8}
+            isRevese
+            className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15"
+          >
+            <Spotlight size={128} className="opacity-35 blur-2xl" />
+
             <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
               globe_uk
             </span>
             <p className="text-3xl font-semibold text-white">80+</p>
             <p className="p1-regular text-white">Countries</p>
-          </div>
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+          </Tilt>
+          <Tilt
+            rotationFactor={8}
+            isRevese
+            className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15"
+          >
+            <Spotlight size={128} className="opacity-35 blur-2xl" />
+
             <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
               join_right
             </span>
             <p className="text-3xl font-semibold text-white">500+</p>
             <p className="p1-regular text-white">Partner Outlets</p>
-          </div>
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15">
+          </Tilt>
+          <Tilt
+            rotationFactor={8}
+            isRevese
+            className="flex flex-col items-center justify-center rounded-2xl border border-blue-light border-opacity-40 bg-white bg-opacity-15"
+          >
+            <Spotlight size={128} className="opacity-35 blur-2xl" />
+
             <span className="material-symbols-outlined mb-3 rounded-lg bg-blue-light-active p-3 text-blue-normal">
               temp_preferences_eco
             </span>
             <p className="text-3xl font-semibold text-white">$2M+</p>
             <p className="p1-regular text-white">Total savings</p>
-          </div>
+          </Tilt>
         </div>
       </section>
 
       {/*FAQ*/}
 
       <section className="faq-section mt-20 px-[15%]">
-        <p className="p1-regular mb-3">FAQs</p>
-        <p className="h3 mb-6">Everything you need to know</p>
-        <div className="flex gap-4">
-          <div className="faqs basis-3/4">
-            <Accordion
-              type="single"
-              className="rounded-2xl border border-gray border-opacity-50"
-              collapsible
-            >
-              <AccordionItem className="px-6" value="item-1">
-                <AccordionTrigger className="p1-medium">
-                  Is it whatever?
-                </AccordionTrigger>
-                <AccordionContent className="p1-regular">
-                  Yes. it is something something
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem className="px-6 py-3" value="item-2">
-                <AccordionTrigger>Is it whatever?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. it is something something
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem className="px-6 py-3" value="item-3">
-                <AccordionTrigger>Is it whatever?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. it is something something
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem className="px-6 py-3" value="item-4">
-                <AccordionTrigger>Is it whatever?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. it is something something
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-
-          <div className="more-questions flex basis-1/4 flex-col items-center justify-center gap-3 rounded-2xl border border-gray border-opacity-50 px-8 text-center">
-            <span className="material-symbols-outlined h-10 w-10 text-5xl">
-              chat_bubble
-            </span>
-            <p className="p1-medium">Do you have more questions?</p>
-            <p className="p1-regular text-gray">
-              Reach out to our team & we&apos;ll get back to you quickly
-            </p>
-            <BlueButton>Get in Touch</BlueButton>
-          </div>
-        </div>
+        <Faqs />
       </section>
     </div>
   );

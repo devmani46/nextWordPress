@@ -114,6 +114,17 @@ export interface Page extends WPEntity {
   // meta: Record<string, unknown>;
 }
 
+export interface OrganizationalStructurePage extends Page {
+  organizational_structure_image_url?: string; // WordPress provides this pre-resolved URL
+  meta: {
+    organizational_structure_title: string;
+    organizational_structure_image: number; // WordPress media ID
+    organizational_structure_stat_title: string;
+    organizational_structure_stat_description: string;
+    [key: string]: unknown;
+  };
+}
+
 // Taxonomy types
 interface Taxonomy {
   id: number;
@@ -171,6 +182,39 @@ export interface Activity extends WPEntity {
   _embedded?: {
     "wp:featuredmedia"?: FeaturedMedia[];
   };
+}
+
+export interface GalleryImage {
+  url: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+export interface Gallery extends WPEntity {
+  title: RenderedTitle;
+  content: RenderedContent;
+  featured_media: number;
+  images: GalleryImage[];
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+  };
+}
+
+export interface Video extends WPEntity {
+  title: RenderedTitle;
+  video_youtube_url: string;
+  content?: RenderedContent;
+  excerpt?: RenderedContent;
+  featured_media?: number;
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+  };
+}
+
+export interface Faq extends WPEntity {
+  title: RenderedTitle;
+  answer: string;
 }
 
 export interface Category extends Taxonomy {
@@ -322,4 +366,14 @@ export interface OurNCC extends WPEntity {
   ncc_est_date: string;
   ncc_official_email: string;
   ncc_website: string;
+}
+
+export interface WordPressPaginationHeaders {
+  total: number;
+  totalPages: number;
+}
+
+export interface WordPressResponse<T> {
+  data: T;
+  headers: WordPressPaginationHeaders;
 }
