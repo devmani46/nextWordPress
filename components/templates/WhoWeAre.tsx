@@ -24,6 +24,9 @@ import ParallaxDiv from "../parallax-divs/parallax";
 import { Spotlight } from "../motion-primitives/spotlight";
 import { Tilt } from "../motion-primitives/tilt";
 import Faqs from "../fw-faqs/fw-faqs";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { cn, getWordPressImage } from "@/lib/utils";
 
 interface WhoWeAreTemplateProps {
   page: Page & {
@@ -143,8 +146,13 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
       {/*CERTIFICATE SECTION*/}
 
       <section className="certificate-section mt-20 flex flex-col gap-11 px-10 md:px-[15%]">
-        <div className="certificate-image h-[354px] w-full rounded-2xl bg-gray">
-          <img src={who_we_are_certificate_image_url} alt="certificate" />
+        <div className="certificate-image h-[354px] w-full rounded-2xl bg-gray relative overflow-hidden">
+          <Image
+            src={getWordPressImage(who_we_are_certificate_image_url)}
+            alt="certificate"
+            fill
+            className="object-cover"
+          />
         </div>
         <div className="certificate-text flex flex-col gap-3 px-0 md:px-[10%]">
           <p className="p1-regular">Official Recognition</p>
@@ -180,10 +188,11 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
           </div>
         </div>
         <div className="president-image-container relative h-[525px] basis-2/5 overflow-hidden">
-          <img
-            src="/NRNA 1.png"
+          <Image
+            src={"/NRNA 1.png"}
             className="translate-y-[140px] scale-150 object-fill"
             alt="pres"
+            fill
           />
           <div className="absolute bottom-0 left-0 z-10 h-[450px] w-full bg-gradient-to-t from-white to-transparent" />
         </div>
@@ -192,8 +201,13 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
       {/*MEET THE TEAM*/}
 
       <section className="meet-the-team mt-20 flex flex-col gap-11 px-[15%]">
-        <div className="certificate-image h-[354px] w-[1064px] rounded-2xl bg-gray object-cover">
-          <img src={who_we_are_team_image_url} alt="team-image" />
+        <div className="certificate-image h-[354px] w-[1064px] rounded-2xl bg-gray relative overflow-hidden">
+          <Image
+            src={getWordPressImage(who_we_are_team_image_url)}
+            alt="team-image"
+            fill
+            className="object-cover"
+          />
         </div>
         <div className="certificate-text flex flex-col items-start gap-3 px-[10%]">
           <p className="p1-regular">The Team</p>
@@ -309,6 +323,92 @@ export default function WhoWeAreTemplate({ page }: WhoWeAreTemplateProps) {
       <section className="faq-section mt-20 px-[15%]">
         <Faqs />
       </section>
+
+      <footer className="w-full px-[15%] pt-16">
+        <div className="column-containers flex justify-between">
+          <div className="first-column">
+            <div className="logo-text-container p2-semi-bold mb-7 text-violet-dark">
+              <p className="mb-1 font-bold">Non-Residential Nepali</p>
+              <p className="font-bold">गैरआवासीय नेपाली संघ</p>
+            </div>
+            <div className="p2-medium flex flex-col gap-3 text-gray">
+              <p>Phone: +977-014511530,014526005</p>
+              <p>Email:info@nrna.org</p>
+              <p>Address:Subarna Shamsher Marg, Baluwatar, Kathmandu</p>
+            </div>
+          </div>
+          <div className="second-column">
+            <p className="p1-bold mb-6">Resources</p>
+            <ul>
+              {[
+                "Notice",
+                "News",
+                "Gallery",
+                "Activities",
+                "Press Release",
+                "Publications",
+              ].map((item) => (
+                <li
+                  className="p2-medium footerlink mb-[14px] text-gray"
+                  key={item}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="third-column">
+            <p className="p1-bold mb-6">Important</p>
+            <ul>
+              {[
+                "Notice",
+                "News",
+                "Gallery",
+                "Activities",
+                "Press Release",
+                "Publications",
+              ].map((item) => (
+                <li className="p2-medium mb-[14px] text-gray" key={item}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="fourth-column">
+            <p className="p1-bold mb-6">NRN Area</p>
+            <ul>
+              {[
+                "Notice",
+                "News",
+                "Gallery",
+                "Activities",
+                "Press Release",
+                "Publications",
+              ].map((item) => (
+                <li className="p2-medium mb-[14px] text-gray" key={item}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="contacts">
+          <div className="subscribe">
+            <p>Subscribe</p>
+            <Input type="email" placeholder="Enter your email address" />
+            <Button
+              className={cn(
+                "duration-[2200ms] rounded-lg border-[1px] bg-[length:200%_100%] tracking-wide shadow hover:animate-bg-shine",
+
+                "border-zinc-300 bg-[linear-gradient(110deg,#FFF,45%,#60609AFF,95%,#FFF)]",
+              )}
+            >
+              Subscribe
+            </Button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

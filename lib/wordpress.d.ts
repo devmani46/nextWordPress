@@ -368,6 +368,19 @@ export interface OurNCC extends WPEntity {
   ncc_website: string;
 }
 
+export interface ExecutiveCommittee extends WPEntity {
+  title: RenderedTitle;
+  featured_media: number;
+  committee_role: string;
+  committee_institution: string;
+  committee_country: string;
+  hierarchy_order: number;
+  image_url?: string; // Direct image URL for easy access
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+  };
+}
+
 export interface WordPressPaginationHeaders {
   total: number;
   totalPages: number;

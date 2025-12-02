@@ -25,12 +25,13 @@ import Link from "next/link";
 import WorldMap from "../world-map/WorldMap";
 import HeroCarousel from "../home-carousel/home-carousel";
 import { Input } from "../ui/input";
-import { cn } from "@/lib/utils";
+import { cn, getWordPressImage } from "@/lib/utils";
 import { Tilt } from "../motion-primitives/tilt";
 import { Spotlight } from "../motion-primitives/spotlight";
 import { TextEffect } from "../motion-primitives/text-effect";
 import { InView } from "../ui/in-view";
 import { TextShimmer } from "../motion-primitives/text-shimmer";
+import NewHomeCarousel from "../home-carousel/new-home-carousel";
 
 interface HomeTemplateProps {
   page: Page & {
@@ -93,6 +94,8 @@ export default function HomeTemplate({
 
   const banner_cta_title = page.meta.banner_cta_title as string;
   const banner_cta_link = page.meta.banner_cta_link as string;
+
+  const about_title = page.meta.about_title as string;
 
   const why_title = page.meta.why_title as string;
   const why_description = page.meta.why_description as string;
@@ -166,7 +169,7 @@ export default function HomeTemplate({
           <BlueButton className="button-regular">{hero_button_text}</BlueButton>
         </div>
 
-        <HeroCarousel slides={slides} />
+        <NewHomeCarousel slides={slides} autoplay loop showPagination />
       </section>
 
       {/*BANNER SECTION*/}
@@ -197,13 +200,13 @@ export default function HomeTemplate({
           <div className="about-us-images basis-full md:basis-1/2">
             <div className="flex">
               <Image
-                src={page.about_image_1_url as string}
+                src={getWordPressImage(page.about_image_1_url)}
                 alt="about-image-1"
                 width={380}
                 height={230}
               />
               <Image
-                src={page.about_image_2_url as string}
+                src={getWordPressImage(page.about_image_2_url)}
                 alt="about-image-1"
                 className="h-[80px] w-[75px]"
                 width={75}
@@ -211,7 +214,7 @@ export default function HomeTemplate({
               />
             </div>
             <Image
-              src={page.about_image_3_url as string}
+              src={getWordPressImage(page.about_image_3_url)}
               alt="about-image-1"
               width={480}
               height={260}
@@ -222,9 +225,7 @@ export default function HomeTemplate({
               About us
             </TextEffect>
 
-            <p className="title h3">
-              Global Representation of Nepalis Across Borders
-            </p>
+            <p className="title h3">{about_title}</p>
             <p className="p1-regular mb-3 text-gray">
               {who_we_are_hero_description}
             </p>
@@ -294,10 +295,13 @@ export default function HomeTemplate({
                   <div className="flex justify-center">
                     {/*circle avatars*/}
                     {why_images.map((image, index) => (
-                      <img
+                      <Image
                         key={index}
-                        src={image}
+                        src={getWordPressImage(image)}
+                        alt={`Community member ${index + 1}`}
                         className="-ml-2 max-h-12 min-h-12 min-w-12 max-w-12 rounded-full border-2 border-white bg-blue-normal object-cover"
+                        width={48}
+                        height={48}
                       />
                     ))}
                   </div>
@@ -318,13 +322,13 @@ export default function HomeTemplate({
               </div>
             </Tilt>
 
-            <div className="watch-video bottom-7 left-6 mt-10 flex items-center gap-2 lg:absolute lg:mt-0">
+            <div className="watch-video bottom-7 left-6 mt-10 flex items-center gap-2 xl:absolute xl:mt-0">
               <span className="material-symbols-outlined"></span>
               <LucidePlay className="h-16 w-16 rounded-full bg-white-light p-5 text-blue-normal" />
               <p className="p1-medium">Watch Video</p>
             </div>
           </div>
-          <div className="years-stat lg: invisible absolute bottom-0 right-[230px] z-10 mt-0 h-[108px] w-[117px] rounded-2xl bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] pt-3 text-center text-white-light lg:visible">
+          <div className="years-stat invisible absolute bottom-0 right-[15%] z-10 mt-0 h-[108px] w-[7%] rounded-2xl bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] pt-3 text-center text-white-light xl:visible">
             <p className="h1">22</p>
             <p className="h4">Years</p>
           </div>
@@ -398,7 +402,7 @@ export default function HomeTemplate({
               {notices.slice(0, 4).map((notice, index) => (
                 <div
                   key={index}
-                  className="notice-card flex flex-col gap-2 rounded-xl border border-white-normal bg-blue-light p-4 transition-all hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer hover:bg-blue-light-hover"
+                  className="notice-card flex flex-col gap-2 rounded-xl border border-white-normal bg-blue-light p-4 transition-all duration-500 will-change-auto hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer hover:bg-blue-light-hover"
                 >
                   <Spotlight
                     className="from-blue-light-hover via-blue-normal-hover to-blue-light-hover blur-3xl dark:from-blue-light-hover dark:via-blue-light-hover dark:to-blue-light-hover"
@@ -433,10 +437,10 @@ export default function HomeTemplate({
                         height={64}
                         width={100}
                         alt="event-image"
-                        src={
+                        src={getWordPressImage(
                           event._embedded?.["wp:featuredmedia"]?.[0]?.source_url
-                        }
-                        className="rounded-lg"
+                        )}
+                        className="rounded-lg object-cover"
                       />
                     )}
                     {/* <div className="h-16 w-24 bg-slate-400" /> */}
@@ -492,12 +496,16 @@ export default function HomeTemplate({
         </div>
 
         <div className="flex flex-wrap gap-8 lg:flex-nowrap">
-          <div className="big-news flex flex-col gap-2 transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer">
-            <img
-              src={news?.[0]._embedded?.["wp:featuredmedia"]?.[0]?.source_url}
-              className="big-news-image mb-3 h-[80%] w-full rounded-lg"
-              alt="latest news image"
-            />
+          <div className="big-news flex flex-col gap-2 transition-transform hover:cursor-pointer">
+            <div className="image-container h-[80%] w-full overflow-hidden rounded-xl">
+              <Image
+                src={getWordPressImage(news?.[0]._embedded?.["wp:featuredmedia"]?.[0]?.source_url)}
+                className="big-news-image mb-3 w-full transition-transform duration-500 hover:scale-110 object-cover"
+                alt="latest news image"
+                width={600}
+                height={400}
+              />
+            </div>
             <p className="label-medium text-gray">
               {new Date(news?.[0].date).toLocaleDateString("en-US", {
                 month: "long",
@@ -511,7 +519,7 @@ export default function HomeTemplate({
             {news.slice(1, 5).map((single_news, index) => (
               <div
                 key={index}
-                className="news-card flex flex-col gap-2 pt-3 transition-transform hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer"
+                className="news-card flex flex-col gap-2 pt-3 transition-transform duration-500 will-change-transform hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer"
               >
                 <p className="label-medium text-gray">
                   {new Date(single_news.date).toLocaleDateString("en-US", {
@@ -553,8 +561,9 @@ export default function HomeTemplate({
           <CarouselContent className="flex gap-4 pl-14 pt-4 md:pl-60">
             {projects.map((project) => {
               // get featured image URL
-              const imageUrl =
-                project._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
+              const imageUrl = getWordPressImage(
+                project._embedded?.["wp:featuredmedia"]?.[0]?.source_url
+              );
 
               return (
                 <CarouselItem

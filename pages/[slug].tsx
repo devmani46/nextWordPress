@@ -7,6 +7,8 @@ import {
   getAllNews,
   getAllActivities,
   getAllOurNCCs,
+  getAllExecutiveCommittees,
+  getFeaturedMediaById,
 } from "@/lib/wordpress";
 import { Page as WPPage } from "@/lib/wordpress";
 
@@ -25,17 +27,33 @@ import VideosTemplate from "@/components/templates/VideosTemplate";
 import PhotoAlbumTemplate from "@/components/templates/PhotoAlbumTemplate";
 
 export async function getStaticPaths() {
-  const pages = await getAllPages();
+  try {
+    const pages = await getAllPages();
 
-  // Filter out any pages that might be undefined or have no slug
-  const validPages = pages.filter((page) => page && page.slug);
+    if (!Array.isArray(pages)) {
+      console.error("getAllPages returned non-array data:", pages);
+      return {
+        paths: [],
+        fallback: "blocking",
+      };
+    }
 
-  return {
-    paths: validPages.map((page) => ({
-      params: { slug: page.slug },
-    })),
-    fallback: "blocking",
-  };
+    // Filter out any pages that might be undefined or have no slug
+    const validPages = pages.filter((page) => page && page.slug);
+
+    return {
+      paths: validPages.map((page) => ({
+        params: { slug: page.slug },
+      })),
+      fallback: "blocking",
+    };
+  } catch (error) {
+    console.error("Error in getStaticPaths:", error);
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -88,6 +106,37 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props.ourNCCs = ourNCCs;
     }
 
+    if (slug === "executivecommittee") {
+      const committees = await getAllExecutiveCommittees();
+      
+      // Always fetch featured media separately since _embedded is not reliable
+      if (committees && committees.length > 0) {
+        const committeesWithMedia = await Promise.all(
+          committees.map(async (committee) => {
+            if (committee.featured_media && committee.featured_media > 0) {
+              try {
+                const media = await getFeaturedMediaById(committee.featured_media);
+                return {
+                  ...committee,
+                  image_url: media.source_url, // Direct property for easy access
+                  _embedded: {
+                    "wp:featuredmedia": [media]
+                  }
+                };
+              } catch (error) {
+                console.error(`Failed to fetch media ${committee.featured_media}:`, error);
+                return committee;
+              }
+            }
+            return committee;
+          })
+        );
+        props.committees = committeesWithMedia;
+      } else {
+        props.committees = committees;
+      }
+    }
+
     return {
       props,
       revalidate: 10,
@@ -127,12 +176,12 @@ export default function Page(props: any) {
     case "nrna-organizational-structure":
       Template = OrganizationalStructureTemplate;
       break;
-    case "videos":
-      Template = VideosTemplate;
-      break;
-    case "photo-album":
-      Template = PhotoAlbumTemplate;
-      break;
+    // case "videos":
+    //   Template = VideosTemplate;
+    //   break;
+    // case "photo-album":
+    //   Template = PhotoAlbumTemplate;
+    //   break;
     default:
       Template = DefaultTemplate;
   }

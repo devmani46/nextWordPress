@@ -8,7 +8,8 @@ import {
 
 import { Section, Container, Article, Prose } from "@/components/craft";
 import { badgeVariants } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, getWordPressImage } from "@/lib/utils";
+import Image from "next/image";
 import { siteConfig } from "@/site.config";
 
 import Link from "next/link";
@@ -92,12 +93,12 @@ export default function Page({
               </Link>
             </div>
             {featuredMedia?.source_url && (
-              <div className="h-96 my-12 md:h-[500px] overflow-hidden flex items-center justify-center border rounded-lg bg-accent/25">
-                {/* eslint-disable-next-line */}
-                <img
-                  className="w-full h-full object-cover"
-                  src={featuredMedia.source_url}
+              <div className="h-96 my-12 md:h-[500px] overflow-hidden flex items-center justify-center border rounded-lg bg-accent/25 relative">
+                <Image
+                  className="object-cover"
+                  src={getWordPressImage(featuredMedia.source_url)}
                   alt={post.title.rendered}
+                  fill
                 />
               </div>
             )}
@@ -114,9 +115,12 @@ export default function Page({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await getAllPostSlugs();
-  const paths = slugs.map((slug) => ({
-    params: { slug: slug.slug },
-  }));
+  // Filter out any undefined or invalid slug items
+  const paths = slugs
+    .filter((slug) => slug && slug.slug)
+    .map((slug) => ({
+      params: { slug: slug.slug },
+    }));
 
   return {
     paths,

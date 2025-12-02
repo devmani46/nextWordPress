@@ -19,26 +19,34 @@ export default function Countdown() {
   }, []);
   return (
     <div className="justify-center">
-      <p>Event Countdown</p>
-      <div className="countdown-container flex">
-        <div className="countdown-card flex w-36 flex-col justify-center bg-gradient-to-b from-[#E7F3FD] to-[#E0E0F4] pt-2 text-center">
-          <SlidingNumber value={days} padStart={true} />
-          <p>days</p>
+      <p className="h3 mb-6 text-center">Event Countdown</p>
+      <div className="countdown-container flex gap-4">
+        <div className="countdown-card flex w-36 flex-col items-center justify-center rounded-xl bg-gradient-to-b from-[#E7F3FD] to-[#E0E0F4] py-4 text-center">
+          <div className="text-5xl font-semibold text-blue-normal">
+            <SlidingNumber value={days} padStart={true} />
+          </div>
+          <p className="h5 text-gray">Days</p>
         </div>
-        <div className="countdown-card">
-          <SlidingNumber value={hours} padStart={true} />
+        <div className="countdown-card flex w-36 flex-col items-center justify-center rounded-xl bg-gradient-to-b from-[#E7F3FD] to-[#E0E0F4] py-4 text-center">
+          <div className="text-5xl font-semibold text-blue-normal">
+            <SlidingNumber value={hours} padStart={true} />
+          </div>
 
-          <p>hours</p>
+          <p>Hours</p>
         </div>
-        <div className="countdown-card">
-          <SlidingNumber value={minutes} padStart={true} />
+        <div className="countdown-card flex w-36 flex-col items-center justify-center rounded-xl bg-gradient-to-b from-[#E7F3FD] to-[#E0E0F4] py-4 text-center">
+          <div className="text-5xl font-semibold text-blue-normal">
+            <SlidingNumber value={minutes} padStart={true} />
+          </div>
 
-          <p>minutes</p>
+          <p>Minutes</p>
         </div>
-        <div className="countdown-card">
-          <SlidingNumber value={seconds} padStart={true} />
+        <div className="countdown-card flex w-36 flex-col items-center justify-center rounded-xl bg-gradient-to-b from-[#E7F3FD] to-[#E0E0F4] py-4 text-center">
+          <div className="text-5xl font-semibold text-blue-normal">
+            <SlidingNumber value={seconds} padStart={true} />
+          </div>
 
-          <p>seconds</p>
+          <p>Seconds</p>
         </div>
       </div>
     </div>

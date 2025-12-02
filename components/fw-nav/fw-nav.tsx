@@ -33,11 +33,33 @@ const font = FontSans({
   variable: "--font-sans",
 });
 
+const decodeHtml = (html: string) => {
+  if (typeof window === "undefined") return html;
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+};
+
+
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menus, setMenus] = useState<WpMenuItem[]>([]);
+
+  const isPDF = (url: string) => url.endsWith(".pdf");
+  const isInternal = (url: string) =>
+    url.startsWith(process.env.NEXT_PUBLIC_WORDPRESS_URL!);
+
+  const convertToNextSlug = (url: string) => {
+    const base = process.env.NEXT_PUBLIC_WORDPRESS_URL!;
+    return url.replace(base, "");
+  };
+  const getMenuLink = (url: string) => {
+    if (isPDF(url)) return url; // Use direct PDF link
+    if (isInternal(url)) return convertToNextSlug(url); // Use Next.js route
+    return url; // External links remain external
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -109,42 +131,48 @@ export default function NavBar() {
         </div>
 
         {/* Desktop Menu */}
-        {/* Desktop Menu */}
         <ul className="p2-regular hidden items-center gap-4 text-gray md:flex">
           {menus.map((item) => (
             <li key={item.id} className="cursor-pointer">
               {item.children?.length > 0 ? (
-                // Item has children → dropdown
                 <DropdownMenu>
                   <DropdownMenuTrigger className="flex items-center gap-1 focus-within:text-blue-normal hover:text-blue-normal focus:outline-none">
-                    {item.title}
+                    {decodeHtml(item.title)}
                     <span className="material-symbols-outlined">
                       keyboard_arrow_down
                     </span>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+
+                  <DropdownMenuContent
+                    className="w-64 rounded-xl border bg-white p-2 shadow-md"
+                  >
                     {item.children.map((child) => (
                       <DropdownMenuItem
-                        className={cn("font-sans", font.variable)}
                         key={child.id}
+                        className="w-full rounded-lg px-4 py-2 hover:bg-[#E8EDFF] focus:bg-[#E8EDFF]"
                       >
-                        <Link href={`/${child.slug}`}>{child.title}</Link>
+                        <Link
+                          href={getMenuLink(child.url)}
+                          className="block w-full"
+                        >
+                          {decodeHtml(child.title)}
+                        </Link>
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                // No children → direct link
                 <Link
                   href={`/${item.slug}`}
                   className="flex items-center gap-1 focus-within:text-blue-normal hover:text-blue-normal focus:outline-none"
                 >
-                  {item.title}
+                  {decodeHtml(item.title)}
                 </Link>
               )}
             </li>
           ))}
         </ul>
+
 
         {/* Mobile Burger */}
         <div className="md:hidden">
@@ -154,115 +182,83 @@ export default function NavBar() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: "-100%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.45, ease: "easeInOut" }}
-            className="fixed left-0 top-14 z-50 h-screen w-full bg-white px-8 py-5 md:hidden"
-          >
-            {/* Header with Close Button */}
-            {/* <div className="mb-4 flex w-full items-center justify-between">
-              <p className="text-lg font-semibold">Menu</p>
-              <button onClick={() => setMenuOpen(false)}>
-                <X className="h-7 w-7" />
-              </button>
-            </div> */}
-
-            {/* Language Dropdown */}
-            {/* <motion.div>
-              <button
-                className="flex w-full justify-between rounded p-2"
-                onClick={() => setLanguageOpen(!languageOpen)}
-              >
-                Region
-                <span className="material-symbols-outlined">
-                  keyboard_arrow_down
-                </span>
-              </button>
-
-              <AnimatePresence>
-                {languageOpen && (
-                  <motion.ul
-                    key="language"
-                    initial={{ opacity: 1, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 1, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="mt-1 space-y-1 overflow-hidden rounded p-2"
-                  >
-                    <li>Africa</li>
-                    <li>America</li>
-                    <li>Asia Pacific</li>
-                    <li>Europe</li>
-                    <li>Middle East</li>
-                    <li>Oceania</li>
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </motion.div> */}
-
-            {/* Main Links */}
-            <motion.ul
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: {},
-                visible: {
-                  transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-                },
-              }}
-              className="mt-4 space-y-2"
-            >
+{/* Mobile Menu */}
+<AnimatePresence>
+  {menuOpen && (
+    <motion.div
+      initial={{ opacity: 0, y: "-100%" }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: "-100%" }}
+      transition={{ duration: 0.45, ease: "easeInOut" }}
+      className="fixed left-0 top-14 z-50 h-screen w-full overflow-y-auto bg-white px-6 py-5 md:hidden"
+    >
+      <motion.ul
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: { staggerChildren: 0.07, delayChildren: 0.1 },
+          },
+        }}
+        className="mt-4 space-y-2"
+      >
+        {menus.map((item) => (
+          <div key={item.id} className="w-full">
+            {item.children?.length > 0 ? (
               <Accordion
                 className="flex w-full flex-col"
                 transition={{ type: "spring", stiffness: 120, damping: 20 }}
                 variants={{
-                  expanded: {
-                    opacity: 1,
-                    scale: 1,
-                  },
-                  collapsed: {
-                    opacity: 0,
-                    scale: 0.7,
-                  },
+                  expanded: { opacity: 1, scale: 1 },
+                  collapsed: { opacity: 0.9, scale: 0.98 },
                 }}
               >
-                {menus.map((item) => (
-                  <AccordionItem key={item.id} value={item.id}>
-                    <AccordionTrigger>
-                      <motion.li
-                        variants={{
-                          hidden: { opacity: 0, y: 40 },
-                          visible: { opacity: 1, y: 0 },
-                        }}
-                        transition={{ duration: 0.6 }}
-                        className="flex cursor-pointer items-center justify-between rounded p-2 text-xl font-semibold transition-colors hover:text-blue-normal"
+                <AccordionItem value={item.id} className="border-none">
+                  <AccordionTrigger className="w-full">
+                    <motion.li
+                      variants={{
+                        hidden: { opacity: 0, y: 40 },
+                        visible: { opacity: 1, y: 0 },
+                      }}
+                      transition={{ duration: 0.6 }}
+                      className="flex w-full cursor-pointer items-center justify-between rounded-lg px-4 py-3 text-lg font-semibold transition-colors hover:bg-[#E8EDFF]"
+                    >
+                      {decodeHtml(item.title)}
+                      <span className="material-symbols-outlined">
+                        keyboard_arrow_down
+                      </span>
+                    </motion.li>
+                  </AccordionTrigger>
+
+                  <AccordionContent className="flex flex-col gap-1 pl-2 pt-2">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.id}
+                        href={getMenuLink(child.url)}
+                        className="w-full rounded-lg px-4 py-2 text-base hover:bg-[#E8EDFF]"
                       >
-                        {item.title}
-                        {item.children?.length > 0 && (
-                          <span className="material-symbols-outlined">
-                            keyboard_arrow_down
-                          </span>
-                        )}
-                      </motion.li>
-                    </AccordionTrigger>
-                    <AccordionContent className="flex origin-left flex-col gap-2 pl-3">
-                      <li className="hover:text-blue-normal">Submenu 1</li>
-                      <li>Submenu 2</li>
-                      <li>Submenu 3</li>
-                      <li>Submenu 4</li>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
+                        {decodeHtml(child.title)}
+                      </Link>
+                    ))}
+                  </AccordionContent>
+                </AccordionItem>
               </Accordion>
-            </motion.ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ) : (
+              <Link
+                href={`/${item.slug}`}
+                className="block w-full rounded-lg px-4 py-3 text-lg font-semibold hover:bg-[#E8EDFF]"
+              >
+                {decodeHtml(item.title)}
+              </Link>
+            )}
+          </div>
+        ))}
+      </motion.ul>
+    </motion.div>
+  )}
+</AnimatePresence>
+
     </section>
   );
 }

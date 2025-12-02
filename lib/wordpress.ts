@@ -25,6 +25,7 @@ import type {
   Video,
   WordPressPaginationHeaders,
   WordPressResponse,
+  ExecutiveCommittee,
 } from "./wordpress.d";
 
 const baseUrl = process.env.WORDPRESS_URL;
@@ -908,6 +909,35 @@ export async function getOurNCCsPaginated(
 //   return normalizeMenuTree(data);
 // }
 
+// Executive Committee functions
+export async function getAllExecutiveCommittees(): Promise<
+  ExecutiveCommittee[]
+> {
+  return wordpressFetch<ExecutiveCommittee[]>(
+    "/wp-json/wp/v2/executive_committee",
+    {
+      _embed: true,
+      per_page: 100,
+    },
+  );
+}
+
+export async function getExecutiveCommitteesPaginated(
+  page: number = 1,
+  perPage: number = 100,
+): Promise<WordPressResponse<ExecutiveCommittee[]>> {
+  const query = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  return wordpressFetchWithPagination<ExecutiveCommittee[]>(
+    "/wp-json/wp/v2/executive_committee",
+    query,
+  );
+}
+
 export { WordPressAPIError };
 export type {
   Post,
@@ -926,4 +956,5 @@ export type {
   Faq,
   OurNCC,
   Region,
+  ExecutiveCommittee,
 };
