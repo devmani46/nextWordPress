@@ -85,8 +85,8 @@ const Carousel_001 = ({
         breakpoints={{
           0: { spaceBetween: 70, slidesPerView: 1.1 },
           640: { spaceBetween: 110, slidesPerView: 1.3 },
-          1024: { spaceBetween: 120, slidesPerView: 1.5 },
-          1440: { spaceBetween: 140, slidesPerView: 1.5 },
+          1024: { spaceBetween: 120, slidesPerView: 1.7 },
+          1440: { spaceBetween: 120, slidesPerView: 1.7 },
         }}
         spaceBetween={spaceBetween}
         autoplay={
@@ -101,7 +101,7 @@ const Carousel_001 = ({
         grabCursor={true}
         centeredSlides={true}
         loop={loop}
-        slidesPerView={1.5}
+        slidesPerView={1.7}
         coverflowEffect={{
           rotate: 0,
           slideShadows: false,
@@ -122,7 +122,7 @@ const Carousel_001 = ({
         className="mySwiper pagination-outside relative"
       >
         {images.map((slide, index) => (
-          <SwiperSlide key={index} className="!h-[400px] w-full">
+          <SwiperSlide key={index} className="!h-[420px] w-full">
             <div className="relative h-full w-full overflow-hidden rounded-3xl">
               <img
                 src={slide.src}
@@ -130,7 +130,7 @@ const Carousel_001 = ({
                 className="h-full w-full object-cover"
               />
               {slide.title && (
-                <div className="absolute bottom-2 left-0 w-full text-center font-medium text-black/50">
+                <div className="p1-bold absolute bottom-5 left-5 w-[90%] text-white-light lg:w-[45%]">
                   {slide.title}
                 </div>
               )}

@@ -32,6 +32,11 @@ import { TextEffect } from "../motion-primitives/text-effect";
 import { InView } from "../ui/in-view";
 import { TextShimmer } from "../motion-primitives/text-shimmer";
 import NewHomeCarousel from "../home-carousel/new-home-carousel";
+import StayUpdatedSection from "./homeSections/StayUpdatedSection";
+import AboutUsSection from "./homeSections/AboutUsSetion";
+import WhyChooseUsSection from "./homeSections/WhyChooseUsSection";
+import GetInvolvedSection from "./homeSections/GetInvolvedSection";
+import LatestNewsAndUpdatesSection from "./homeSections/LatestNewsSection";
 
 interface HomeTemplateProps {
   page: Page & {
@@ -66,9 +71,7 @@ interface HomeTemplateProps {
       who_we_are_message_description: string;
     };
   };
-  notices: Notice[];
   projects: Project[];
-  events: Event[];
   news: News[];
 }
 
@@ -81,10 +84,7 @@ interface Slide {
 export default function HomeTemplate({
   page,
   whowearePage,
-  notices,
   projects,
-  events,
-  news,
 }: HomeTemplateProps) {
   const hero_title = page.meta.hero_title as string;
   const hero_description = page.meta.hero_description as string;
@@ -128,9 +128,6 @@ export default function HomeTemplate({
   }));
   const getInvolvedCards = page.involved_actions || [];
   const why_features = page.meta.why_features || [];
-
-  console.log("hello");
-  console.log(why_features);
 
   const stats = page.about_stats || [];
   const why_images = page.why_images_urls || [];
@@ -197,42 +194,12 @@ export default function HomeTemplate({
         transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
       >
         <section className="about-us mb-20 mt-20 flex flex-col gap-8 px-10 md:flex-row md:px-12 lg:px-[15%]">
-          <div className="about-us-images basis-full md:basis-1/2">
-            <div className="flex">
-              <Image
-                src={getWordPressImage(page.about_image_1_url)}
-                alt="about-image-1"
-                width={380}
-                height={230}
-              />
-              <Image
-                src={getWordPressImage(page.about_image_2_url)}
-                alt="about-image-1"
-                className="h-[80px] w-[75px]"
-                width={75}
-                height={80}
-              />
-            </div>
-            <Image
-              src={getWordPressImage(page.about_image_3_url)}
-              alt="about-image-1"
-              width={480}
-              height={260}
-            />
-          </div>
-          <div className="about-us-text flex basis-full flex-col items-start gap-3 md:basis-1/2">
-            <TextEffect per="char" preset="fade">
-              About us
-            </TextEffect>
-
-            <p className="title h3">{about_title}</p>
-            <p className="p1-regular mb-3 text-gray">
-              {who_we_are_hero_description}
-            </p>
-            <BlueButton className="button-regular" icon>
-              Read More
-            </BlueButton>
-          </div>
+          <AboutUsSection
+            who_we_are_hero_description={who_we_are_hero_description}
+            about_image_1_url={page.about_image_1_url as string}
+            about_image_2_url={page.about_image_2_url as string}
+            about_image_3_url={page.about_image_3_url as string}
+          />
         </section>
       </InView>
 
@@ -272,94 +239,24 @@ export default function HomeTemplate({
         transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
       >
         <section className="why-choose-us relative mb-20 mt-20 flex flex-wrap px-10 md:px-[15%] xl:flex-nowrap">
-          <Tilt rotationFactor={4} isRevese>
-            <div className="box-1 relative max-h-[800px] min-w-[320px] flex-1 bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_20%,rgba(224,224,244,1)_80%)] pb-16 pl-10 pt-16 lg:max-h-[400px] lg:pl-16">
-              <div className="choose-us-text flex w-[90%] flex-col items-start gap-3 xl:w-3/5">
-                <p className="p1-regular">Why Choose Us</p>
-                <p className="h3 text-blue-normal">{why_title}</p>
-                <p className="p1-regular text-gray">{why_description}</p>
-                <Link href={why_cta_link} className="mt-3">
-                  <BlueButton icon>{why_cta_title}</BlueButton>
-                </Link>
-              </div>
-              <img
-                src="/nepalFlag.png"
-                className="invisible absolute bottom-0 right-16 xl:visible"
-              />
-            </div>
-          </Tilt>
-          <div className="box-2 relative max-h-[400px] min-w-[300px] flex-1 bg-[linear-gradient(180deg,rgba(224,224,244,1)_10%,rgba(191,216,235,1)_80%,rgba(234,243,249,1)_100%)] pl-[10%] pr-5 pt-4">
-            <Tilt rotationFactor={4} isRevese>
-              <div className="community-container grid grid-cols-2 grid-rows-2 gap-5">
-                <div className="col-span-full rounded-lg border border-white-light bg-white bg-opacity-40 p-4">
-                  <div className="flex justify-center">
-                    {/*circle avatars*/}
-                    {why_images.map((image, index) => (
-                      <Image
-                        key={index}
-                        src={getWordPressImage(image)}
-                        alt={`Community member ${index + 1}`}
-                        className="-ml-2 max-h-12 min-h-12 min-w-12 max-w-12 rounded-full border-2 border-white bg-blue-normal object-cover"
-                        width={48}
-                        height={48}
-                      />
-                    ))}
-                  </div>
-                  <p className="label-regular mt-2 text-center">
-                    Vast Community
-                  </p>
-                </div>
-                <div className="flex flex-col gap-1 rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
-                  <LucideGlobe className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
-                  <div className="text-xl font-semibold">22+</div>
-                  <div className="label-regular text-gray">Global Presence</div>
-                </div>
-                <div className="flex flex-col gap-1 rounded-lg border border-white-light bg-white bg-opacity-40 p-3">
-                  <LucideChartColumn className="h-8 w-8 rounded-full bg-white-light p-2 text-blue-normal" />
-                  <div className="text-xl font-semibold">500+</div>
-                  <div className="label-regular text-gray">Proven Impact</div>
-                </div>
-              </div>
-            </Tilt>
-
-            <div className="watch-video bottom-7 left-6 mt-10 flex items-center gap-2 xl:absolute xl:mt-0">
-              <span className="material-symbols-outlined"></span>
-              <LucidePlay className="h-16 w-16 rounded-full bg-white-light p-5 text-blue-normal" />
-              <p className="p1-medium">Watch Video</p>
-            </div>
-          </div>
-          <div className="years-stat invisible absolute bottom-0 right-[15%] z-10 mt-0 h-[108px] w-[7%] rounded-2xl bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] pt-3 text-center text-white-light xl:visible">
-            <p className="h1">22</p>
-            <p className="h4">Years</p>
-          </div>
+          <WhyChooseUsSection
+            why_cta_link={why_cta_link}
+            why_cta_title={why_cta_title}
+            why_description={why_description}
+            why_images={why_images}
+            why_title={why_title}
+          />
         </section>
       </InView>
 
       {/*GET INVOLVED SECTION*/}
 
       <section className="get-involved px-8 md:px-[15%]">
-        <div className="get-involved-text mb-11 flex flex-col gap-3">
-          <p className="p1-regular">Get Involved</p>
-          <p className="h3">{involved_title}</p>
-          <p className="p1-regular text-gray">{involved_description}</p>
-        </div>
-        <div className="card-container flex flex-col gap-4 md:gap-8 lg:flex-row">
-          {/*list of cards*/}
-          {getInvolvedCards.map((card, index) => (
-            <div
-              key={index}
-              className="card flex h-auto min-h-[360px] w-full flex-col items-start gap-3 rounded-3xl bg-[url('/Mask-group.jpg')] bg-cover px-6 py-10 transition-transform hover:-translate-x-2 hover:-translate-y-4 md:px-10 md:py-14 lg:w-1/3"
-            >
-              <p className="p1-medium text-white">{card.title}</p>
-              <p className="mb-3 pr-4 text-[30px] font-bold text-white">
-                {card.description}
-              </p>
-              <WhiteButton className="p2-medium bg-white" icon>
-                {card.cta_title}
-              </WhiteButton>
-            </div>
-          ))}
-        </div>
+        <GetInvolvedSection
+          involved_title={involved_title}
+          involved_description={involved_description}
+          getInvolvedCards={getInvolvedCards}
+        />
       </section>
 
       {/*PRESIDENT'S MESSAGE SECTION*/}
@@ -387,158 +284,18 @@ export default function HomeTemplate({
       </section>
 
       {/*STAY UPDATED SECTION*/}
-
-      <section className="stay-updated bg-[linear-gradient(180deg,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_100%)] px-8 py-20 md:px-[15%]">
-        <div className="stay-updated-text mb-11 flex flex-col gap-3">
-          <p className="p1-regular">Stay Updated</p>
-          <p className="h3">{stay_updated_title}</p>
-          <p className="p1-regular text-gray">{stay_updated_description}</p>
-        </div>
-        <div className="notice-and-events flex flex-wrap gap-10 lg:flex-nowrap">
-          <div className="notices flex flex-col items-start gap-6 lg:basis-1/2">
-            <p className="h5">Notice</p>
-            <div className="notice-card-container flex flex-col gap-3">
-              {/*display four notices*/}
-              {notices.slice(0, 4).map((notice, index) => (
-                <div
-                  key={index}
-                  className="notice-card flex flex-col gap-2 rounded-xl border border-white-normal bg-blue-light p-4 transition-all duration-500 will-change-auto hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer hover:bg-blue-light-hover"
-                >
-                  <Spotlight
-                    className="from-blue-light-hover via-blue-normal-hover to-blue-light-hover blur-3xl dark:from-blue-light-hover dark:via-blue-light-hover dark:to-blue-light-hover"
-                    size={124}
-                  />
-                  <div className="relative h-full w-full rounded-xl bg-white dark:bg-black"></div>
-                  <p className="label-medium text-gray">
-                    {new Date(notice.date).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </p>
-                  <p className="p1-medium">{notice.title.rendered}</p>
-                </div>
-              ))}
-            </div>
-            <WhiteButton icon>View More</WhiteButton>
-          </div>
-          <div className="events flex flex-col items-start gap-5 lg:basis-1/2">
-            <p className="h5">Events</p>
-            <div className="event-card-container grid grid-cols-2 grid-rows-2 gap-4">
-              {/*Display four events*/}
-              {events.slice(0, 4).map((event, index) => (
-                <div
-                  key={index}
-                  className="event-card rounded-lg border border-white-light bg-blue-light p-4 transition-all hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer hover:bg-blue-light-hover"
-                >
-                  <div className="mb-3 flex flex-wrap items-center gap-2">
-                    {event._embedded?.["wp:featuredmedia"]?.[0]?.source_url && (
-                      <Image
-                        height={64}
-                        width={100}
-                        alt="event-image"
-                        src={getWordPressImage(
-                          event._embedded?.["wp:featuredmedia"]?.[0]?.source_url
-                        )}
-                        className="rounded-lg object-cover"
-                      />
-                    )}
-                    {/* <div className="h-16 w-24 bg-slate-400" /> */}
-
-                    <div className="event-date flex flex-col text-violet-normal">
-                      <p className="h2">
-                        {new Date(event.event_start_date).toLocaleDateString(
-                          "en-GB",
-                          {
-                            day: "numeric",
-                          },
-                        )}
-                      </p>
-                      <p className="p1-regular">
-                        {new Date(event.event_start_date).toLocaleDateString(
-                          "en-GB",
-                          {
-                            month: "short",
-                            year: "numeric",
-                          },
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="p1-medium">{event.title.rendered}</p>
-                    <p className="label-medium text-gray">Kathmandu, Nepal</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <WhiteButton icon>View More</WhiteButton>
-          </div>
-        </div>
-      </section>
+      <StayUpdatedSection
+        stay_updated_title={stay_updated_title}
+        stay_updated_description={stay_updated_description}
+      />
 
       {/*LATEST NEWS AND UPDATES */}
 
       <section className="latest-news px-8 py-20 md:px-[15%]">
-        <div className="latest-news-text mb-10 flex flex-col gap-3">
-          <p className="p1-regular">Latest News & Updates</p>
-          <p className="h3">{latest_news_title}</p>
-          <div className="flex w-full items-center justify-between">
-            <p className="p1-regular">{latest_news_description}</p>
-            <WhiteButton
-              className="invisible border border-gray border-opacity-10 md:visible"
-              icon
-            >
-              View More
-            </WhiteButton>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap gap-8 lg:flex-nowrap">
-          <div className="big-news flex flex-col gap-2 transition-transform hover:cursor-pointer">
-            <div className="image-container h-[80%] w-full overflow-hidden rounded-xl">
-              <Image
-                src={getWordPressImage(news?.[0]._embedded?.["wp:featuredmedia"]?.[0]?.source_url)}
-                className="big-news-image mb-3 w-full transition-transform duration-500 hover:scale-110 object-cover"
-                alt="latest news image"
-                width={600}
-                height={400}
-              />
-            </div>
-            <p className="label-medium text-gray">
-              {new Date(news?.[0].date).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
-            <p className="font-bold">{news?.[0].title.rendered}</p>
-          </div>
-          <div className="more-news flex flex-col gap-3 divide-y divide-black divide-opacity-30">
-            {news.slice(1, 5).map((single_news, index) => (
-              <div
-                key={index}
-                className="news-card flex flex-col gap-2 pt-3 transition-transform duration-500 will-change-transform hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer"
-              >
-                <p className="label-medium text-gray">
-                  {new Date(single_news.date).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </p>
-                <p className="font-bold">{single_news.title.rendered}</p>
-              </div>
-            ))}
-          </div>
-          <WhiteButton
-            className="border border-gray border-opacity-10 lg:hidden"
-            icon
-          >
-            View More
-          </WhiteButton>
-        </div>
+        <LatestNewsAndUpdatesSection
+          latest_news_description={latest_news_description}
+          latest_news_title={latest_news_title}
+        />
       </section>
 
       {/*Our Initiatives*/}
@@ -562,7 +319,7 @@ export default function HomeTemplate({
             {projects.map((project) => {
               // get featured image URL
               const imageUrl = getWordPressImage(
-                project._embedded?.["wp:featuredmedia"]?.[0]?.source_url
+                project._embedded?.["wp:featuredmedia"]?.[0]?.source_url,
               );
 
               return (
@@ -605,11 +362,11 @@ export default function HomeTemplate({
 
       {/*JOIN THE JOURNEY*/}
 
-      <section className="join-the-journey mt-10 flex flex-wrap bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] px-[10%] py-28 text-white lg:flex-nowrap">
+      <section className="join-the-journey mt-10 flex flex-wrap bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] py-28 pl-[10%] pr-[10%] text-white md:pl-0 lg:flex-nowrap">
         <div className="world-map basis-full md:basis-2/3">
           <WorldMap />
         </div>
-        <div className="journey-text flex flex-col items-start gap-3 md:basis-1/2">
+        <div className="journey-text flex flex-col items-start gap-3 md:basis-1/3">
           <p className="p1-regular">Join the Journey</p>
           <p className="h3">{journey_title}</p>
           <p className="p1-regular">{journey_description}</p>

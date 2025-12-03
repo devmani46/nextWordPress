@@ -1,8 +1,19 @@
 "use client";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useRef } from "react";
+import Link from "next/link";
 
-export default function BannerTwo() {
+interface BannerTwoProps {
+  title?: string;
+  cta_title?: string;
+  cta_link?: string;
+}
+
+export default function BannerTwo({
+  title = "Discover NRNA NCCs, Representing Our Members in 80+ Countries, with tenures from 2021–25.",
+  cta_title = "Explore Membership Benefits",
+  cta_link = "/membership",
+}: BannerTwoProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   // track cursor position
@@ -77,12 +88,13 @@ export default function BannerTwo() {
 
         <div className="banner-cta relative z-10 flex flex-col items-center gap-5 px-[10%] text-white">
           <p className="h2 text-center">
-            Discover NRNA NCCs, Representing Our Members in 80+ Countries, with
-            tenures from 2021–25.
+            {title}
           </p>
-          <button className="button-regular h-11 w-72 rounded-md bg-white text-blue-normal">
-            Explore Membership Benefits
-          </button>
+          <Link href={cta_link}>
+            <button className="button-regular h-11 w-72 rounded-md bg-white text-blue-normal">
+              {cta_title}
+            </button>
+          </Link>
         </div>
         <div className="banner-image"></div>
       </div>

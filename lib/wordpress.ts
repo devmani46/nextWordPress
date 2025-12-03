@@ -28,7 +28,7 @@ import type {
   ExecutiveCommittee,
 } from "./wordpress.d";
 
-const baseUrl = process.env.WORDPRESS_URL;
+const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
 console.log("WORDPRESS_URL =", baseUrl);
 
 if (!baseUrl && typeof window === "undefined") {
@@ -67,6 +67,23 @@ async function wordpressFetch<T>(
   });
 
   if (!response.ok) {
+    // --- START DEBUG LOGGING ---
+    console.error(`--- WORDPRESS API FAILED ---`);
+    console.error(`Status: ${response.status} (${response.statusText})`);
+    console.error(`Failing URL: ${url}`);
+
+    // Attempt to read the error body
+    try {
+      const errorBody = await response.json();
+      console.error("API Error Body:", errorBody);
+    } catch (e) {
+      console.error(
+        "Could not read JSON error body for status:",
+        response.status,
+      );
+    }
+    // --- END DEBUG LOGGING ---
+
     throw new WordPressAPIError(
       `WordPress API request failed: ${response.statusText}`,
       response.status,

@@ -212,6 +212,24 @@ export interface Video extends WPEntity {
   };
 }
 
+export interface ResourceFile {
+  id: number;
+  url: string;
+  filename: string;
+}
+
+export interface Resource extends WPEntity {
+  title: RenderedTitle;
+  content: RenderedContent;
+  resource_category: number[];
+  featured_media: number;
+  resource_files: ResourceFile[];
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+    "wp:term"?: Array<Array<Category | Tag>>;
+  };
+}
+
 export interface Faq extends WPEntity {
   title: RenderedTitle;
   answer: string;

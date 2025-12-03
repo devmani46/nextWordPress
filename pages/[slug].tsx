@@ -108,32 +108,95 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     if (slug === "executivecommittee") {
       const committees = await getAllExecutiveCommittees();
-      
-      // Always fetch featured media separately since _embedded is not reliable
-      if (committees && committees.length > 0) {
-        const committeesWithMedia = await Promise.all(
-          committees.map(async (committee) => {
-            if (committee.featured_media && committee.featured_media > 0) {
-              try {
-                const media = await getFeaturedMediaById(committee.featured_media);
-                return {
-                  ...committee,
-                  image_url: media.source_url, // Direct property for easy access
-                  _embedded: {
-                    "wp:featuredmedia": [media]
-                  }
-                };
-              } catch (error) {
-                console.error(`Failed to fetch media ${committee.featured_media}:`, error);
-                return committee;
+      props.committees = committees;
+    }
+
+    if (slug === "committeestaskforce") {
+      const rawPage = page as any;
+
+      // Initialize meta if it doesn't exist
+      if (!page.meta) {
+        page.meta = {};
+      }
+
+      // Map Hero
+      if (rawPage.hero) {
+        page.meta.hero_title = rawPage.hero.title;
+        page.meta.hero_description = rawPage.hero.description;
+
+        // Fetch Hero Images
+        if (Array.isArray(rawPage.hero.images)) {
+          const heroImageUrls = await Promise.all(
+            rawPage.hero.images.map(async (imgObj: any) => {
+              const id = typeof imgObj === "object" ? imgObj.image : imgObj;
+              if (id) {
+                try {
+                  const media = await getFeaturedMediaById(Number(id));
+                  return media.source_url;
+                } catch (e) {
+                  console.error(`Failed to fetch hero image ${id}`, e);
+                  return null;
+                }
               }
-            }
-            return committee;
-          })
-        );
-        props.committees = committeesWithMedia;
-      } else {
-        props.committees = committees;
+              return null;
+            }),
+          );
+          page.meta.hero_images = heroImageUrls.filter(
+            (url) => url !== null,
+          ) as string[];
+        }
+      }
+
+      // Map Why
+      if (rawPage.why) {
+        page.meta.why_title = rawPage.why.title;
+        page.meta.why_description = rawPage.why.description;
+
+        if (rawPage.why.image) {
+          try {
+            const media = await getFeaturedMediaById(Number(rawPage.why.image));
+            page.meta.why_image = media.source_url;
+          } catch (e) {
+            console.error(`Failed to fetch why image ${rawPage.why.image}`, e);
+          }
+        }
+      }
+
+      // Map How
+      if (rawPage.how) {
+        page.meta.how_title = rawPage.how.title;
+        page.meta.how_description = rawPage.how.description;
+
+        if (rawPage.how.image) {
+          try {
+            const media = await getFeaturedMediaById(Number(rawPage.how.image));
+            page.meta.how_image = media.source_url;
+          } catch (e) {
+            console.error(`Failed to fetch how image ${rawPage.how.image}`, e);
+          }
+        }
+      }
+
+      // Map Banner 1
+      if (rawPage.banner1) {
+        page.meta.banner1_title = rawPage.banner1.title;
+        page.meta.banner1_description = rawPage.banner1.description;
+        page.meta.banner1_cta_link = rawPage.banner1.cta_link;
+        page.meta.banner1_cta_title = rawPage.banner1.cta_title;
+        page.meta.banner1_stats = rawPage.banner1.stats;
+      }
+
+      // Map Teams
+      if (rawPage.teams) {
+        page.meta.teams_members = rawPage.teams.members;
+      }
+
+      // Map Banner 2
+      if (rawPage.banner2) {
+        page.meta.banner2_title = rawPage.banner2.title;
+        page.meta.banner2_description = rawPage.banner2.description;
+        page.meta.banner2_cta_link = rawPage.banner2.cta_link;
+        page.meta.banner2_cta_title = rawPage.banner2.cta_title;
       }
     }
 

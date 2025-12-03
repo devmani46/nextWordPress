@@ -53,7 +53,11 @@ export default function NavBar() {
 
   const convertToNextSlug = (url: string) => {
     const base = process.env.NEXT_PUBLIC_WORDPRESS_URL!;
-    return url.replace(base, "");
+    const slug = url.replace(base, "");
+    if (slug === "/resource-category/downloads" || slug === "/resource-category/downloads/") {
+      return "/downloads";
+    }
+    return slug;
   };
   const getMenuLink = (url: string) => {
     if (isPDF(url)) return url; // Use direct PDF link

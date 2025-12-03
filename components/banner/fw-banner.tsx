@@ -2,8 +2,23 @@
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useRef } from "react";
 import WhiteButton from "../ui/whitebutton";
+import Link from "next/link";
 
-export default function CircleFollowCard() {
+interface CircleFollowCardProps {
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  cta_title?: string;
+  cta_link?: string;
+}
+
+export default function CircleFollowCard({
+  title = "Global Nepali Network",
+  subtitle = "Be Part of the",
+  description = "Join NRNA to connect with Nepalis worldwide, shape policies, and represent your region globally.",
+  cta_title = "Explore Membership Benefits",
+  cta_link = "/membership",
+}: CircleFollowCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   // track cursor position
@@ -81,16 +96,15 @@ export default function CircleFollowCard() {
         />
         <div className="banner-cta relative z-10 flex flex-col items-start gap-5 text-white lg:w-[50%]">
           <div>
-            <p className="h3">Be Part of the</p>
-            <p className="h1">Global Nepali Network</p>
+            <p className="h3">{subtitle}</p>
+            <p className="h1">{title}</p>
           </div>
-          <p>
-            Join NRNA to connect with Nepalis worldwide, shape policies, and
-            represent your region globally.
-          </p>
-          <WhiteButton className="button-regular text-blue-normal">
-            Explore Membership Benefits
-          </WhiteButton>
+          <p>{description}</p>
+          <Link href={cta_link}>
+            <WhiteButton className="button-regular text-blue-normal">
+              {cta_title}
+            </WhiteButton>
+          </Link>
         </div>
         <div className="banner-image"></div>
       </div>

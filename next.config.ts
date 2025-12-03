@@ -5,13 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.nrna.featherwebs.dev",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: process.env.WORDPRESS_HOSTNAME || "api.nrna.featherwebs.dev",
+        hostname: `${process.env.WORDPRESS_HOSTNAME}`,
         port: "",
         pathname: "/**",
       },
@@ -22,6 +16,7 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+    domains: ["wordpress_nextjs.test"],
   },
   async redirects() {
     return [
