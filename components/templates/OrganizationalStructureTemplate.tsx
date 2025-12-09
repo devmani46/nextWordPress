@@ -21,7 +21,7 @@ export default function OrganizationalStructureTemplate({
 
       {/* Main Structure Image */}
       {imageUrl && (
-        <div className="mb-12 w-full">
+        <div className="relative mb-12 flex w-full flex-col">
           <Image
             src={imageUrl}
             alt={title}
@@ -30,14 +30,14 @@ export default function OrganizationalStructureTemplate({
             className="h-auto w-full"
             priority
           />
+          <div className="mt-3 flex h-[72px] w-[50%] flex-col items-center justify-center self-end rounded-xl bg-[#2A2A6B] py-4 text-white">
+            <p className="p1-medium leading-none">{statTitle}</p>
+            <p className="h3 font-bold leading-none">{statDescription}</p>
+          </div>
         </div>
       )}
 
       {/* Statistics Block */}
-      <div className="w-full rounded-xl bg-[#2A2A6B] py-6 text-center text-white">
-        <p className="p1-medium mb-1">{statTitle}</p>
-        <p className="h3 font-bold">{statDescription}</p>
-      </div>
     </div>
   );
 }

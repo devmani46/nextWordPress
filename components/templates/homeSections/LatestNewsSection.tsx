@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import WhiteButton from "@/components/ui/whitebutton";
 import { getWordPressImage } from "@/lib/utils";
 import { getAllNews, News } from "@/lib/wordpress";
@@ -65,8 +66,29 @@ export default function LatestNewsAndUpdatesSection({
       </div>
 
       {isLoading ? (
-        <div className="flex min-h-[400px] items-center justify-center">
-          <p>Loading news...</p>
+        <div className="flex flex-wrap gap-8 lg:flex-nowrap">
+          {/* --- Big News Skeleton --- */}
+          <div className="big-news flex w-full flex-col gap-2 lg:w-auto">
+            <div className="image-container h-[80%] w-full overflow-hidden rounded-xl">
+              <Skeleton className="h-64 w-full rounded-xl" />{" "}
+              {/* large image */}
+            </div>
+            <Skeleton className="h-4 w-40" /> {/* date */}
+            <Skeleton className="h-6 w-3/4" /> {/* title */}
+          </div>
+
+          {/* --- More News Skeleton (4 items) --- */}
+          <div className="more-news flex w-full flex-col gap-3 divide-y divide-black divide-opacity-30 lg:w-auto">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="news-card flex flex-col gap-2 pt-3">
+                <Skeleton className="h-4 w-32" /> {/* date */}
+                <Skeleton className="h-5 w-3/4" /> {/* title */}
+              </div>
+            ))}
+          </div>
+
+          {/* --- Mobile “View More” button skeleton --- */}
+          <Skeleton className="h-10 w-32 rounded-lg border border-gray border-opacity-10 lg:hidden" />
         </div>
       ) : (
         <div className="flex flex-wrap gap-8 lg:flex-nowrap">

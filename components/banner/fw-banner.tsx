@@ -54,7 +54,7 @@ export default function CircleFollowCard({
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="global-banner relative m-auto w-[80%] overflow-hidden rounded-xl bg-blue-normal px-10 py-11 md:w-[70%] md:px-20"
+        className="global-banner relative m-auto overflow-hidden rounded-xl bg-blue-normal px-10 py-11 md:px-20"
       >
         <img
           src="/globe.png"

@@ -37,6 +37,11 @@ import AboutUsSection from "./homeSections/AboutUsSetion";
 import WhyChooseUsSection from "./homeSections/WhyChooseUsSection";
 import GetInvolvedSection from "./homeSections/GetInvolvedSection";
 import LatestNewsAndUpdatesSection from "./homeSections/LatestNewsSection";
+import OurInitiativesSection from "./homeSections/OurInitiativesSection";
+import JoinTheJourneySection from "./homeSections/JoinTheJourneySection";
+import PresidentMessageSection from "./homeSections/PresidentMessageSection";
+
+import parse from "html-react-parser";
 
 interface HomeTemplateProps {
   page: Page & {
@@ -69,6 +74,7 @@ interface HomeTemplateProps {
       who_we_are_hero_title: string;
       who_we_are_hero_description: string;
       who_we_are_message_description: string;
+      who_we_are_message_representative_name: string;
     };
   };
   projects: Project[];
@@ -138,6 +144,8 @@ export default function HomeTemplate({
     .who_we_are_hero_description as string;
   const who_we_are_message_description = whowearePage.meta
     .who_we_are_message_description as string;
+  const who_we_are_message_representative_name = whowearePage.meta
+    .who_we_are_message_representative_name as string;
 
   if (slides.length === 0) return null; //nothing to show
 
@@ -162,7 +170,7 @@ export default function HomeTemplate({
               {hero_title}
             </TextEffect>
           </div>
-          <div className="p1-regular text-gray">{hero_description}</div>
+          <div className="p1-regular text-gray">{parse(hero_description)}</div>
           <BlueButton className="button-regular">{hero_button_text}</BlueButton>
         </div>
 
@@ -178,7 +186,7 @@ export default function HomeTemplate({
         viewOptions={{ margin: "0px 0px -200px 0px" }}
         transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
       >
-        <section className="banner-container mt-28">
+        <section className="banner-container mt-28 px-10 md:px-[15%]">
           <CircleFollowCard />
         </section>
       </InView>
@@ -262,25 +270,12 @@ export default function HomeTemplate({
       {/*PRESIDENT'S MESSAGE SECTION*/}
 
       <section className="president mt-11 flex flex-wrap gap-10 px-10 md:px-[15%] lg:flex-nowrap">
-        <div className="president-message flex flex-col items-start justify-center gap-3 md:basis-3/5">
-          <p className="p1-regular">One Diaspora, One Purpose</p>
-          <p className="h5 italic">
-            &quot;{who_we_are_message_description}&quot;
-          </p>
-          <p className="p1-medium mb-3 text-gray">Dr. Badri K.C. President</p>
-          <BlueButton icon className="mt-3">
-            Read Full Message
-          </BlueButton>
-        </div>
-        <div className="president-image hidden overflow-hidden lg:flex lg:basis-2/5">
-          <Image
-            src={"/NRNA 1.png"}
-            alt="president-image"
-            height={612}
-            width={408}
-            className="translate-y-[150px] scale-125 object-cover object-top"
-          ></Image>
-        </div>
+        <PresidentMessageSection
+          who_we_are_message_description={who_we_are_message_description}
+          who_we_are_message_representative_name={
+            who_we_are_message_representative_name
+          }
+        />
       </section>
 
       {/*STAY UPDATED SECTION*/}
@@ -301,82 +296,24 @@ export default function HomeTemplate({
       {/*Our Initiatives*/}
 
       <section className="our-intiatives bg-[linear-gradient(to_bottom,rgba(234,243,249,1)_0%,rgba(191,216,235,1)_50%,rgba(224,224,244,1)_60%,transparent_60%,transparent_100%)] py-20">
-        <div className="our-initiatives-text flex flex-col gap-3 pl-10 md:pl-[15%]">
-          <p className="p1-regular">Our Initiatives</p>
-          <p className="h3">Transformative Projects Worldwide</p>
-          <div className="flex w-[80%] items-center justify-between">
-            <p className="p1-regular text-gray">
-              Explore NRNA projects driving impact across communities and
-              supporting global Nepali Initiatives
-            </p>
-            <WhiteButton className="hidden md:flex" icon>
-              View More
-            </WhiteButton>
-          </div>
-        </div>
-        <Carousel className="project-cards-container mt-11 flex gap-8">
-          <CarouselContent className="flex gap-4 pl-14 pt-4 md:pl-60">
-            {projects.map((project) => {
-              // get featured image URL
-              const imageUrl = getWordPressImage(
-                project._embedded?.["wp:featuredmedia"]?.[0]?.source_url,
-              );
-
-              return (
-                <CarouselItem
-                  key={project.id}
-                  className="project-card flex max-w-80 flex-col overflow-hidden rounded-2xl bg-white pl-0 transition-transform hover:-translate-x-2 hover:-translate-y-4"
-                >
-                  <div className="project-card-text p-6">
-                    <p className="label-medium mb-1 text-gray">
-                      {new Date(project.date).toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </p>
-                    <p className="p1-medium">{project.title.rendered}</p>
-                  </div>
-                  <div
-                    className="project-card-image relative flex h-60 w-full flex-col justify-end bg-gray"
-                    style={{
-                      backgroundImage: `url(${imageUrl})`,
-                      backgroundSize: "cover",
-                    }}
-                  >
-                    <div className="buttons-container flex bg-gray bg-opacity-10 text-white backdrop-blur-lg">
-                      <button className="basis-1/2 border-r border-t py-3 transition-colors hover:bg-blue-normal hover:text-white-light">
-                        Register
-                      </button>
-                      <button className="basis-1/2 border-t py-3 transition-colors hover:bg-blue-normal hover:text-white-light">
-                        Learn More
-                      </button>
-                    </div>
-                  </div>
-                </CarouselItem>
-              );
-            })}
-          </CarouselContent>
-        </Carousel>
+        <OurInitiativesSection
+          our_initiatives_title={our_intitiatives_title}
+          our_initiatives_description={our_initiatives_description}
+        />
       </section>
 
       {/*JOIN THE JOURNEY*/}
 
       <section className="join-the-journey mt-10 flex flex-wrap bg-[linear-gradient(to_bottom,#3082BF_0%,#2A2A6B_100%)] py-28 pl-[10%] pr-[10%] text-white md:pl-0 lg:flex-nowrap">
-        <div className="world-map basis-full md:basis-2/3">
-          <WorldMap />
-        </div>
-        <div className="journey-text flex flex-col items-start gap-3 md:basis-1/3">
-          <p className="p1-regular">Join the Journey</p>
-          <p className="h3">{journey_title}</p>
-          <p className="p1-regular">{journey_description}</p>
-          <Link href={journey_cta_link} className="mt-3">
-            <WhiteButton icon>{journey_cta_title}</WhiteButton>
-          </Link>
-        </div>
+        <JoinTheJourneySection
+          journey_title={journey_title}
+          journey_description={journey_description}
+          journey_cta_link={journey_cta_link}
+          journey_cta_title={journey_cta_title}
+        />
       </section>
 
-      <footer className="w-full px-[15%] pt-16">
+      <footer className="bg-gray-200 w-full space-y-2 divide-y-2 px-[15%] pt-16">
         <div className="column-containers flex justify-between">
           <div className="first-column">
             <div className="logo-text-container p2-semi-bold mb-7 text-violet-dark">
@@ -445,19 +382,25 @@ export default function HomeTemplate({
           </div>
         </div>
 
-        <div className="contacts">
-          <div className="subscribe">
-            <p>Subscribe</p>
-            <Input type="email" placeholder="Enter your email address" />
-            <Button
-              className={cn(
-                "duration-[2200ms] rounded-lg border-[1px] bg-[length:200%_100%] tracking-wide shadow hover:animate-bg-shine",
+        <div className="contacts flex items-center justify-between">
+          <div className="subscribe flex items-center gap-10">
+            <span>Subscribe</span>
+            <div className="enter-email border-gray-500 flex rounded-xl border p-1">
+              <Input
+                type="email"
+                placeholder="Enter your email address"
+                className="border-none p-0"
+              />
+              <Button className="bg-blue-normal">Subscribe</Button>
+            </div>
+          </div>
 
-                "border-zinc-300 bg-[linear-gradient(110deg,#FFF,45%,#60609AFF,95%,#FFF)]",
-              )}
-            >
-              Subscribe
-            </Button>
+          <div className="socials flex gap-5 divide-x-2">
+            <p>Facebook</p>
+            <p>Twitter</p>
+            <p>Youtube</p>
+            <p>Instagram</p>
+            <p>Join Viber Community</p>
           </div>
         </div>
       </footer>

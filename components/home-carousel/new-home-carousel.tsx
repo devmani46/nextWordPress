@@ -128,6 +128,7 @@ const Carousel_001 = ({
                 src={slide.src}
                 alt={slide.alt}
                 className="h-full w-full object-cover"
+                data-swiper-parallax="-100"
               />
               {slide.title && (
                 <div className="p1-bold absolute bottom-5 left-5 w-[90%] text-white-light lg:w-[45%]">

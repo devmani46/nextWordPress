@@ -33,17 +33,6 @@ export default function SingleGallery({ gallery }: SingleGalleryProps) {
           dangerouslySetInnerHTML={{ __html: gallery.title.rendered }}
         />
 
-        {/* Featured Image Section */}
-        {featuredImage && (
-          <div className="mb-8 overflow-hidden rounded-xl bg-muted">
-            <img
-              src={featuredImage}
-              alt={gallery.title.rendered}
-              className="h-auto w-full object-cover max-h-[600px]"
-            />
-          </div>
-        )}
-
         {/* Gallery Grid */}
         {gallery.images && gallery.images.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

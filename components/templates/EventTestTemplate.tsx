@@ -22,6 +22,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../motion-primitives/accordion";
+import { InfiniteSlider } from "../motion-primitives/infinite-slider";
+import Image from "next/image";
+import CircleFollowCard from "../banner/fw-banner";
+import Faqs from "../fw-faqs/fw-faqs";
+import DownloadCard from "../downloads/DownloadCard";
 
 interface EventtestProps {
   page: Page;
@@ -117,7 +122,7 @@ export default function EventtestTemplate({ page }: EventtestProps) {
         </p>
 
         <Tabs className="flex flex-col items-center justify-center">
-          <TabsList className="h-auto bg-[#E0E0F4] p-3">
+          <TabsList className="mb-6 mt-6 h-auto bg-[#E0E0F4] p-3">
             {["1", "2", "3"].map((item, index) => (
               <TabsTrigger
                 className="p-3 data-[state=active]:bg-blue-normal data-[state=active]:text-white-light"
@@ -230,14 +235,208 @@ export default function EventtestTemplate({ page }: EventtestProps) {
         <p>Meet the Team</p>
         <div className="meet-team flex max-w-full flex-wrap gap-4">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
-            <div className="member-card rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
-              <div className="member-image mb-2 h-36 w-36 rounded-xl bg-gray" />
+            <div className="member-card basis-1/6 rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-3">
+              <div className="member-image mb-2 h-36 w-[full] rounded-xl bg-gray" />
               <p className="p2-semibold text-blue-normal">Dr. Badri K.C.</p>
               <p className="label-regular">President | IES | Russia</p>
             </div>
           ))}
         </div>
       </section>
+
+      <section className="our-sponsors mt-20">
+        <p className="p1-regular text-center">Our Sponsors</p>
+        <p className="h3 text-center">Partners & Supporters</p>
+
+        <div className="mb-12 mt-6 flex w-full justify-center gap-4">
+          {[1, 2, 3].map((item, index) => (
+            <div className="sponsor-card flex h-[175px] w-[245px] flex-col overflow-hidden rounded-xl border border-blue-light-hover">
+              <div className="flex-1 bg-gray"></div>
+              <div className="flex flex-col items-center bg-blue-light-hover py-2">
+                <p className="text-base font-semibold text-blue-normal">
+                  Suvash Lamichane
+                </p>
+                <p className="text-xs font-normal text-blue-normal-hover">
+                  Vice President, NRNA NCC Japan
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="mb-7 text-center">Gold Partner</p>
+
+        <div className="gold-partners-container mb-11 flex justify-center gap-4">
+          {[1, 2, 3].map((item, index) => (
+            <div
+              key={index}
+              className="gold-partner flex h-28 w-40 flex-col gap-3"
+            >
+              <div className="relative flex-1">
+                <Image
+                  src={"/logo.png"}
+                  fill
+                  className="object-contain"
+                  alt="sponsor-logo"
+                />
+              </div>
+              <p className="text-center">Sani Securities</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mb-7 text-center">Silver Partner</p>
+
+        <div className="gold-partners-container mb-11 flex justify-center gap-4">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((item, index) => (
+            <div
+              key={index}
+              className="gold-partner flex h-28 w-40 flex-col gap-3"
+            >
+              <div className="relative flex-1">
+                <Image
+                  src={"/logo.png"}
+                  fill
+                  className="object-contain"
+                  alt="sponsor-logo"
+                />
+              </div>
+              <p className="text-center">Sani Securities</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mb-7 text-center">Event Partner</p>
+
+        <div className="gold-partners-container mb-11 flex justify-center gap-4">
+          {[1, 2, 3].map((item, index) => (
+            <div
+              key={index}
+              className="gold-partner flex h-28 w-40 flex-col gap-3"
+            >
+              <div className="relative flex-1">
+                <Image
+                  src={"/logo.png"}
+                  fill
+                  className="object-contain"
+                  alt="sponsor-logo"
+                />
+              </div>
+              <p className="text-center">Sani Securities</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mb-7 text-center">Airlines Partner</p>
+
+        <div className="gold-partners-container mb-11 flex justify-center gap-4">
+          {[1].map((item, index) => (
+            <div
+              key={index}
+              className="gold-partner flex h-28 w-40 flex-col gap-3"
+            >
+              <div className="relative flex-1">
+                <Image
+                  src={"/logo.png"}
+                  fill
+                  className="object-contain"
+                  alt="sponsor-logo"
+                />
+              </div>
+              <p className="text-center">Sani Securities</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-20">
+        <CircleFollowCard />
+      </section>
+
+      <section className="mb-20 px-[15%]">
+        <Faqs />
+      </section>
+
+      <section className="mb-20 px-[15%]">
+        <div className="grid grid-cols-9 grid-rows-3 gap-6">
+          <div className="col-span-3 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 1</p>
+            <p className="text-gray-500 text-sm">Item 1</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 2</p>
+            <p className="text-gray-500 text-sm">Item 2</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 3</p>
+            <p className="text-gray-500 text-sm">Item 3</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray bg-white p-4">
+            <button className="hover:bg-gray-100 absolute right-2 top-2 rounded-full p-1">
+              ☰
+            </button>
+            <p className="text-lg font-semibold">Item 4</p>
+            <p className="text-gray-500 text-sm">Item 4</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 5</p>
+            <p className="text-gray-500 text-sm">Item 5</p>
+          </div>
+
+          <div className="col-span-3 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 6</p>
+            <p className="text-gray-500 text-sm">Item 6</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 7</p>
+            <p className="text-gray-500 text-sm">Item 7</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 8</p>
+            <p className="text-gray-500 text-sm">Item 8</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 9</p>
+            <p className="text-gray-500 text-sm">Item 9</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 10</p>
+            <p className="text-gray-500 text-sm">Item 10</p>
+          </div>
+
+          <div className="col-span-3 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 11</p>
+            <p className="text-gray-500 text-sm">Item 11</p>
+          </div>
+
+          <div className="col-span-2 h-40 rounded-xl border-2 border-dashed border-gray p-4">
+            <p className="text-lg font-semibold">Item 12</p>
+            <p className="text-gray-500 text-sm">Item 12</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p className="mb-8 pl-[15%]">Video Gallery</p>
+        <div className="videos-container flex gap-2 overflow-x-scroll">
+          {[1, 2, 3, 4, 5, 6, 7].map((item, index) => (
+            <div
+              key={index}
+              className="min-h-[230px] min-w-[300px] rounded-xl bg-gray"
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="downloads"></section>
     </div>
   );
 }

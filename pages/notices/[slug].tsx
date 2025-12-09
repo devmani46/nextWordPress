@@ -1,102 +1,107 @@
-import {
-  getNoticeBySlug,
-  getNoticesByIds,
-  getNoticeImage,
-  getAllNotices,
-} from "@/lib/wordpress";
-import Link from "next/link";
+import { getNoticeBySlug, getAllNotices, getNoticesByIds, Notice } from "@/lib/wordpress";
 import { GetStaticProps, GetStaticPaths } from "next";
+import Link from "next/link";
+import { parseActivityContent } from "@/lib/parseActivityContent";
 
-export default function NoticePage({
-  notice,
-  relatedNoticesWithImages,
-  imageUrl,
-}: {
-  notice: any;
-  relatedNoticesWithImages: any[];
-  imageUrl?: string;
-}) {
+interface NoticePageProps {
+  notice: Notice;
+  relatedNotices: Notice[];
+}
+
+export default function NoticePage({ notice, relatedNotices }: NoticePageProps) {
   if (!notice) {
     return <div className="p-10 text-center">Notice not found.</div>;
   }
 
   return (
-    <div className="px-[15%] py-10">
+    <div className="container mx-auto px-4 py-10 lg:px-[10%]">
+      {/* Title */}
       <h1
-        className="mb-4 text-2xl font-semibold"
+        className="mb-2 text-3xl font-bold leading-tight lg:text-4xl"
         dangerouslySetInnerHTML={{ __html: notice.title.rendered }}
       />
-      <p className="label-medium text-gray mb-6">
+      
+      {/* Date */}
+      <p className="mb-6 text-sm text-gray-600">
         {new Date(notice.date).toLocaleDateString("en-US", {
           year: "numeric",
           month: "long",
           day: "numeric",
         })}
       </p>
-      <div className="flex flex-col md:flex-row gap-16">
-        <div className="notice-content md:basis-2/3">
-          {imageUrl && (
+
+      {/* Main Content Layout */}
+      <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
+        {/* Main Content Area - 2/3 width */}
+        <div className="activity-content flex-1 lg:basis-2/3">
+          {/* Featured Image */}
+          {notice._embedded?.["wp:featuredmedia"]?.[0]?.source_url && (
             <img
-              src={imageUrl}
+              src={notice._embedded["wp:featuredmedia"][0].source_url}
               alt={notice.title.rendered}
-              className="mb-6 w-full rounded-md object-cover"
+              className="mb-6 w-full rounded-lg object-cover"
             />
           )}
-          <div
-            dangerouslySetInnerHTML={{
-              __html: notice.notice_content || "<p>No content available.</p>",
-            }}
-            className="prose max-w-none"
-          />
+
+          {/* Notice Content with WYSIWYG and YouTube embedding */}
+          <div className="prose prose-lg max-w-none whitespace-pre-wrap">
+            {parseActivityContent(
+              notice.notice_content || notice.content?.rendered || ""
+            )}
+          </div>
         </div>
 
-        <div className="other-notices flex md:basis-1/3 flex-col gap-3">
-          <h3 className="text-xl font-semibold mb-2">Related Notices</h3>
-          {relatedNoticesWithImages.length > 0 ? (
-            relatedNoticesWithImages.map((item) => (
-              <Link
-                key={item.id}
-                href={`/notices/${item.slug}`}
-                className="notice-card flex gap-[10px] rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-4 transition-all hover:shadow-sm"
-              >
-                <div className="h-[68px] w-[78px] shrink-0 rounded-xl bg-gray/10 overflow-hidden">
-                  {item.imageUrl ? (
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title.rendered}
-                      className="h-full w-full object-cover"
+        {/* Related Notices Sidebar - 1/3 width */}
+        {relatedNotices && relatedNotices.length > 0 && (
+          <aside className="lg:basis-1/3">
+            <h2 className="mb-4 text-xl font-semibold">Other Notices</h2>
+            <div className="flex flex-col gap-4">
+              {relatedNotices.map((relatedItem) => (
+                <Link
+                  key={relatedItem.id}
+                  href={`/notices/${relatedItem.slug}`}
+                  className="group flex gap-3 rounded-xl bg-gradient-to-b from-[#E0E0F4] to-[#E7F3FD] p-4 transition-all hover:shadow-md"
+                >
+                  {/* Thumbnail */}
+                  <div className="h-[68px] w-[78px] flex-shrink-0 overflow-hidden rounded-xl bg-gray-200">
+                    {relatedItem._embedded?.["wp:featuredmedia"]?.[0]?.source_url ? (
+                      <img
+                        src={relatedItem._embedded["wp:featuredmedia"][0].source_url}
+                        alt={relatedItem.title.rendered}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-gradient-to-br from-blue-100 to-blue-200" />
+                    )}
+                  </div>
+
+                  {/* Text Content */}
+                  <div className="flex flex-1 flex-col justify-center">
+                    <p className="mb-1 text-xs text-gray-600">
+                      {new Date(relatedItem.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                    <p
+                      className="line-clamp-2 text-sm font-medium leading-tight group-hover:text-blue-600"
+                      dangerouslySetInnerHTML={{ __html: relatedItem.title.rendered }}
                     />
-                  ) : (
-                    <div className="h-full w-full bg-gray/20" />
-                  )}
-                </div>
-                <div className="notice-card-text flex-1">
-                  <p className="label-medium mb-1 text-gray">
-                    {new Date(item.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                  <p
-                    className="p1-medium line-clamp-2"
-                    dangerouslySetInnerHTML={{ __html: item.title.rendered }}
-                  />
-                </div>
-              </Link>
-            ))
-          ) : (
-            <p className="text-gray-500">No related notices found.</p>
-          )}
-        </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </aside>
+        )}
       </div>
     </div>
   );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const notices = await getAllNotices();
-  const paths = notices.map((notice: any) => ({
+  const allNotices = await getAllNotices();
+  const paths = allNotices.map((notice: Notice) => ({
     params: { slug: notice.slug },
   }));
 
@@ -116,30 +121,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
-  // Fetch related notices based on IDs in notice_related
-  let relatedNotices: any[] = [];
+  // Fetch related notices if they exist
+  let relatedNotices: Notice[] = [];
   if (notice.notice_related && notice.notice_related.length > 0) {
-    const relatedIds = notice.notice_related.map((id: string) =>
-      parseInt(id, 10)
-    );
+    const relatedIds = notice.notice_related.map((id) => parseInt(id, 10));
     relatedNotices = await getNoticesByIds(relatedIds);
   }
-
-  const imageUrl = await getNoticeImage(notice);
-
-  // Process related notices images in parallel
-  const relatedNoticesWithImages = await Promise.all(
-    relatedNotices.map(async (item) => {
-      const img = await getNoticeImage(item);
-      return { ...item, imageUrl: img };
-    })
-  );
 
   return {
     props: {
       notice,
-      relatedNoticesWithImages,
-      imageUrl: imageUrl || null,
+      relatedNotices,
     },
     revalidate: 10,
   };

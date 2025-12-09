@@ -14,14 +14,22 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { InView } from "../ui/in-view";
+import CommitteesCard from "../banner/committees-banner";
 interface CommitteesTaskforcesProps {
   page: Page & {
     meta?: {
       hero_title?: string;
       hero_description?: string;
       hero_images?: string[];
-      
+
       why_title?: string;
       why_description?: string;
       why_image?: string;
@@ -40,11 +48,11 @@ interface CommitteesTaskforcesProps {
         project: string;
         name: string;
         role: string;
-        official_email: string;
+        email: string;
       }[];
 
       banner2_title?: string;
-      banner2_description?: string; 
+      banner2_description?: string;
       banner2_cta_link?: string;
       banner2_cta_title?: string;
     };
@@ -57,36 +65,47 @@ export default function CommitteesTaskforcesTemplate({
   const meta = page?.meta || {};
 
   // Hero Data
-  const hero_title = meta.hero_title || "The Trust of Committees, Taskforces & Subcommittees";
-  const hero_description = meta.hero_description || "The Non-Resident Nepali Association (NRNA) was born out of the diverse aspirations of the Nepali Diaspora...";
-  const hero_images = meta.hero_images || []; 
+  const hero_title =
+    meta.hero_title || "The Trust of Committees, Taskforces & Subcommittees";
+  const hero_description =
+    meta.hero_description ||
+    "The Non-Resident Nepali Association (NRNA) was born out of the diverse aspirations of the Nepali Diaspora...";
+  const hero_images = meta.hero_images || [];
 
   // Why Data
   const why_title = meta.why_title || "Purpose & Aspirations";
-  const why_description = meta.why_description || "The Strategic Goals of NRNA is to unite and bring Nepali residing all over the world under one umbrella...";
+  const why_description =
+    meta.why_description ||
+    "The Strategic Goals of NRNA is to unite and bring Nepali residing all over the world under one umbrella...";
   const why_image = meta.why_image || "";
 
   // How Data
   const how_title = meta.how_title || "Role & Evolution";
-  const how_description = meta.how_description || "Institutionalize and strengthen the organizational structure of NRNA...";
+  const how_description =
+    meta.how_description ||
+    "Institutionalize and strengthen the organizational structure of NRNA...";
   const how_image = meta.how_image || "";
 
   // Banner 1 Data
   const banner1_title = meta.banner1_title || "NRNA at a Glance";
-  const banner1_description = meta.banner1_description || "Driving impact globally and bringing change where it matters most.";
+  const banner1_description =
+    meta.banner1_description ||
+    "Driving impact globally and bringing change where it matters most.";
   const banner1_cta_title = meta.banner1_cta_title || "Explore Our Work";
   const banner1_cta_link = meta.banner1_cta_link || "/work";
   const banner1_stats = meta.banner1_stats || [
     { title: "22", description: "Countries Represented" },
     { title: "500", description: "Projects Executed" },
-    { title: "$60M", description: "Funds Raised" }
+    { title: "$60M", description: "Funds Raised" },
   ];
 
   // Teams Data
   const teams_members = meta.teams_members || [];
 
   // Banner 2 Data
-  const banner2_title = meta.banner2_title || "Explore The Full NRNA Structure & See How Everything Connects";
+  const banner2_title =
+    meta.banner2_title ||
+    "Explore The Full NRNA Structure & See How Everything Connects";
   const banner2_cta_title = meta.banner2_cta_title || "See Full Structure";
   const banner2_cta_link = meta.banner2_cta_link || "/structure";
 
@@ -110,7 +129,7 @@ export default function CommitteesTaskforcesTemplate({
                   alt="hero-image-1"
                   className="h-[80px] w-[75px]"
                   width={75}
-                  height={80}                    
+                  height={80}
                 />
               )}
               {hero_images[1] && (
@@ -137,9 +156,7 @@ export default function CommitteesTaskforcesTemplate({
             </TextEffect>
 
             <p className="title h3">{hero_title}</p>
-            <p className="p1-regular mb-3 text-gray">
-              {hero_description}
-            </p>
+            <p className="p1-regular mb-3 text-gray">{hero_description}</p>
           </div>
         </section>
       </InView>
@@ -175,17 +192,17 @@ export default function CommitteesTaskforcesTemplate({
         viewOptions={{ margin: "0px 0px -200px 0px" }}
         transition={{ duration: 0.6, ease: [0.455, 0.03, 0.515, 0.955] }}
       >
-        <section className="banner-container mt-28">
-          <CircleFollowCard 
+        <section className="banner-container mt-28 px-10 md:px-[15%]">
+          <CommitteesCard
             title={banner1_title}
             subtitle="Quick stats & achievements"
             description={banner1_description}
             cta_title={banner1_cta_title}
             cta_link={banner1_cta_link}
           />
-          
+
           {/* Stats Section*/}
-          <div className="statistics flex w-full flex-nowrap justify-center px-10 sm:gap-12 md:justify-between md:gap-16 md:px-[15%] mt-10">
+          <div className="statistics mt-10 flex w-full flex-nowrap justify-center px-10 sm:gap-12 md:justify-between md:gap-16 md:px-[15%]">
             {banner1_stats.map((stat, index) => (
               <div
                 key={index}
@@ -203,9 +220,22 @@ export default function CommitteesTaskforcesTemplate({
 
       {/* 5. FOCUSED TEAMS, STRONG LEADERSHIP (Table) */}
       <section className="teams-section mt-20 px-10 md:px-[15%]">
-        <div className="mb-8">
-          <p className="p1-regular">Focused Teams, Strong Leadership</p>
-          <p className="h3">NRNA Committees & Leadership</p>
+        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <p className="p1-regular">Focused Teams, Strong Leadership</p>
+            <p className="h3">NRNA Committees & Leadership</p>
+          </div>
+          <div className="w-[200px]">
+            <Select defaultValue="2023-2025">
+              <SelectTrigger>
+                <SelectValue placeholder="Select tenure" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2023-2025">2023-2025 tenure</SelectItem>
+                <SelectItem value="2021-2023">2021-2023 tenure</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="border-gray-100 overflow-hidden rounded-md border shadow-sm">
@@ -213,9 +243,8 @@ export default function CommitteesTaskforcesTemplate({
             <TableHeader className="bg-gray-50">
               <TableRow>
                 <TableHead className="w-[60px]">S.N.</TableHead>
-                <TableHead>Project</TableHead>
+                <TableHead>Committees / Taskforce / Subcommittees</TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead>Role</TableHead>
                 <TableHead>Official Email</TableHead>
               </TableRow>
             </TableHeader>
@@ -223,18 +252,30 @@ export default function CommitteesTaskforcesTemplate({
               {teams_members.length > 0 ? (
                 teams_members.map((member, index) => (
                   <TableRow key={index} className="hover:bg-gray-50">
-                    <TableCell className="font-medium">
+                    <TableCell className="text-gray-500 font-medium">
                       {index + 1}
                     </TableCell>
-                    <TableCell>{member.project}</TableCell>
-                    <TableCell className="font-medium">{member.name}</TableCell>
-                    <TableCell>{member.role}</TableCell>
-                    <TableCell>{member.official_email}</TableCell>
+                    <TableCell className="font-medium">
+                      {member.project}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-medium text-black">
+                          {member.name}
+                        </span>
+                        <span className="text-gray-500 text-sm">
+                          {member.role}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-gray-500">
+                      {member.email}
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={5} className="h-24 text-center">
+                  <TableCell colSpan={4} className="h-24 text-center">
                     No members found.
                   </TableCell>
                 </TableRow>
@@ -245,8 +286,8 @@ export default function CommitteesTaskforcesTemplate({
       </section>
 
       {/* 6. BANNER 2 */}
-      <section className="banner2-container mt-20 mb-20">
-        <BannerTwo 
+      <section className="banner2-container mb-20 mt-20">
+        <BannerTwo
           title={banner2_title}
           cta_title={banner2_cta_title}
           cta_link={banner2_cta_link}

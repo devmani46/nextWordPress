@@ -4,6 +4,8 @@ import { Event, getAllEvents, getAllNotices, Notice } from "@/lib/wordpress";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "motion/react";
+import { Skeleton } from "@/components/ui/skeleton";
+import parse from "html-react-parser";
 
 interface StayUpdatedSectionProps {
   stay_updated_title: string;
@@ -65,8 +67,51 @@ export default function StayUpdatedSection({
       </div>
 
       {isLoading ? (
-        <div className="flex min-h-[400px] items-center justify-center">
-          <p>Loading updates...</p>
+        <div className="notice-and-events flex flex-wrap gap-10 lg:flex-nowrap">
+          {/* --- Notices --- */}
+          <div className="notices flex flex-col items-start gap-6 lg:basis-1/2">
+            <p className="h5">Notice</p>
+            <div className="notice-card-container flex flex-col gap-3">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="notice-card flex flex-col gap-2 rounded-xl border border-white-normal bg-blue-light p-4"
+                >
+                  <Skeleton className="h-32 w-full rounded-xl" /> {/* image */}
+                  <Skeleton className="h-4 w-32" /> {/* date */}
+                  <Skeleton className="h-5 w-3/4" /> {/* title */}
+                </div>
+              ))}
+            </div>
+            <Skeleton className="h-10 w-32 rounded-lg" />{" "}
+            {/* View More button */}
+          </div>
+
+          {/* --- Events --- */}
+          <div className="events flex flex-col items-start gap-5 lg:basis-1/2">
+            <p className="h5">Events</p>
+            <div className="event-card-container grid grid-cols-2 grid-rows-2 gap-4">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="event-card rounded-lg border border-white-light bg-blue-light p-4"
+                >
+                  <div className="mb-3 flex flex-wrap items-center gap-2">
+                    <Skeleton className="h-16 w-[100px] rounded-lg" />{" "}
+                    {/* image */}
+                    <div className="event-date flex flex-col">
+                      <Skeleton className="h-7 w-8" /> {/* day */}
+                      <Skeleton className="h-4 w-14" /> {/* month-year */}
+                    </div>
+                  </div>
+                  <Skeleton className="h-5 w-3/4" /> {/* title */}
+                  <Skeleton className="mt-1 h-4 w-1/2" /> {/* location */}
+                </div>
+              ))}
+            </div>
+            <Skeleton className="h-10 w-32 rounded-lg" />{" "}
+            {/* View More button */}
+          </div>
         </div>
       ) : (
         <div className="notice-and-events flex flex-wrap gap-10 lg:flex-nowrap">
@@ -79,10 +124,6 @@ export default function StayUpdatedSection({
                   key={index}
                   className="notice-card flex flex-col gap-2 rounded-xl border border-white-normal bg-blue-light p-4 transition-all duration-500 will-change-auto hover:-translate-x-1 hover:-translate-y-1 hover:cursor-pointer hover:bg-blue-light-hover"
                 >
-                  <Spotlight
-                    className="from-blue-light-hover via-blue-normal-hover to-blue-light-hover blur-3xl dark:from-blue-light-hover dark:via-blue-light-hover dark:to-blue-light-hover"
-                    size={124}
-                  />
                   <div className="relative h-full w-full rounded-xl bg-white dark:bg-black"></div>
                   <p className="label-medium text-gray">
                     {new Date(notice.date).toLocaleDateString("en-US", {
@@ -91,7 +132,7 @@ export default function StayUpdatedSection({
                       year: "numeric",
                     })}
                   </p>
-                  <p className="p1-medium">{notice.title.rendered}</p>
+                  <p className="p1-medium">{parse(notice.title.rendered)}</p>
                 </div>
               ))}
             </div>

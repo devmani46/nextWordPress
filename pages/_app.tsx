@@ -18,7 +18,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <main
-        className={cn("!min-w-screen min-h-screen font-sans", font.variable)}
+        className={cn(
+          "!min-w-screen min-h-screen overflow-x-hidden font-sans",
+          font.variable,
+        )}
       >
         <NavBar />
         <Component {...pageProps} />

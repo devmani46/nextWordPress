@@ -11,10 +11,6 @@ interface DownloadsProps {
 }
 
 const baseUrl = process.env.WORDPRESS_URL;
-
-/**
- * Fetch resources from WordPress API with pagination and search
- */
 async function getResources(
   page: number = 1,
   perPage: number = 12,
@@ -67,13 +63,11 @@ export const getServerSideProps: GetServerSideProps<DownloadsProps> = async (con
   const searchParam = query.search ? String(query.search) : undefined;
 
   try {
-    // Fetch the "downloads" page content from WordPress for SEO/Header info
     const page = await getPageBySlug("downloads");
     
-    // Fetch resources
     const { data: resources, headers: pagination } = await getResources(
       pageParam,
-      12, // perPage
+      12, 
       searchParam
     );
 

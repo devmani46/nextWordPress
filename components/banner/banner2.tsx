@@ -49,7 +49,7 @@ export default function BannerTwo({
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="global-banner relative m-auto w-[70%] overflow-hidden rounded-md bg-[linear-gradient(180deg,#1B6AAC_0%,#4F85B3_39%,#3636B2_100%)] px-20 py-11"
+        className="global-banner relative m-auto w-[70%] overflow-hidden rounded-xl bg-[linear-gradient(180deg,#1B6AAC_0%,#4F85B3_39%,#3636B2_100%)] px-20 py-11"
       >
         {/*TOP LEFT CIRCLES */}
         <motion.div
@@ -87,9 +87,7 @@ export default function BannerTwo({
         />
 
         <div className="banner-cta relative z-10 flex flex-col items-center gap-5 px-[10%] text-white">
-          <p className="h2 text-center">
-            {title}
-          </p>
+          <p className="h2 text-center">{title}</p>
           <Link href={cta_link}>
             <button className="button-regular h-11 w-72 rounded-md bg-white text-blue-normal">
               {cta_title}

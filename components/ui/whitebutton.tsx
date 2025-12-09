@@ -30,10 +30,12 @@ export default function WhiteButton({
       {...props}
       disabled={loading || props.disabled}
       className={cn(
-        "bg-white-light py-5 pl-2 pr-3 text-gray hover:bg-white-normal-hover",
+        "group relative overflow-hidden bg-white-light py-5 pl-2 pr-3 text-gray transition-all duration-500 ease-in-out will-change-auto hover:scale-105 hover:bg-white-normal-hover",
         className,
       )}
     >
+      <span className="ease-[cubic-] absolute bottom-0 left-0 h-48 w-full origin-bottom translate-y-full transform overflow-hidden rounded-full bg-white-normal-hover transition-all duration-500 hover:rounded-xl group-hover:translate-y-20"></span>
+      {/* <span className="relative z-50 hover:text-blue-normal">{content}</span> */}
       <FlipText
         frontText={loading ? "Loading..." : content}
         backText={loading ? "Loading..." : content}

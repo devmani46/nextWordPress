@@ -114,6 +114,24 @@ export interface Page extends WPEntity {
   // meta: Record<string, unknown>;
 }
 
+export interface PolicyItem {
+  title: string;
+  description: string;
+}
+
+export interface PrivacyPolicyPage extends Page {
+  policy_items: PolicyItem[];
+}
+
+export interface TermsItem {
+  title: string;
+  description: string;
+}
+
+export interface TermsAndConditionsPage extends Page {
+  terms_items: TermsItem[];
+}
+
 export interface OrganizationalStructurePage extends Page {
   organizational_structure_image_url?: string; // WordPress provides this pre-resolved URL
   meta: {
@@ -121,6 +139,24 @@ export interface OrganizationalStructurePage extends Page {
     organizational_structure_image: number; // WordPress media ID
     organizational_structure_stat_title: string;
     organizational_structure_stat_description: string;
+    [key: string]: unknown;
+  };
+}
+
+export interface ContactUsPage extends Page {
+  meta: {
+    hero_title: string;
+    hero_description: string;
+    hero_email: string;
+    hero_phone_numbers: string[];
+    hero_location: string;
+    hero_cta_link: string;
+    hero_cta_title: string;
+    information_descriptions: {
+      title: string;
+      description: string;
+    }[];
+    map_embed: string;
     [key: string]: unknown;
   };
 }
@@ -140,15 +176,105 @@ export interface Notice extends WPEntity {
   title: RenderedTitle;
   notice_content: string;
   notice_related: string[]; // IDs as strings
+  notice_category: number[]; // Category IDs
   featured_media: number;
+  content?: RenderedContent;
   _embedded?: {
     "wp:featuredmedia"?: FeaturedMedia[];
     "wp:term"?: Array<Array<Category | Tag>>;
   };
 }
 
+export interface EventScheduleDate {
+  date: string;
+  sessions: {
+    start_time: string;
+    end_time: string;
+    title: string;
+    description: string;
+  }[];
+}
+
+export interface EventDownload {
+  title: string;
+  file: {
+    id: string;
+    url: string;
+    filename: string;
+  }[];
+}
+
+export interface RegionalMeetingDownload {
+  title: string;
+  file: {
+    id: number;
+    url: string;
+    filename: string;
+  };
+}
+
+export interface ProjectDownload {
+  title: string;
+  file: {
+    id: number;
+    url: string;
+    filename: string;
+  };
+}
+
 export interface Event extends WPEntity {
   title: RenderedTitle;
+  event_hero_title: string;
+  event_location: string;
+  event_start_date: string;
+  event_cta_title: string;
+  event_cta_link: string;
+  event_description: string;
+  event_objective_cta_link: string;
+  event_objective_title: string;
+  event_objective_cta_title: string;
+  event_overview_title: string;
+  event_overview_description: string;
+  event_schedule_title: string;
+  event_schedule_description: string;
+  event_schedule_dates: EventScheduleDate[];
+  event_sponsorship_title: string;
+  event_sponsorship_description: string;
+  event_sponsorhips: { category: string; amount: string }[];
+  event_venue_title: string;
+  event_venue_description: string;
+  event_venue_map: string;
+  event_venue_details: { title: string; description: string }[];
+  event_organizing_committee_title: string;
+  event_organizing_committee: {
+    photo: string;
+    name: string;
+    role: string;
+    service: string;
+    country: string;
+  }[];
+  event_sponsors_title: string;
+  event_sponsors: {
+    photo: string;
+    name: string;
+    role: string;
+    service: string;
+    country: string;
+  };
+  event_partners: {
+    category: string;
+    logo: string;
+    name: string;
+  };
+  event_banner_title: string;
+  event_banner_description: string;
+  event_banner_cta_link: string;
+  event_banner_cta_title: string;
+  event_image_gallery: string[];
+  event_video_gallery: string[];
+
+  event_downloads: EventDownload[];
+
   featured_media: number;
   event_start_date: string;
 
@@ -157,9 +283,63 @@ export interface Event extends WPEntity {
   };
 }
 
+export interface RegionalMeeting extends WPEntity {
+  title: RenderedTitle;
+  rm_hero_title: string;
+  rm_start_date: string;
+  rm_end_date: string;
+  rm_cta_link: string;
+  rm_cta_title: string;
+  rm_location: string;
+  rm_description: string;
+  rm_agenda_title: string;
+  rm_agenda_description: string;
+  rm_contact_title: string;
+  rm_contact_description: string;
+  rm_sponsorship_title: string;
+  rm_sponsorship_descriptipn: string;
+  rm_organizing_committee_title: string;
+  rm_sponsors_title: string;
+  rm_sponsorships: {
+    category: string;
+    amount: string;
+  }[];
+  rm_organizing_committee: {
+    photo: string;
+    name: string;
+    role: string;
+    service: string;
+    country: string;
+  }[];
+  rm_sponsors: {
+    photo: string;
+    name: string;
+    role: string;
+    service: string;
+    country: string;
+  }[];
+  rm_partners: {
+    category: string;
+    logo: string;
+    name: string;
+  }[];
+  rm_downloads: RegionalMeetingDownload[];
+  rm_image_gallery: string[];
+  rm_video_gallery: string[];
+
+  featured_media: number;
+
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+  };
+}
+
 export interface News extends WPEntity {
   title: RenderedTitle;
+  news_content?: string;
+  news_related?: string[];
   featured_media: number;
+  content?: RenderedContent;
 
   _embedded?: {
     "wp:featuredmedia"?: FeaturedMedia[];
@@ -168,7 +348,33 @@ export interface News extends WPEntity {
 
 export interface Project extends WPEntity {
   title: RenderedTitle;
+  project_hero_title: string;
+  project_date: string;
+  project_sub_title: string;
+  project_cta_link_1: string;
+
+  project_cta_title_1: string;
+  project_cta_link_2: string;
+  project_cta_title_2: string;
+  project_description: string;
+  project_objective_title: string;
+  project_objective_description: string;
+  project_banner_title: string;
+  project_banner_description: string;
+  project_banner_cta_link: string;
+  project_banner_cta_title: string;
+  project_locations: {
+    place: string;
+    date: string;
+    description: string;
+    cta_link: string;
+    cta_title: string;
+  }[];
+  project_downloads: ProjectDownload[];
+  project_image_gallery: string[];
+
   featured_media: number;
+
   _embedded?: {
     "wp:featuredmedia"?: FeaturedMedia[];
   };
@@ -178,6 +384,7 @@ export interface Activity extends WPEntity {
   title: RenderedTitle;
   content: RenderedContent;
   activity_content?: string;
+  activity_related_activities?: string[];
   featured_media: number;
   _embedded?: {
     "wp:featuredmedia"?: FeaturedMedia[];
@@ -397,6 +604,27 @@ export interface ExecutiveCommittee extends WPEntity {
   _embedded?: {
     "wp:featuredmedia"?: FeaturedMedia[];
   };
+}
+
+export interface ReportsMenuItem {
+  id: number;
+  title: string;
+  url?: string;
+  children?: ReportsMenuItem[];
+}
+
+export interface ReportFile {
+  title: string;
+  url: string;
+}
+
+export interface Report {
+  id: number;
+  date?: string;
+  slug: string;
+  title: RenderedTitle;
+  category_titles: string[];
+  pdf_files: ReportFile[]; // API returns array but we only use first file
 }
 
 export interface WordPressPaginationHeaders {

@@ -11,9 +11,9 @@ import type {
   OrganizationalStructurePage,
   Author,
   FeaturedMedia,
-  Team,
   Notice,
   Event,
+  RegionalMeeting,
   Project,
   Activity,
   News,
@@ -26,7 +26,15 @@ import type {
   WordPressPaginationHeaders,
   WordPressResponse,
   ExecutiveCommittee,
+  PrivacyPolicyPage,
+  PolicyItem,
+  TermsAndConditionsPage,
+  TermsItem,
+  Report,
+  ReportsMenuItem,
 } from "./wordpress.d";
+
+export type * from "./wordpress.d";
 
 const baseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
 console.log("WORDPRESS_URL =", baseUrl);
@@ -257,11 +265,10 @@ export async function getPostBySlug(slug: string): Promise<Post> {
 }
 
 export async function getAllNotices(): Promise<Notice[]> {
-  return wordpressFetch<Notice[]>("/wp-json/wp/v2/notices");
-}
-
-export async function getAllFaqs(): Promise<Faq[]> {
-  return wordpressFetch<Faq[]>("/wp-json/wp/v2/faqs");
+  return wordpressFetch<Notice[]>("/wp-json/wp/v2/notices", {
+    _embed: true,
+    per_page: 100,
+  });
 }
 
 export async function getNoticesPaginated(
@@ -344,16 +351,88 @@ export async function getAllEvents(): Promise<Event[]> {
   return wordpressFetch<Event[]>("/wp-json/wp/v2/events?_embed");
 }
 
+export async function getAllRegionalMeetings(): Promise<RegionalMeeting[]> {
+  return wordpressFetch<RegionalMeeting[]>(
+    "/wp-json/wp/v2/regional_meetings?_embed",
+  );
+}
+
+export async function getRegionalMeetingsPaginated(
+  page: number = 1,
+  perPage: number = 13,
+): Promise<WordPressResponse<RegionalMeeting[]>> {
+  const query = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  return wordpressFetchWithPagination<RegionalMeeting[]>(
+    "/wp-json/wp/v2/regional_meetings",
+    query,
+  );
+}
+
 export async function getAllProjects(): Promise<Project[]> {
   return wordpressFetch<Project[]>("/wp-json/wp/v2/projects?_embed");
 }
 
+export async function getProjectsPaginated(
+  page: number = 1,
+  perPage: number = 9,
+): Promise<WordPressResponse<Project[]>> {
+  const query = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  return wordpressFetchWithPagination<Project[]>(
+    "/wp-json/wp/v2/projects",
+    query,
+  );
+}
+
 export async function getAllActivities(): Promise<Activity[]> {
-  return wordpressFetch<Activity[]>("/wp-json/wp/v2/activities?_embed");
+  return wordpressFetch<Activity[]>("/wp-json/wp/v2/activities", {
+    _embed: true,
+    per_page: 100,
+  });
 }
 
 export async function getAllNews(): Promise<News[]> {
-  return wordpressFetch<News[]>("/wp-json/wp/v2/news?_embed");
+  return wordpressFetch<News[]>("/wp-json/wp/v2/news", {
+    _embed: true,
+    per_page: 100,
+  });
+}
+
+export async function getNewsByIds(ids: number[]): Promise<News[]> {
+  if (ids.length === 0) return [];
+  return wordpressFetch<News[]>("/wp-json/wp/v2/news", {
+    include: ids.join(","),
+    _embed: true,
+  });
+}
+
+export async function getNewsBySlug(slug: string): Promise<News> {
+  return wordpressFetch<News[]>("/wp-json/wp/v2/news", {
+    slug,
+    _embed: true,
+  }).then((news) => news[0]);
+}
+
+export async function getNewsPaginated(
+  page: number = 1,
+  perPage: number = 13,
+): Promise<WordPressResponse<News[]>> {
+  const query = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  return wordpressFetchWithPagination<News[]>("/wp-json/wp/v2/news", query);
 }
 
 export async function getActivityBySlug(slug: string): Promise<Activity> {
@@ -363,8 +442,58 @@ export async function getActivityBySlug(slug: string): Promise<Activity> {
   }).then((activities) => activities[0]);
 }
 
+export async function getActivitiesByIds(ids: number[]): Promise<Activity[]> {
+  if (ids.length === 0) return [];
+  return wordpressFetch<Activity[]>("/wp-json/wp/v2/activities", {
+    include: ids.join(","),
+    _embed: true,
+  });
+}
+
+export async function getActivitiesPaginated(
+  page: number = 1,
+  perPage: number = 13,
+): Promise<WordPressResponse<Activity[]>> {
+  const query = {
+    _embed: true,
+    per_page: perPage,
+    page,
+  };
+
+  return wordpressFetchWithPagination<Activity[]>(
+    "/wp-json/wp/v2/activities",
+    query,
+  );
+}
+
+export async function getEventBySlug(slug: string): Promise<Event> {
+  return wordpressFetch<Event[]>("/wp-json/wp/v2/events", {
+    slug,
+    _embed: true,
+  }).then((events) => events[0]);
+}
+
+export async function getRegionalMeetingBySlug(
+  slug: string,
+): Promise<RegionalMeeting> {
+  return wordpressFetch<RegionalMeeting[]>("/wp-json/wp/v2/regional_meetings", {
+    slug,
+    _embed: true,
+  }).then((regional_meeting) => regional_meeting[0]);
+}
+
+export async function getProjectBySlug(slug: string): Promise<Project> {
+  return wordpressFetch<Project[]>("/wp-json/wp/v2/projects", {
+    slug,
+    _embed: true,
+  }).then((projects) => projects[0]);
+}
+
 export async function getAllGalleries(): Promise<Gallery[]> {
-  return wordpressFetch<Gallery[]>("/wp-json/wp/v2/galleries?_embed");
+  return wordpressFetch<Gallery[]>("/wp-json/wp/v2/galleries", {
+    _embed: true,
+    per_page: 100,
+  });
 }
 
 export async function getGalleriesPaginated(
@@ -391,7 +520,10 @@ export async function getGalleryBySlug(slug: string): Promise<Gallery> {
 }
 
 export async function getAllVideos(): Promise<Video[]> {
-  return wordpressFetch<Video[]>("/wp-json/wp/v2/videos?_embed");
+  return wordpressFetch<Video[]>("/wp-json/wp/v2/videos", {
+    _embed: true,
+    per_page: 100,
+  });
 }
 
 export async function getVideosPaginated(
@@ -468,6 +600,57 @@ export async function getPageBySlug(slug: string): Promise<Page> {
   return wordpressFetch<Page[]>("/wp-json/wp/v2/pages", { slug }).then(
     (pages) => pages[0],
   );
+}
+
+// Fetch Reports & Publications categories dynamically from WordPress
+export async function getReportsMenu(): Promise<ReportsMenuItem[]> {
+  try {
+    // Fetch categories from WordPress taxonomy
+    const categories = await wordpressFetch<
+      Array<{
+        id: number;
+        name: string;
+        slug: string;
+      }>
+    >("/wp-json/wp/v2/reports_publications_category", {
+      per_page: 100,
+      orderby: "name",
+      order: "asc",
+    });
+
+    // Transform categories into menu structure
+    const menuChildren: ReportsMenuItem[] = categories.map((cat) => ({
+      id: cat.id,
+      title: cat.name,
+      url: `http://localhost:3000/reports-publications-category/${cat.slug}/`,
+    }));
+
+    return [
+      {
+        id: 361,
+        title: "Reports & Publications",
+        children: menuChildren,
+      },
+    ];
+  } catch (error) {
+    console.error("Error fetching reports categories:", error);
+    // Return empty structure if fetch fails
+    return [
+      {
+        id: 361,
+        title: "Reports & Publications",
+        children: [],
+      },
+    ];
+  }
+}
+
+export async function getAllReports(): Promise<Report[]> {
+  // Fetch from WordPress API - note the hyphen in the endpoint
+  return wordpressFetch<Report[]>("/wp-json/wp/v2/reports-publications", {
+    _embed: true,
+    per_page: 100,
+  });
 }
 
 export async function getAllAuthors(): Promise<Author[]> {
@@ -606,268 +789,6 @@ export async function getPostsByAuthorPaginated(
   return wordpressFetchWithPagination<Post[]>("/wp-json/wp/v2/posts", query);
 }
 
-// Team functions
-export async function getAllTeams(filterParams?: {
-  author?: string;
-  team_category?: string;
-  team_type?: string;
-  search?: string;
-}): Promise<Team[]> {
-  const query: Record<string, any> = {
-    _embed: true,
-    per_page: 100,
-  };
-
-  if (filterParams?.search) {
-    query.search = filterParams.search;
-  }
-  if (filterParams?.author) {
-    query.author = filterParams.author;
-  }
-  if (filterParams?.team_category) {
-    query.team_category = filterParams.team_category;
-  }
-  if (filterParams?.team_type) {
-    query.team_type = filterParams.team_type;
-  }
-
-  return wordpressFetch<Team[]>("/wp-json/wp/v2/team", query);
-}
-
-export async function getTeamById(id: number): Promise<Team> {
-  return wordpressFetch<Team>(`/wp-json/wp/v2/team/${id}`, { _embed: true });
-}
-
-export async function getTeamBySlug(slug: string): Promise<Team> {
-  return wordpressFetch<Team[]>("/wp-json/wp/v2/team", {
-    slug,
-    _embed: true,
-  }).then((teams) => teams[0]);
-}
-
-export async function getTeamsPaginated(
-  page: number = 1,
-  perPage: number = 9,
-  filterParams?: {
-    author?: string;
-    team_category?: string;
-    team_type?: string;
-    search?: string;
-  },
-): Promise<WordPressResponse<Team[]>> {
-  const query: Record<string, any> = {
-    _embed: true,
-    per_page: perPage,
-    page,
-  };
-
-  // Build cache tags based on filters
-  const cacheTags = ["wordpress", "teams"];
-
-  if (filterParams?.search) {
-    query.search = filterParams.search;
-    cacheTags.push("teams-search");
-  }
-  if (filterParams?.author) {
-    query.author = filterParams.author;
-    cacheTags.push(`teams-author-${filterParams.author}`);
-  }
-  if (filterParams?.team_category) {
-    query.team_category = filterParams.team_category;
-    cacheTags.push(`teams-category-${filterParams.team_category}`);
-  }
-  if (filterParams?.team_type) {
-    query.team_type = filterParams.team_type;
-    cacheTags.push(`teams-type-${filterParams.team_type}`);
-  }
-
-  // Add page-specific cache tag for granular invalidation
-  cacheTags.push(`teams-page-${page}`);
-
-  const url = `${baseUrl}/wp-json/wp/v2/team${
-    querystring.stringify(query) ? `?${querystring.stringify(query)}` : ""
-  }`;
-  const userAgent = "Next.js WordPress Client";
-
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent": userAgent,
-    },
-    next: {
-      tags: cacheTags,
-      revalidate: 10, // 1 hour cache
-    },
-  });
-
-  if (!response.ok) {
-    throw new WordPressAPIError(
-      `WordPress API request failed: ${response.statusText}`,
-      response.status,
-      url,
-    );
-  }
-
-  const data = await response.json();
-
-  return {
-    data,
-    headers: {
-      total: parseInt(response.headers.get("X-WP-Total") || "0", 10),
-      totalPages: parseInt(response.headers.get("X-WP-TotalPages") || "0", 10),
-    },
-  };
-}
-
-export async function getAllTeamSlugs(): Promise<{ slug: string }[]> {
-  const allSlugs: { slug: string }[] = [];
-  let page = 1;
-  let hasMore = true;
-
-  while (hasMore) {
-    const response = await wordpressFetchWithPagination<Team[]>(
-      "/wp-json/wp/v2/team",
-      {
-        per_page: 100,
-        page,
-        _fields: "slug",
-      },
-    );
-
-    const teams = response.data;
-    allSlugs.push(...teams.map((team) => ({ slug: team.slug })));
-
-    hasMore = page < response.headers.totalPages;
-    page++;
-  }
-
-  return allSlugs;
-}
-
-// Team taxonomy functions
-export async function getAllTeamCategories(): Promise<Category[]> {
-  return wordpressFetch<Category[]>("/wp-json/wp/v2/team_category");
-}
-
-export async function getTeamCategoryById(id: number): Promise<Category> {
-  return wordpressFetch<Category>(`/wp-json/wp/v2/team_category/${id}`);
-}
-
-export async function getTeamCategoryBySlug(slug: string): Promise<Category> {
-  return wordpressFetch<Category[]>("/wp-json/wp/v2/team_category", {
-    slug,
-  }).then((categories) => categories[0]);
-}
-
-export async function getTeamsByTeamCategory(
-  categoryId: number,
-): Promise<Team[]> {
-  return wordpressFetch<Team[]>("/wp-json/wp/v2/team", {
-    team_category: categoryId,
-    _embed: true,
-  });
-}
-
-export async function getAllTeamTypes(): Promise<Tag[]> {
-  return wordpressFetch<Tag[]>("/wp-json/wp/v2/team_type");
-}
-
-export async function getTeamTypeById(id: number): Promise<Tag> {
-  return wordpressFetch<Tag>(`/wp-json/wp/v2/team_type/${id}`);
-}
-
-export async function getTeamTypeBySlug(slug: string): Promise<Tag> {
-  return wordpressFetch<Tag[]>("/wp-json/wp/v2/team_type", { slug }).then(
-    (types) => types[0],
-  );
-}
-
-export async function getTeamsByTeamType(typeId: number): Promise<Team[]> {
-  return wordpressFetch<Team[]>("/wp-json/wp/v2/team", {
-    team_type: typeId,
-    _embed: true,
-  });
-}
-
-export async function searchTeamCategories(query: string): Promise<Category[]> {
-  return wordpressFetch<Category[]>("/wp-json/wp/v2/team_category", {
-    search: query,
-    per_page: 100,
-  });
-}
-
-export async function searchTeamTypes(query: string): Promise<Tag[]> {
-  return wordpressFetch<Tag[]>("/wp-json/wp/v2/team_type", {
-    search: query,
-    per_page: 100,
-  });
-}
-
-// Enhanced pagination functions for team queries
-export async function getTeamsByTeamCategoryPaginated(
-  categoryId: number,
-  page: number = 1,
-  perPage: number = 9,
-): Promise<WordPressResponse<Team[]>> {
-  const query = {
-    _embed: true,
-    per_page: perPage,
-    page,
-    team_category: categoryId,
-  };
-
-  return wordpressFetchWithPagination<Team[]>("/wp-json/wp/v2/team", query);
-}
-
-export async function getTeamsByTeamTypePaginated(
-  typeId: number,
-  page: number = 1,
-  perPage: number = 9,
-): Promise<WordPressResponse<Team[]>> {
-  const query = {
-    _embed: true,
-    per_page: perPage,
-    page,
-    team_type: typeId,
-  };
-
-  return wordpressFetchWithPagination<Team[]>("/wp-json/wp/v2/team", query);
-}
-
-// export async function getMenu(menuSlug: string) {
-//   const path = `wp-json/custom/v1/menus/${menuSlug}`;
-
-//   const menuItems = await wordpressFetch<any[]>(path);
-
-//   //Convert full WP URLS to Next.js URLs
-//   const normalized = menuItems.map((item) => ({
-//     ...item,
-//     url: normalizeWpUrl(item.url),
-//   }));
-
-//   return normalized;
-// }
-
-export function normalizeWpUrl(url?: string) {
-  if (!url) return "";
-
-  try {
-    const wpBase = new URL(process.env.NEXT_PUBLIC_WORDPRESS_URL!).origin;
-
-    return url.startsWith(wpBase) ? url.replace(wpBase, "") : url;
-  } catch {
-    return url;
-  }
-}
-
-// --- Recursive URL normalizer ---
-function normalizeMenuTree(menu: WpMenuItem[]): WpMenuItem[] {
-  return menu.map((item) => ({
-    ...item,
-    url: normalizeWpUrl(item.url),
-    children: item.children ? normalizeMenuTree(item.children) : [],
-  }));
-}
-
 // // --- Fetch menus from WP API ---
 
 export async function getAllOurNCCs(): Promise<OurNCC[]> {
@@ -892,16 +813,6 @@ export async function getOurNCCsPaginated(
     query.search = filterParams.search;
   }
   if (filterParams?.region) {
-    // Assuming we might need to filter by meta or custom field if it's not a taxonomy
-    // But for now let's assume we filter client side or if API supports it
-    // The JSON shows ncc_region as a top level field.
-    // Standard WP API doesn't filter by custom fields easily without plugin support.
-    // I will fetch all and filter client side in the template for now if needed,
-    // OR pass it as a param if the backend supports it.
-    // Given the user said "Show region filter tabs fetched from backend",
-    // I'll assume for pagination we might just fetch all for now or rely on client side filtering
-    // if the dataset is small (100 per page).
-    // However, to be safe, I'll pass it as a query param in case they have a filter set up.
     query.ncc_region = filterParams.region;
   }
 
@@ -955,6 +866,13 @@ export async function getExecutiveCommitteesPaginated(
   );
 }
 
+export async function getAllFaqs(): Promise<Faq[]> {
+  return wordpressFetch<Faq[]>("/wp-json/wp/v2/faqs", {
+    _embed: true,
+    per_page: 100,
+  });
+}
+
 export { WordPressAPIError };
 export type {
   Post,
@@ -963,10 +881,10 @@ export type {
   Author,
   Category,
   Tag,
-  Team,
   FeaturedMedia,
   Notice,
   Event,
+  RegionalMeeting,
   Project,
   News,
   Activity,

@@ -18,6 +18,7 @@ type CarouselProps = {
   showNavigation?: boolean;
   loop?: boolean;
   autoplay?: boolean;
+  onSlideChange?: (index: number) => void;
 };
 
 export default function OverlappingCarousel({
@@ -27,6 +28,7 @@ export default function OverlappingCarousel({
   showNavigation = false,
   loop = true,
   autoplay = false,
+  onSlideChange,
 }: CarouselProps) {
   return (
     <motion.div
@@ -63,7 +65,10 @@ export default function OverlappingCarousel({
               }
             : false
         }
-        className="h-[420px] w-[900px]"
+        onSlideChange={(swiper) => {
+          if (onSlideChange) onSlideChange(swiper.realIndex);
+        }}
+        className="h-[420px] w-full max-w-[600px] md:max-w-[900px]"
       >
         {images.map((image, i) => (
           <SwiperSlide

@@ -18,11 +18,14 @@ export default function Page({ pages }: { pages: any[] }) {
           <Prose className="mb-8">
             <h2>All Pages</h2>
             <ul className="grid">
-              {pages.map((page: any) => (
-                <li key={page.id}>
-                  <Link href={`/${page.slug}`}>{page.title.rendered}</Link>
-                </li>
-              ))}
+              {pages.map((page: any) => {
+                if (!page?.title?.rendered) return null;
+                return (
+                  <li key={page.id}>
+                    <Link href={`/${page.slug}`}>{page.title.rendered}</Link>
+                  </li>
+                );
+              })}
             </ul>
           </Prose>
           <BackButton />
